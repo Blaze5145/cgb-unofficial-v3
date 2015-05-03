@@ -77,7 +77,7 @@ Func Train()
 	Else
 		Click($TrainPos[0], $TrainPos[1]) ;Click Train Troops button
 		If _Sleep(500) Then Return
-		;if not $fullArmy then CheckFullArmy()  ;if armycamp not full, check full by barrack
+		if not $fullArmy then CheckFullArmy()  ;if armycamp not full, check full by barrack
 	Endif
 
 	Local $NextPos = _PixelSearch(749, 333, 787, 349, Hex(0xF08C40, 6), 5)
@@ -571,6 +571,13 @@ Func checkArmyCamp()
 	   if $TotalCamp = "" or $TotalCamp = 0 then
 		$TotalCamp = Number(getOther(586, 193, "Camp", True))
 	   endif
+	   
+	   if $TotalCamp = "" and $TotalCamp = 0 then
+		   $TotalCamp = InputBox("Question", "Enter your total Army Camp capacity", "200", "", _
+				 Default,Default, 600, 300)
+			$TotalCamp = int($TotalCamp)
+		 Endif
+	   If _Sleep(500) Then Return
 
 	   SetLog("Total Army Camp capacity: " & $CurCamp & "/" & $TotalCamp)
 	   ;If _ColorCheck(_GetPixelColor(692, 208), Hex(0x90DB38, 6), 20) and $ichkFullTroop = 0 Then

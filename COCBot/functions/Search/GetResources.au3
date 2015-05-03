@@ -24,20 +24,7 @@ Func GetResources() ;Reads resources
 	WEnd
 
 	$searchElixir = getElixir(51, 66 + 29)
-	$i = 0
-	while $searchElixir < 1000
-		If _Sleep(100) Then Return
-		$searchElixir = getElixir(51, 66 + 29)
-		$i += 1
-		If $i >= 100 Then ; wait max 10 sec then Restart Bot
-			SetLog("Cannot locate Next button, Restarting Bot", $COLOR_RED)
-			$Is_ClientSyncError = True
-			$iStuck = 0
-			checkMainScreen()
-			$Restart = True
-			Return
-		EndIf		
-	wend
+	
 	$searchTrophy = getTrophy(51, 66 + 90)
 
 	If $searchGold = $searchGold2 Then $iStuck += 1

@@ -331,7 +331,7 @@ Global $PixelNearCollector[0]
 Global $PixelRedArea[0]
 Global $hBitmapFirst
 Global Enum $eVectorLeftTop, $eVectorRightTop, $eVectorLeftBottom, $eVectorRightBottom
-Global $debugRedArea = 0, $debugSetlog = 0
+Global $debugRedArea = 0
 
 Global $DESTOLoc = ""
 
