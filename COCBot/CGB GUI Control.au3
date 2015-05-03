@@ -162,6 +162,7 @@ EndFunc   ;==>Check
 Func btnStart()
 	GUICtrlSetState($btnStart, $GUI_HIDE)
 	GUICtrlSetState($btnStop, $GUI_SHOW)
+	GUICtrlSetState($btnPause, $GUI_SHOW)
 	$FirstAttack = 0
 
 	CreateLogFile()
