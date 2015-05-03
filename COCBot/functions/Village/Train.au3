@@ -82,18 +82,34 @@ Func Train()
 
 	Local $NextPos = _PixelSearch(749, 333, 787, 349, Hex(0xF08C40, 6), 5)
     Local $PrevPos = _PixelSearch(70, 336, 110, 351, Hex(0xF08C40, 6), 5)
+	Local $checkLoop = 0
 
-	while not IsArray($NextPos)
-		If _Sleep(100) Then Return
-		$NextPos = _PixelSearch(749, 333, 787, 349, Hex(0xF08C40, 6), 5)
-		$PrevPos = _PixelSearch(70, 336, 110, 351, Hex(0xF08C40, 6), 5)
-	wend
-	while not IsArray($PrevPos)
-		If _Sleep(100) Then Return
-		$PrevPos = _PixelSearch(70, 336, 110, 351, Hex(0xF08C40, 6), 5)
+    while not IsArray($NextPos)
+        If $checkLoop > 20 Then
+           SetLog("Something went wrong.", $COLOR_RED)
+           checkMainScreen()
+           Return
+        EndIf
+        If _Sleep(100) Then Return
+        $NextPos = _PixelSearch(749, 333, 787, 349, Hex(0xF08C40, 6), 5)
+        $PrevPos = _PixelSearch(70, 336, 110, 351, Hex(0xF08C40, 6), 5)
+        $checkLoop += 1
 	wend
 
-	
+	$checkLoop = 0
+
+    while not IsArray($PrevPos)
+       If $checkLoop > 20 Then
+           SetLog("Something went wrong.", $COLOR_RED)
+           checkMainScreen()
+           Return
+        EndIf
+        If _Sleep(100) Then Return
+        $PrevPos = _PixelSearch(70, 336, 110, 351, Hex(0xF08C40, 6), 5)
+        $checkLoop += 1
+    wend
+
+
 	if $isNormalBuild = "" then
 		for $i=0 to Ubound($TroopName) - 1
 			If GUICtrlRead(eval("txtNum" & $TroopName[$i])) <> "0" Then
@@ -104,7 +120,7 @@ Func Train()
 	if $isNormalBuild = "" then
 		$isNormalBuild = false
 	endif
-	
+
 	if $isDarkBuild = "" then
 		for $i=0 to Ubound($TroopDarkName) - 1
 			If GUICtrlRead(eval("txtNum" & $TroopDarkName[$i])) <> "0" Then
@@ -511,7 +527,7 @@ Func Train()
 			If _Sleep(1000) Then ExitLoop
 			If $iBarrHere = 7 then ExitLoop
 	  wend
-	
+
 	if isSpellFactory() then
 		SetLog("Create Lightning Spell", $COLOR_BLUE)
 		If  _ColorCheck(_GetPixelColor(237, 354,"Y"), Hex(0xFFFFFF, 6), 20) = False Then
@@ -571,7 +587,7 @@ Func checkArmyCamp()
 	   if $TotalCamp = "" or $TotalCamp = 0 then
 		$TotalCamp = Number(getOther(586, 193, "Camp", True))
 	   endif
-	   
+
 	   if $TotalCamp = "" and $TotalCamp = 0 then
 		   $TotalCamp = InputBox("Question", "Enter your total Army Camp capacity", "200", "", _
 				 Default,Default, 600, 300)
