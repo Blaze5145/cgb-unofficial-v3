@@ -1,3 +1,8 @@
+#RequireAdmin
+#Region ;**** Directives created by AutoIt3Wrapper_GUI ****
+#AutoIt3Wrapper_UseX64=n
+#AutoIt3Wrapper_Run_AU3Check=n
+#EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 ; #FUNCTION# ====================================================================================================================
 ; Name ..........: CGB Bot
 ; Description ...: This file contens the Sequence that runs all CGB Bot
@@ -9,9 +14,6 @@
 ; Link ..........:
 ; Example .......: No
 ; ===============================================================================================================================
-
-#RequireAdmin
-#AutoIt3Wrapper_UseX64=n
 #include <WindowsConstants.au3>
 #include <WinAPI.au3>
 
