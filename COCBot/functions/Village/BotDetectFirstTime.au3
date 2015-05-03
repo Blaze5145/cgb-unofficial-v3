@@ -26,7 +26,6 @@ Func BotDetectFirstTime()
 			$pixel = $PixelTHHere[0]
 			$TownHallPos[0] = $pixel[0]
 			$TownHallPos[1] = $pixel[1]
-			If $debugSetlog = 1 Then SetLog("Townhall: (" & $TownHallPos[0] & "," & $TownHallPos[1] & ")")
 		EndIf
 	EndIf
 
@@ -40,12 +39,6 @@ Func BotDetectFirstTime()
 			$pixel = $PixelBarrackHere[0]
 			$barrackPos[0] = $pixel[0]
 			$barrackPos[1] = $pixel[1]
-			If $debugSetlog = 1 Then
-				For $i = 0 To UBound($PixelBarrackHere) - 1
-					$pixel = $PixelBarrackHere[$i]
-					SetLog("- Barrack " & $i + 1 & ": (" & $pixel[0] & "," & $pixel[1] & ")")
-				Next
-			EndIf
 		EndIf
 	EndIf
 
@@ -55,12 +48,6 @@ Func BotDetectFirstTime()
 		Local $PixelBarrackDarkHere = GetLocationItem("getLocationDarkBarrack")
 		$barrackDarkNum = UBound($PixelBarrackDarkHere)
 		SetLog("Total No. of Dark Barracks: " & $barrackDarkNum)
-		If UBound($PixelBarrackDarkHere) > 0 And $debugSetlog = 1 Then
-			For $i = 0 To UBound($PixelBarrackDarkHere) - 1
-				$pixel = $PixelBarrackDarkHere[$i]
-				SetLog("- Dark Barrack " & $i + 1 & ": (" & $pixel[0] & "," & $pixel[1] & ")")
-			Next
-		EndIf
 	EndIf
 
 	If _Sleep(50) Then Return
@@ -85,7 +72,6 @@ Func BotDetectFirstTime()
 		For $i = 0 To UBound($PixelMineHere) - 1
 			$pixel = $PixelMineHere[$i]
 			$listResourceLocation = $listResourceLocation & $pixel[0] & ";" & $pixel[1] & "|"
-			If $debugSetlog = 1 Then SetLog("- Gold Mine " & $i + 1 & ": (" & $pixel[0] & "," & $pixel[1] & ")")
 		Next
 		$PixelElixirHere = GetLocationItem("getLocationElixirExtractor")
 		If UBound($PixelElixirHere) > 0 Then
@@ -94,7 +80,6 @@ Func BotDetectFirstTime()
 		For $i = 0 To UBound($PixelElixirHere) - 1
 			$pixel = $PixelElixirHere[$i]
 			$listResourceLocation = $listResourceLocation & $pixel[0] & ";" & $pixel[1] & "|"
-			If $debugSetlog = 1 Then SetLog("- Elixir Collector " & $i + 1 & ": (" & $pixel[0] & "," & $pixel[1] & ")")
 		Next
 		$PixelDarkElixirHere = GetLocationItem("getLocationDarkElixirExtractor")
 		If UBound($PixelDarkElixirHere) > 0 Then
@@ -103,7 +88,6 @@ Func BotDetectFirstTime()
 		For $i = 0 To UBound($PixelDarkElixirHere) - 1
 			$pixel = $PixelDarkElixirHere[$i]
 			$listResourceLocation = $listResourceLocation & $pixel[0] & ";" & $pixel[1] & "|"
-			If $debugSetlog = 1 Then SetLog("- Dark Ellxir Drill " & $i + 1 & ": (" & $pixel[0] & "," & $pixel[1] & ")")
 		Next
 	EndIf
 

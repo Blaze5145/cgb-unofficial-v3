@@ -49,21 +49,27 @@ Func DonateCC($Check = False)
 		If _Sleep(250) Then ExitLoop
 		$DonatePixel = _MultiPixelSearch(202, $y, 203, 670, 1, 1, Hex(0x262926, 6), $offColors, 20)
 		If IsArray($DonatePixel) Then
-			If $debugSetlog = 1 Then Setlog("Donatepixel: (" & $DonatePixel[0] & "," & $DonatePixel[1] & ")")
 			$Donate = False
 			If $DonateTroop Then
-				_CaptureRegion(0, 0, 435, $DonatePixel[1] + 50)
-				Local $ClanString = getString($DonatePixel[1] - 44)
-				If $ClanString = "" Then
-					$ClanString = getString($DonatePixel[1] - 31)
-				Else
-					$ClanString &= " " & getString($DonatePixel[1] - 31)
-				EndIf
-				If $ClanString = "" Or $ClanString = " " Then
-					$ClanString = getString($DonatePixel[1] - 17)
-				Else
-					$ClanString &= " " & getString($DonatePixel[1] - 17)
-				EndIf
+				Local $ClanString = ""
+				$icount = 0
+				while $ClanString = "" or $ClanString = " "
+					_CaptureRegion(0, 0, 435, $DonatePixel[1] + 50)
+					$ClanString = getString($DonatePixel[1] - 44)
+					If $ClanString = "" Then
+						$ClanString = getString($DonatePixel[1] - 31)
+					Else
+						$ClanString &= " " & getString($DonatePixel[1] - 31)
+					EndIf
+					If $ClanString = "" Or $ClanString = " " Then
+						$ClanString = getString($DonatePixel[1] - 17)
+					Else
+						$ClanString &= " " & getString($DonatePixel[1] - 17)
+					EndIf
+					If _Sleep(250) Then ExitLoop
+					$icount += 1
+					if $icount = 10 then exitloop
+				wend
 				If $ClanString = "" Or $ClanString = " " Then
 					SetLog("Unable to read Chat Request!", $COLOR_RED)
 					$Donate = True
@@ -359,8 +365,18 @@ Func DonateTroopType($Type)
 	EndSwitch
 
 	Click($DonatePixel[0], $DonatePixel[1] + 11)
-	If _Sleep(250) Then Return
+	If _Sleep(250) Then Return	
 	_CaptureRegion(0, 0, 766, $DonatePixel[1] + 50 + $YComp)
+	$icount = 0
+	while not (_ColorCheck(_GetPixelColor(237 + ($Slot * 82), $DonatePixel[1] - 5 + $YComp), Hex(0x507C00, 6), 10) Or _
+			_ColorCheck(_GetPixelColor(237 + ($Slot * 82), $DonatePixel[1] - 10 + $YComp), Hex(0x507C00, 6), 10) Or _
+			_ColorCheck(_GetPixelColor(237 + ($Slot * 82), $DonatePixel[1] - 16 + $YComp), Hex(0x507C00, 6), 10))
+		If _Sleep(250) Then Return	
+		_CaptureRegion(0, 0, 766, $DonatePixel[1] + 50 + $YComp)
+		$icount += 1
+		if $icount = 10 then exitloop
+	wend
+	
 	If _ColorCheck(_GetPixelColor(237 + ($Slot * 82), $DonatePixel[1] - 5 + $YComp), Hex(0x507C00, 6), 10) Or _
 			_ColorCheck(_GetPixelColor(237 + ($Slot * 82), $DonatePixel[1] - 10 + $YComp), Hex(0x507C00, 6), 10) Or _
 			_ColorCheck(_GetPixelColor(237 + ($Slot * 82), $DonatePixel[1] - 16 + $YComp), Hex(0x507C00, 6), 10) Then

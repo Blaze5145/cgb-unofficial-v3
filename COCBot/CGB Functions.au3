@@ -53,6 +53,7 @@
 #include "functions\Other\Time.au3"
 #include "functions\Other\BlockInputEx.au3"
 #include "functions\Other\TogglePause.au3"
+#include "functions\Other\CheckPrerequisites.au3"
 
 #include "functions\Pixels\_CaptureRegion.au3"
 #include "functions\Pixels\_ColorCheck.au3"

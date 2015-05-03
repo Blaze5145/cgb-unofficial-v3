@@ -1727,3 +1727,4 @@ $tiExit = TrayCreateItem("Exit")
 ;~ -------------------------------------------------------------
 
 GUISetState(@SW_SHOW)
+CheckPrerequisites()
