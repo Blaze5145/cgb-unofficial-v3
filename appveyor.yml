@@ -1,0 +1,22 @@
+version: 3.0.1.{build}
+
+platform:
+    - x86
+
+skip_commits:
+  message: /\[skip ci\]/
+
+shallow_clone: true
+
+install:
+    - choco -y install autoit.commandline
+
+build_script:
+    - del .gitattributes
+    - del .gitignore
+    - del appveyor.yml
+    - aut2exe /in "CGB Bot.au3"
+    - 7z a "CGBv3.0.1 build %APPVEYOR_BUILD_NUMBER%.zip" .\*
+
+artifacts:
+  - path: CGBv3.0.1 build *.zip

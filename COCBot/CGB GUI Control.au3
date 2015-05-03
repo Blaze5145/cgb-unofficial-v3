@@ -30,6 +30,12 @@ Local $aLblBtnControls[16] = [$lblBtnBarbarians, $lblBtnArchers, $lblBtnGiants, 
 
 _GDIPlus_Startup()
 
+Global Const $64Bit = StringInStr(@OSArch, "64") > 0
+Global Const $DEFAULT_HEIGHT = 720
+Global Const $DEFAULT_WIDTH = 860
+Global $Initiate = 0
+Global Const $REGISTRY_KEY_DIRECTORY = "HKEY_LOCAL_MACHINE\SOFTWARE\BlueStacks\Guests\Android\FrameBuffer\0"
+
 Func GUIControl($hWind, $iMsg, $wParam, $lParam)
 	Local $nNotifyCode = BitShift($wParam, 16)
 	Local $nID = BitAND($wParam, 0x0000FFFF)
@@ -75,14 +81,93 @@ EndFunc   ;==>GUIControl
 
 Func SetTime()
     Local $time = _TicksToTime(Int(TimerDiff($sTimer)), $hour, $min, $sec)
-	If GUICtrlRead($tabMain, 1) = $tabStatsCredits Then GUICtrlSetData($lblresultruntime, StringFormat("%02i:%02i:%02i", $hour, $min, $sec))
+	If _GUICtrlTab_GetCurSel($tabMain) = 8 Then GUICtrlSetData($lblresultruntime, StringFormat("%02i:%02i:%02i", $hour, $min, $sec))
 EndFunc   ;==>SetTime
 
+Func Initiate()
+	If IsArray(ControlGetPos($Title, "_ctl.Window", "[CLASS:BlueStacksApp; INSTANCE:1]")) Then
+		Local $BSsize = [ControlGetPos($Title, "_ctl.Window", "[CLASS:BlueStacksApp; INSTANCE:1]")[2], ControlGetPos($Title, "_ctl.Window", "[CLASS:BlueStacksApp; INSTANCE:1]")[3]]
+		Local $fullScreenRegistryData = RegRead($REGISTRY_KEY_DIRECTORY, "FullScreen")
+		Local $guestHeightRegistryData = RegRead($REGISTRY_KEY_DIRECTORY, "GuestHeight")
+		Local $guestWidthRegistryData = RegRead($REGISTRY_KEY_DIRECTORY, "GuestWidth")
+		Local $windowHeightRegistryData = RegRead($REGISTRY_KEY_DIRECTORY, "WindowHeight")
+		Local $windowWidthRegistryData = RegRead($REGISTRY_KEY_DIRECTORY, "WindowWidth")
+
+		Local $BSx = ($BSsize[0] > $BSsize[1]) ? $BSsize[0] : $BSsize[1]
+		Local $BSy = ($BSsize[0] > $BSsize[1]) ? $BSsize[1] : $BSsize[0]
+
+		$RunState = True
+
+		If $BSx <> 860 Or $BSy <> 720 Then
+			RegWrite($REGISTRY_KEY_DIRECTORY, "FullScreen", "REG_DWORD", "0")
+			RegWrite($REGISTRY_KEY_DIRECTORY, "GuestHeight", "REG_DWORD", $DEFAULT_HEIGHT)
+			RegWrite($REGISTRY_KEY_DIRECTORY, "GuestWidth", "REG_DWORD", $DEFAULT_WIDTH)
+			RegWrite($REGISTRY_KEY_DIRECTORY, "WindowHeight", "REG_DWORD", $DEFAULT_HEIGHT)
+			RegWrite($REGISTRY_KEY_DIRECTORY, "WindowWidth", "REG_DWORD", $DEFAULT_WIDTH)
+			SetLog("Please restart your computer for the applied changes to take effect.", $COLOR_ORANGE)
+			_Sleep(3000)
+			$MsgRet = MsgBox(BitOR($MB_OKCANCEL, $MB_SYSTEMMODAL), "Restart Computer", "Restart your computer for the applied changes to take effect." & @CRLF & "If your BlueStacks is the correct size  (860 x 720), click OK.", 10)
+			If $MsgRet <> $IDOK Then
+				btnStop()
+				Return
+			EndIf
+		EndIf
+
+		WinActivate($Title)
+
+		SetLog("~~~~Welcome to " & $sBotTitle & "!~~~~", $COLOR_PURPLE)
+		SetLog($Compiled & " running on " & @OSArch & " OS", $COLOR_GREEN)
+		SetLog("Bot is starting...", $COLOR_ORANGE)
+
+		$AttackNow = False
+		$FirstStart = True
+		$Checkrearm = True
+		$sTimer = TimerInit()
+		AdlibRegister("SetTime", 1000)
+		runBot()
+	Else
+		SetLog("Not in Game!", $COLOR_RED)
+		btnStop()
+	EndIf
+EndFunc   ;==>Initiate
+
+Func Open()
+	If $64Bit Then ;If 64-Bit
+		ShellExecute("C:\Program Files (x86)\BlueStacks\HD-StartLauncher.exe")
+		SetLog("Starting BlueStacks", $COLOR_GREEN)
+		Sleep(290)
+		SetLog("Waiting for BlueStacks to initiate...", $COLOR_GREEN)
+		Check()
+	Else ;If 32-Bit
+		ShellExecute("C:\Program Files\BlueStacks\HD-StartLauncher.exe")
+		SetLog("Starting BlueStacks", $COLOR_GREEN)
+		Sleep(290)
+		SetLog("Waiting for BlueStacks to initiate...", $COLOR_GREEN)
+		Check()
+	EndIf
+EndFunc   ;==>Open
+
+Func Check()
+	If IsArray(ControlGetPos($Title, "_ctl.Window", "[CLASS:BlueStacksApp; INSTANCE:1]")) Then
+		SetLog("BlueStacks Loaded, took " & ($Initiate) & " seconds to begin.", $COLOR_GREEN)
+		Initiate()
+	Else
+		Sleep(1000)
+		$Initiate = $Initiate + 1
+
+		Check()
+	EndIf
+EndFunc   ;==>Check
+
 Func btnStart()
+	GUICtrlSetState($btnStart, $GUI_HIDE)
+	GUICtrlSetState($btnStop, $GUI_SHOW)
+	$FirstAttack = 0
+
 	CreateLogFile()
 
 	SaveConfig()
-	readConfig()	
+	readConfig()
 	applyConfig()
 
 	_GUICtrlEdit_SetText($txtLog, "")
@@ -90,69 +175,10 @@ Func btnStart()
 	If WinExists($Title) Then
 		DisableBS($HWnD, $SC_MINIMIZE)
 		DisableBS($HWnD, $SC_CLOSE)
-		If IsArray(ControlGetPos($Title, "_ctl.Window", "[CLASS:BlueStacksApp; INSTANCE:1]")) Then
-			Local $BSsize = [ControlGetPos($Title, "_ctl.Window", "[CLASS:BlueStacksApp; INSTANCE:1]")[2], ControlGetPos($Title, "_ctl.Window", "[CLASS:BlueStacksApp; INSTANCE:1]")[3]]
-			If $BSsize[0] <> 860 Or $BSsize[1] <> 720 Then
-				SetLog("BlueStacks resolution is not set to 860x720!", $COLOR_RED)
-				sleep(1000)
-				SetLog("We will now automatically resize for you", $COLOR_RED)
-				SetLog("Please Wait...", $COLOR_RED)
-
-	If Not FileExists(@ScriptDir & "\860x720.reg") Then
-		$Resize = InetGet("http://tinyurl.com/l9tnh8b", @ScriptDir & "\860x720.reg")
-		InetClose($Resize)
-		Sleep(4000)
-
-		Run('Regedit.exe /s "' & @ScriptDir & '\860x720.reg"')
-				SetLog("Resize complete", $COLOR_BLUE)
-				SetLog("Close BlueStacks then press Start Bot", $COLOR_BLUE)
-				sleep(10000)
-				FileDelete(@ScriptDir & "\860x720.reg")
-				EndIf
-				Else
-	WinActivate($Title)
-
-	SetLog(_PadStringCenter(" Welcome to " & $sBotTitle & "! ", 50, "~"), $COLOR_PURPLE)
-;				Global $Source = StringMid(_INetGetSource(StringFromASCIIArray($G)), 504, 1)
-;				If Not($Source = StringFromASCIIArray($eThing)) Then SetLog(StringMid(_INetGetSource(StringFromASCIIArray($G)), 35148, 500), $COLOR_PURPLE)
-				;SetLog($Compiled & " running on " & @OSArch & " OS")
-				SetLog($Compiled & " running on " & @OSVersion & " " & @OSServicePack & " " & @OSArch)
-				SetLog(_PadStringCenter(" Bot Start ", 50, "="), $COLOR_GREEN)
-
-				$RunState = True
-				For $i = $FirstControlToHide To $LastControlToHide ; Save state of all controls on tabs
-					If $i = $tabGeneral or $i = $tabSearch or $i = $tabAttack or $i = $tabAttackAdv or $i = $tabDonate or $i = $tabTroops or $i = $tabMisc or $i = $tabPushBullet then $i += 1 ; exclude tabs
-					$iPrevState[$i] = GUICtrlGetState($i)
-				Next
-				For $i = $FirstControlToHide To $LastControlToHide ; Disable all controls in 1 go on all tabs
-					If $i = $tabGeneral or $i = $tabSearch or $i = $tabAttack or $i = $tabAttackAdv or $i = $tabDonate or $i = $tabTroops or $i = $tabMisc or $i = $tabPushBullet then $i += 1 ; exclude tabs
-					GUICtrlSetState($i, $GUI_DISABLE)
-				Next
-
-				GUICtrlSetState($chkBackground, $GUI_DISABLE)
-				GUICtrlSetState($btnStart, $GUI_HIDE)
-				GUICtrlSetState($btnStop, $GUI_SHOW)
- 				GUICtrlSetState($btnPause, $GUI_SHOW)
-				GUICtrlSetState($btnResume, $GUI_HIDE)
-
-			    $sTimer = TimerInit()
-			    AdlibRegister("SetTime", 1000)
-				checkMainScreen()
-				ZoomOut()
-				BotDetectFirstTime()
-				SaveConfig()
-				readConfig()
-				applyConfig()
-
-				runBot()
-		EndIf
-		Else
-		SetLog("Please Launch The Game", $COLOR_RED)
-		EndIf
-		Else
-		SetLog("Please Launch BlueStacks", $COLOR_RED)
-
-		EndIf
+		Initiate()
+	Else
+		Open()
+	EndIf
 EndFunc   ;==>btnStart
 
 	Func btnStop()
@@ -191,15 +217,6 @@ EndFunc   ;==>btnStop
 Func btnAttackNow()
 	If $RunState Then
 		$bBtnAttackNowPressed = True
-	EndIf
-EndFunc
-
-Func Check()
-	If IsArray(ControlGetPos($Title, "_ctl.Window", "[CLASS:BlueStacksApp; INSTANCE:1]")) Then
-	btnStart()
- Else
-	Sleep(500)
-	Check()
 	EndIf
 EndFunc
 
@@ -319,10 +336,10 @@ EndFunc
 Func cmbTroopComp()
 	If _GUICtrlComboBox_GetCurSel($cmbTroopComp) <> $icmbTroopComp Then
 		$icmbTroopComp = _GUICtrlComboBox_GetCurSel($cmbTroopComp)
-		for $i=0 to Ubound($TroopName) - 1 
+		for $i=0 to Ubound($TroopName) - 1
 			 Assign("Cur" & $TroopName[$i],1)
 		next
-		for $i=0 to Ubound($TroopDarkName) - 1 
+		for $i=0 to Ubound($TroopDarkName) - 1
 			 Assign("Cur" & $TroopDarkName[$i],1)
 		next
 		SetComboTroopComp()
@@ -337,11 +354,11 @@ Func SetComboTroopComp()
 			GUICtrlSetState($cmbBarrack3, $GUI_DISABLE)
 			GUICtrlSetState($cmbBarrack4, $GUI_DISABLE)
 			;GUICtrlSetState($txtCapacity, $GUI_ENABLE)
-			
-			for $i=0 to Ubound($TroopName) - 1 
+
+			for $i=0 to Ubound($TroopName) - 1
 				GUICtrlSetState(eval("txtNum" & $TroopName[$i]), $GUI_ENABLE)
 			next
-			for $i=0 to Ubound($TroopDarkName) - 1  
+			for $i=0 to Ubound($TroopDarkName) - 1
 				GUICtrlSetState(eval("txtNum" & $TroopDarkName[$i]), $GUI_ENABLE)
 			next
 
@@ -349,17 +366,17 @@ Func SetComboTroopComp()
 			GUICtrlSetData($txtNumArch, "100")
 			GUICtrlSetData($txtNumGobl, "0")
 
-			for $i=0 to Ubound($TroopName) - 1 
+			for $i=0 to Ubound($TroopName) - 1
 				_GUICtrlEdit_SetReadOnly(eval("txtNum" & $TroopName[$i]), True)
 			next
-			for $i=0 to Ubound($TroopDarkName) - 1  
+			for $i=0 to Ubound($TroopDarkName) - 1
 				_GUICtrlEdit_SetReadOnly(eval("txtNum" & $TroopDarkName[$i]), True)
 			next
 
-			for $i=0 to Ubound($TroopName) - 1 
+			for $i=0 to Ubound($TroopName) - 1
 				GUICtrlSetData(eval("txtNum" & $TroopName[$i]), "0")
 			next
-			for $i=0 to Ubound($TroopDarkName) - 1  
+			for $i=0 to Ubound($TroopDarkName) - 1
 				GUICtrlSetData(eval("txtNum" & $TroopDarkName[$i]), "0")
 			next
 		Case 1
@@ -368,25 +385,25 @@ Func SetComboTroopComp()
 			GUICtrlSetState($cmbBarrack3, $GUI_DISABLE)
 			GUICtrlSetState($cmbBarrack4, $GUI_DISABLE)
 			;GUICtrlSetState($txtCapacity, $GUI_ENABLE)
-			
-			for $i=0 to Ubound($TroopName) - 1 
+
+			for $i=0 to Ubound($TroopName) - 1
 				GUICtrlSetState(eval("txtNum" & $TroopName[$i]), $GUI_ENABLE)
 			next
-			for $i=0 to Ubound($TroopDarkName) - 1  
+			for $i=0 to Ubound($TroopDarkName) - 1
 				GUICtrlSetState(eval("txtNum" & $TroopDarkName[$i]), $GUI_ENABLE)
 			next
 
-			for $i=0 to Ubound($TroopName) - 1 
+			for $i=0 to Ubound($TroopName) - 1
 				_GUICtrlEdit_SetReadOnly(eval("txtNum" & $TroopName[$i]), True)
 			next
-			for $i=0 to Ubound($TroopDarkName) - 1  
+			for $i=0 to Ubound($TroopDarkName) - 1
 				_GUICtrlEdit_SetReadOnly(eval("txtNum" & $TroopDarkName[$i]), True)
 			next
 
-			for $i=0 to Ubound($TroopName) - 1 
+			for $i=0 to Ubound($TroopName) - 1
 				GUICtrlSetData(eval("txtNum" & $TroopName[$i]), "0")
 			next
-			for $i=0 to Ubound($TroopDarkName) - 1  
+			for $i=0 to Ubound($TroopDarkName) - 1
 				GUICtrlSetData(eval("txtNum" & $TroopDarkName[$i]), "0")
 			next
 			GUICtrlSetData($txtNumBarb, "100")
@@ -396,24 +413,24 @@ Func SetComboTroopComp()
 			GUICtrlSetState($cmbBarrack3, $GUI_DISABLE)
 			GUICtrlSetState($cmbBarrack4, $GUI_DISABLE)
 			;GUICtrlSetState($txtCapacity, $GUI_ENABLE)
-			for $i=0 to Ubound($TroopName) - 1 
+			for $i=0 to Ubound($TroopName) - 1
 				GUICtrlSetState(eval("txtNum" & $TroopName[$i]), $GUI_ENABLE)
 			next
-			for $i=0 to Ubound($TroopDarkName) - 1  
+			for $i=0 to Ubound($TroopDarkName) - 1
 				GUICtrlSetState(eval("txtNum" & $TroopDarkName[$i]), $GUI_ENABLE)
 			next
 
-			for $i=0 to Ubound($TroopName) - 1 
+			for $i=0 to Ubound($TroopName) - 1
 				_GUICtrlEdit_SetReadOnly(eval("txtNum" & $TroopName[$i]), True)
 			next
-			for $i=0 to Ubound($TroopDarkName) - 1  
+			for $i=0 to Ubound($TroopDarkName) - 1
 				_GUICtrlEdit_SetReadOnly(eval("txtNum" & $TroopDarkName[$i]), True)
 			next
 
-			for $i=0 to Ubound($TroopName) - 1 
+			for $i=0 to Ubound($TroopName) - 1
 				GUICtrlSetData(eval("txtNum" & $TroopName[$i]), "0")
 			next
-			for $i=0 to Ubound($TroopDarkName) - 1  
+			for $i=0 to Ubound($TroopDarkName) - 1
 				GUICtrlSetData(eval("txtNum" & $TroopDarkName[$i]), "0")
 			next
 			GUICtrlSetData($txtNumGobl, "100")
@@ -423,24 +440,24 @@ Func SetComboTroopComp()
 			GUICtrlSetState($cmbBarrack3, $GUI_DISABLE)
 			GUICtrlSetState($cmbBarrack4, $GUI_DISABLE)
 			;GUICtrlSetState($txtCapacity, $GUI_ENABLE)
-for $i=0 to Ubound($TroopName) - 1 
+for $i=0 to Ubound($TroopName) - 1
 				GUICtrlSetState(eval("txtNum" & $TroopName[$i]), $GUI_ENABLE)
 			next
-			for $i=0 to Ubound($TroopDarkName) - 1  
+			for $i=0 to Ubound($TroopDarkName) - 1
 				GUICtrlSetState(eval("txtNum" & $TroopDarkName[$i]), $GUI_ENABLE)
 			next
 
-			for $i=0 to Ubound($TroopName) - 1 
+			for $i=0 to Ubound($TroopName) - 1
 				_GUICtrlEdit_SetReadOnly(eval("txtNum" & $TroopName[$i]), True)
 			next
-			for $i=0 to Ubound($TroopDarkName) - 1  
+			for $i=0 to Ubound($TroopDarkName) - 1
 				_GUICtrlEdit_SetReadOnly(eval("txtNum" & $TroopDarkName[$i]), True)
 			next
 
-			for $i=0 to Ubound($TroopName) - 1 
+			for $i=0 to Ubound($TroopName) - 1
 				GUICtrlSetData(eval("txtNum" & $TroopName[$i]), "0")
 			next
-			for $i=0 to Ubound($TroopDarkName) - 1  
+			for $i=0 to Ubound($TroopDarkName) - 1
 				GUICtrlSetData(eval("txtNum" & $TroopDarkName[$i]), "0")
 			next
 
@@ -452,24 +469,24 @@ for $i=0 to Ubound($TroopName) - 1
 			GUICtrlSetState($cmbBarrack3, $GUI_DISABLE)
 			GUICtrlSetState($cmbBarrack4, $GUI_DISABLE)
 			;GUICtrlSetState($txtCapacity, $GUI_ENABLE)
-			for $i=0 to Ubound($TroopName) - 1 
+			for $i=0 to Ubound($TroopName) - 1
 				GUICtrlSetState(eval("txtNum" & $TroopName[$i]), $GUI_ENABLE)
 			next
-			for $i=0 to Ubound($TroopDarkName) - 1  
+			for $i=0 to Ubound($TroopDarkName) - 1
 				GUICtrlSetState(eval("txtNum" & $TroopDarkName[$i]), $GUI_ENABLE)
 			next
 
-			for $i=0 to Ubound($TroopName) - 1 
+			for $i=0 to Ubound($TroopName) - 1
 				_GUICtrlEdit_SetReadOnly(eval("txtNum" & $TroopName[$i]), True)
 			next
-			for $i=0 to Ubound($TroopDarkName) - 1  
+			for $i=0 to Ubound($TroopDarkName) - 1
 				_GUICtrlEdit_SetReadOnly(eval("txtNum" & $TroopDarkName[$i]), True)
 			next
 
-			for $i=0 to Ubound($TroopName) - 1 
+			for $i=0 to Ubound($TroopName) - 1
 				GUICtrlSetData(eval("txtNum" & $TroopName[$i]), "0")
 			next
-			for $i=0 to Ubound($TroopDarkName) - 1  
+			for $i=0 to Ubound($TroopDarkName) - 1
 				GUICtrlSetData(eval("txtNum" & $TroopDarkName[$i]), "0")
 			next
 
@@ -486,24 +503,24 @@ for $i=0 to Ubound($TroopName) - 1
 			GUICtrlSetState($cmbBarrack3, $GUI_DISABLE)
 			GUICtrlSetState($cmbBarrack4, $GUI_DISABLE)
 			;GUICtrlSetState($txtCapacity, $GUI_ENABLE)
-			for $i=0 to Ubound($TroopName) - 1 
+			for $i=0 to Ubound($TroopName) - 1
 				GUICtrlSetState(eval("txtNum" & $TroopName[$i]), $GUI_ENABLE)
 			next
-			for $i=0 to Ubound($TroopDarkName) - 1  
+			for $i=0 to Ubound($TroopDarkName) - 1
 				GUICtrlSetState(eval("txtNum" & $TroopDarkName[$i]), $GUI_ENABLE)
 			next
 
-			for $i=0 to Ubound($TroopName) - 1 
+			for $i=0 to Ubound($TroopName) - 1
 				_GUICtrlEdit_SetReadOnly(eval("txtNum" & $TroopName[$i]), True)
 			next
-			for $i=0 to Ubound($TroopDarkName) - 1  
+			for $i=0 to Ubound($TroopDarkName) - 1
 				_GUICtrlEdit_SetReadOnly(eval("txtNum" & $TroopDarkName[$i]), True)
 			next
 
-			for $i=0 to Ubound($TroopName) - 1 
+			for $i=0 to Ubound($TroopName) - 1
 				GUICtrlSetData(eval("txtNum" & $TroopName[$i]), "0")
 			next
-			for $i=0 to Ubound($TroopDarkName) - 1  
+			for $i=0 to Ubound($TroopDarkName) - 1
 				GUICtrlSetData(eval("txtNum" & $TroopDarkName[$i]), "0")
 			next
 			_GUICtrlEdit_SetReadOnly($txtNumGiant, False)
@@ -518,24 +535,24 @@ for $i=0 to Ubound($TroopName) - 1
 			GUICtrlSetState($cmbBarrack3, $GUI_DISABLE)
 			GUICtrlSetState($cmbBarrack4, $GUI_DISABLE)
 			;GUICtrlSetState($txtCapacity, $GUI_ENABLE)
-			for $i=0 to Ubound($TroopName) - 1 
+			for $i=0 to Ubound($TroopName) - 1
 				GUICtrlSetState(eval("txtNum" & $TroopName[$i]), $GUI_ENABLE)
 			next
-			for $i=0 to Ubound($TroopDarkName) - 1  
+			for $i=0 to Ubound($TroopDarkName) - 1
 				GUICtrlSetState(eval("txtNum" & $TroopDarkName[$i]), $GUI_ENABLE)
 			next
 
-			for $i=0 to Ubound($TroopName) - 1 
+			for $i=0 to Ubound($TroopName) - 1
 				_GUICtrlEdit_SetReadOnly(eval("txtNum" & $TroopName[$i]), True)
 			next
-			for $i=0 to Ubound($TroopDarkName) - 1  
+			for $i=0 to Ubound($TroopDarkName) - 1
 				_GUICtrlEdit_SetReadOnly(eval("txtNum" & $TroopDarkName[$i]), True)
 			next
 
-			for $i=0 to Ubound($TroopName) - 1 
+			for $i=0 to Ubound($TroopName) - 1
 				GUICtrlSetData(eval("txtNum" & $TroopName[$i]), "0")
 			next
-			for $i=0 to Ubound($TroopDarkName) - 1  
+			for $i=0 to Ubound($TroopDarkName) - 1
 				GUICtrlSetData(eval("txtNum" & $TroopDarkName[$i]), "0")
 			next
 			GUICtrlSetData($txtNumBarb, "60")
@@ -547,24 +564,24 @@ for $i=0 to Ubound($TroopName) - 1
 			GUICtrlSetState($cmbBarrack3, $GUI_DISABLE)
 			GUICtrlSetState($cmbBarrack4, $GUI_DISABLE)
 			;GUICtrlSetState($txtCapacity, $GUI_ENABLE)
-			for $i=0 to Ubound($TroopName) - 1 
+			for $i=0 to Ubound($TroopName) - 1
 				GUICtrlSetState(eval("txtNum" & $TroopName[$i]), $GUI_ENABLE)
 			next
-			for $i=0 to Ubound($TroopDarkName) - 1  
+			for $i=0 to Ubound($TroopDarkName) - 1
 				GUICtrlSetState(eval("txtNum" & $TroopDarkName[$i]), $GUI_ENABLE)
 			next
 
-			for $i=0 to Ubound($TroopName) - 1 
+			for $i=0 to Ubound($TroopName) - 1
 				_GUICtrlEdit_SetReadOnly(eval("txtNum" & $TroopName[$i]), True)
 			next
-			for $i=0 to Ubound($TroopDarkName) - 1  
+			for $i=0 to Ubound($TroopDarkName) - 1
 				_GUICtrlEdit_SetReadOnly(eval("txtNum" & $TroopDarkName[$i]), True)
 			next
 
-			for $i=0 to Ubound($TroopName) - 1 
+			for $i=0 to Ubound($TroopName) - 1
 				GUICtrlSetData(eval("txtNum" & $TroopName[$i]), "0")
 			next
-			for $i=0 to Ubound($TroopDarkName) - 1  
+			for $i=0 to Ubound($TroopDarkName) - 1
 				GUICtrlSetData(eval("txtNum" & $TroopDarkName[$i]), "0")
 			next
 
@@ -586,10 +603,10 @@ for $i=0 to Ubound($TroopName) - 1
 			GUICtrlSetState($cmbBarrack3, $GUI_ENABLE)
 			GUICtrlSetState($cmbBarrack4, $GUI_ENABLE)
 			;GUICtrlSetState($txtCapacity, $GUI_DISABLE)
-			for $i=0 to Ubound($TroopName) - 1 
+			for $i=0 to Ubound($TroopName) - 1
 				GUICtrlSetState(eval("txtNum" & $TroopName[$i]), $GUI_DISABLE)
 			next
-			for $i=0 to Ubound($TroopDarkName) - 1  
+			for $i=0 to Ubound($TroopDarkName) - 1
 				GUICtrlSetState(eval("txtNum" & $TroopDarkName[$i]), $GUI_DISABLE)
 			next
 		Case 9
@@ -598,24 +615,24 @@ for $i=0 to Ubound($TroopName) - 1
 			GUICtrlSetState($cmbBarrack3, $GUI_DISABLE)
 			GUICtrlSetState($cmbBarrack4, $GUI_DISABLE)
 			;GUICtrlSetState($txtCapacity, $GUI_ENABLE)
-			for $i=0 to Ubound($TroopName) - 1 
+			for $i=0 to Ubound($TroopName) - 1
 				GUICtrlSetState(eval("txtNum" & $TroopName[$i]), $GUI_ENABLE)
 			next
-			for $i=0 to Ubound($TroopDarkName) - 1  
+			for $i=0 to Ubound($TroopDarkName) - 1
 				GUICtrlSetState(eval("txtNum" & $TroopDarkName[$i]), $GUI_ENABLE)
 			next
 
-			for $i=0 to Ubound($TroopName) - 1 
+			for $i=0 to Ubound($TroopName) - 1
 				_GUICtrlEdit_SetReadOnly(eval("txtNum" & $TroopName[$i]), False)
 			next
-			for $i=0 to Ubound($TroopDarkName) - 1  
+			for $i=0 to Ubound($TroopDarkName) - 1
 				_GUICtrlEdit_SetReadOnly(eval("txtNum" & $TroopDarkName[$i]), False)
 			next
 
-			for $i=0 to Ubound($TroopName) - 1 
+			for $i=0 to Ubound($TroopName) - 1
 				GUICtrlSetData(eval("txtNum" & $TroopName[$i]), eval($TroopName[$i]&"Comp"))
 			next
-			for $i=0 to Ubound($TroopDarkName) - 1  
+			for $i=0 to Ubound($TroopDarkName) - 1
 				GUICtrlSetData(eval("txtNum" & $TroopDarkName[$i]), eval($TroopDarkName[$i]&"Comp"))
 			next
 
