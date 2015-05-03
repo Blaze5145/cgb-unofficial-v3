@@ -33,7 +33,10 @@ Func CheckPrerequisites()
 			SetLog("The VC 2010 x86 is not installed", $COLOR_RED)
 			SetLog("Please download here : https://www.microsoft.com/fr-fr/download/details.aspx?id=5555", $COLOR_RED)
 		EndIf
+		SetLog("Use the bot at your own risk without the prerequisites!")
 
-		GUICtrlSetState($btnStart, $GUI_DISABLE)
+		;Removed because several users are using a later version of C++ Redistributable
+		;Added warning instead
+		;GUICtrlSetState($btnStart, $GUI_DISABLE)
 	EndIf
 EndFunc   ;==>CheckPrerequisites
