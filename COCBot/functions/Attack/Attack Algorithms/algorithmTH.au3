@@ -461,7 +461,7 @@ Func AttackTHgbarch()
 	EndIf
 
 	Setlog("No star yet? Sending 20 more archers.")
-	AttackTHGrid($eArcher, 4, 5, 15000, 2, 4, 0) ;releases 20 archers & wait 15s to check for star
+	AttackTHGrid($eArch, 4, 5, 15000, 2, 4, 0) ;releases 20 archers & wait 15s to check for star
 	_Sleep(200)
 	_CaptureRegion()
 	If _ColorCheck(_GetPixelColor(746, 498), Hex(0xc8cac7, 6), 20) = True Then
