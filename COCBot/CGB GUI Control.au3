@@ -29,13 +29,11 @@ Local $aTxtBlacklistControls[16] = [$txtBlacklistBarbarians, $txtBlacklistArcher
 Local $aLblBtnControls[16] = [$lblBtnBarbarians, $lblBtnArchers, $lblBtnGiants, $lblBtnGoblins, $lblBtnWallBreakers, $lblBtnBalloons, $lblBtnWizards, $lblBtnHealers, $lblBtnDragons, $lblBtnPekkas, $lblBtnMinions, $lblBtnHogRiders, $lblBtnValkyries, $lblBtnGolems, $lblBtnWitches, $lblBtnLavaHounds]
 
 _GDIPlus_Startup()
-
 Global Const $64Bit = StringInStr(@OSArch, "64") > 0
 Global Const $DEFAULT_HEIGHT = 720
 Global Const $DEFAULT_WIDTH = 860
 Global $Initiate = 0
 Global Const $REGISTRY_KEY_DIRECTORY = "HKEY_LOCAL_MACHINE\SOFTWARE\BlueStacks\Guests\Android\FrameBuffer\0"
-
 Func GUIControl($hWind, $iMsg, $wParam, $lParam)
 	Local $nNotifyCode = BitShift($wParam, 16)
 	Local $nID = BitAND($wParam, 0x0000FFFF)
@@ -49,22 +47,22 @@ Func GUIControl($hWind, $iMsg, $wParam, $lParam)
 					_GUICtrlRichEdit_Destroy($txtLog)
 					SaveConfig()
 					Exit
-			    Case $labelGameBotURL
-					 ShellExecute("https://GameBot.org") ;open web site when clicking label
-			    Case $labelClashGameBotURL
-					 ShellExecute("https://www.ClashGameBot.com") ;open web site when clicking label
-			    Case $labelForumURL
-			         ShellExecute("https://GameBot.org/forums/forumdisplay.php?fid=2") ;open web site when clicking label
+				Case $labelGameBotURL
+					ShellExecute("https://GameBot.org") ;open web site when clicking label
+				Case $labelClashGameBotURL
+					ShellExecute("https://www.ClashGameBot.com") ;open web site when clicking label
+				Case $labelForumURL
+					ShellExecute("https://GameBot.org/forums/forumdisplay.php?fid=2") ;open web site when clicking label
 				Case $btnStop
 					If $RunState Then btnStop()
- 				Case $btnPause
- 					If $RunState Then btnPause()
+				Case $btnPause
+					If $RunState Then btnPause()
 				Case $btnResume
 					If $RunState Then btnResume()
 				Case $btnHide
 					If $RunState Then btnHide()
 				Case $btnAttackNow
-					If $RunState then btnAttackNow()
+					If $RunState Then btnAttackNow()
 			EndSwitch
 		Case 274
 			Switch $wParam
@@ -74,17 +72,17 @@ Func GUIControl($hWind, $iMsg, $wParam, $lParam)
 					SaveConfig()
 					Exit
 			EndSwitch
-		 EndSwitch
+	EndSwitch
 
 	Return $GUI_RUNDEFMSG
 EndFunc   ;==>GUIControl
 
 Func SetTime()
-    Local $time = _TicksToTime(Int(TimerDiff($sTimer)), $hour, $min, $sec)
+	Local $time = _TicksToTime(Int(TimerDiff($sTimer)), $hour, $min, $sec)
 	If _GUICtrlTab_GetCurSel($tabMain) = 8 Then GUICtrlSetData($lblresultruntime, StringFormat("%02i:%02i:%02i", $hour, $min, $sec))
 EndFunc   ;==>SetTime
-
 Func Initiate()
+
 	If IsArray(ControlGetPos($Title, "_ctl.Window", "[CLASS:BlueStacksApp; INSTANCE:1]")) Then
 		Local $BSsize = [ControlGetPos($Title, "_ctl.Window", "[CLASS:BlueStacksApp; INSTANCE:1]")[2], ControlGetPos($Title, "_ctl.Window", "[CLASS:BlueStacksApp; INSTANCE:1]")[3]]
 		Local $fullScreenRegistryData = RegRead($REGISTRY_KEY_DIRECTORY, "FullScreen")
@@ -92,12 +90,9 @@ Func Initiate()
 		Local $guestWidthRegistryData = RegRead($REGISTRY_KEY_DIRECTORY, "GuestWidth")
 		Local $windowHeightRegistryData = RegRead($REGISTRY_KEY_DIRECTORY, "WindowHeight")
 		Local $windowWidthRegistryData = RegRead($REGISTRY_KEY_DIRECTORY, "WindowWidth")
-
 		Local $BSx = ($BSsize[0] > $BSsize[1]) ? $BSsize[0] : $BSsize[1]
 		Local $BSy = ($BSsize[0] > $BSsize[1]) ? $BSsize[1] : $BSsize[0]
-
 		$RunState = True
-
 		If $BSx <> 860 Or $BSy <> 720 Then
 			RegWrite($REGISTRY_KEY_DIRECTORY, "FullScreen", "REG_DWORD", "0")
 			RegWrite($REGISTRY_KEY_DIRECTORY, "GuestHeight", "REG_DWORD", $DEFAULT_HEIGHT)
@@ -115,7 +110,7 @@ Func Initiate()
 
 		WinActivate($Title)
 
-		SetLog("~~~~Welcome to " & $sBotTitle & "!~~~~", $COLOR_PURPLE)
+		SetLog("~~~~ " & $sBotTitle & " Powered by GameBot.org~~~~", $COLOR_PURPLE)
 		SetLog($Compiled & " running on " & @OSArch & " OS", $COLOR_GREEN)
 		SetLog("Bot is starting...", $COLOR_ORANGE)
 
@@ -124,6 +119,9 @@ Func Initiate()
 		$Checkrearm = True
 		$sTimer = TimerInit()
 		AdlibRegister("SetTime", 1000)
+		checkMainScreen()
+		ZoomOut()
+		BotDetectFirstTime()
 		runBot()
 	Else
 		SetLog("Not in Game!", $COLOR_RED)
@@ -164,8 +162,8 @@ Func btnStart()
 	GUICtrlSetState($btnStop, $GUI_SHOW)
 	GUICtrlSetState($btnPause, $GUI_SHOW)
 	$FirstAttack = 0
-
 	CreateLogFile()
+
 
 	SaveConfig()
 	readConfig()
@@ -173,30 +171,32 @@ Func btnStart()
 
 	_GUICtrlEdit_SetText($txtLog, "")
 
+
 	If WinExists($Title) Then
 		DisableBS($HWnD, $SC_MINIMIZE)
 		DisableBS($HWnD, $SC_CLOSE)
 		Initiate()
+
 	Else
 		Open()
 	EndIf
 EndFunc   ;==>btnStart
 
-	Func btnStop()
+Func btnStop()
 	If $RunState Then
 		$RunState = False
 		;$FirstStart = true
 		EnableBS($HWnD, $SC_MINIMIZE)
 		EnableBS($HWnD, $SC_CLOSE)
 		For $i = $FirstControlToHide To $LastControlToHide ; Restore previous state of controls
-			If $i = $tabGeneral or $i = $tabSearch or $i = $tabAttack or $i = $tabAttackAdv or $i = $tabDonate or $i = $tabTroops or $i = $tabMisc or $i = $tabPushBullet Then $i += 1 ; exclude tabs
+			If $i = $tabGeneral Or $i = $tabSearch Or $i = $tabAttack Or $i = $tabAttackAdv Or $i = $tabDonate Or $i = $tabTroops Or $i = $tabMisc Or $i = $tabPushBullet Then $i += 1 ; exclude tabs
 			GUICtrlSetState($i, $iPrevState[$i])
 		Next
 
 		GUICtrlSetState($chkBackground, $GUI_ENABLE)
 		GUICtrlSetState($btnStart, $GUI_SHOW)
 		GUICtrlSetState($btnStop, $GUI_HIDE)
- 		GUICtrlSetState($btnPause, $GUI_HIDE)
+		GUICtrlSetState($btnPause, $GUI_HIDE)
 		GUICtrlSetState($btnResume, $GUI_HIDE)
 
 		AdlibUnRegister("SetTime")
@@ -207,19 +207,19 @@ EndFunc   ;==>btnStart
 	EndIf
 EndFunc   ;==>btnStop
 
-	Func btnPause()
-	Send ("{PAUSE}")
-	EndFunc
+Func btnPause()
+	Send("{PAUSE}")
+EndFunc   ;==>btnPause
 
-	Func btnResume()
-	Send ("{PAUSE}")
-	EndFunc
+Func btnResume()
+	Send("{PAUSE}")
+EndFunc   ;==>btnResume
 
 Func btnAttackNow()
 	If $RunState Then
 		$bBtnAttackNowPressed = True
 	EndIf
-EndFunc
+EndFunc   ;==>btnAttackNow
 
 Func btnLocateBarracks()
 	$RunState = True
@@ -249,9 +249,9 @@ Func btnLocateClanCastle()
 		ExitLoop
 	WEnd
 	$RunState = False
- EndFunc   ;==>btnLocateClanCastle
+EndFunc   ;==>btnLocateClanCastle
 
- Func btnLocateSpellfactory()
+Func btnLocateSpellfactory()
 	$RunState = True
 	While 1
 		ZoomOut()
@@ -259,7 +259,7 @@ Func btnLocateClanCastle()
 		ExitLoop
 	WEnd
 	$RunState = False
- EndFunc		;==>btnLocateSpellFactory
+EndFunc   ;==>btnLocateSpellfactory
 
 Func btnLocateTownHall()
 	$RunState = True
@@ -283,9 +283,9 @@ Func btnSearchMode()
 		;GUICtrlSetState($btnLocateCollectors, $GUI_DISABLE)
 
 		$RunState = True
-			PrepareSearch()
-			If _Sleep(1000) Then Return
-			VillageSearch()
+		PrepareSearch()
+		If _Sleep(1000) Then Return
+		VillageSearch()
 		$RunState = False
 
 		GUICtrlSetState($btnStart, $GUI_SHOW)
@@ -321,28 +321,28 @@ Func btnHide()
 EndFunc   ;==>btnHide
 
 Func chkDeployRedArea()
-		If GUICtrlRead($chkDeployRedArea) = $GUI_CHECKED Then
+	If GUICtrlRead($chkDeployRedArea) = $GUI_CHECKED Then
 		$chkRedArea = 1
-		For $i = $lblSmartDeploy to $chkAttackNearDarkElixirDrill
+		For $i = $lblSmartDeploy To $chkAttackNearDarkElixirDrill
 			GUICtrlSetState($i, $GUI_SHOW)
 		Next
 	Else
 		$chkRedArea = 0
-		For $i = $lblSmartDeploy to $chkAttackNearDarkElixirDrill
+		For $i = $lblSmartDeploy To $chkAttackNearDarkElixirDrill
 			GUICtrlSetState($i, $GUI_HIDE)
 		Next
 	EndIf
-EndFunc
+EndFunc   ;==>chkDeployRedArea
 
 Func cmbTroopComp()
 	If _GUICtrlComboBox_GetCurSel($cmbTroopComp) <> $icmbTroopComp Then
 		$icmbTroopComp = _GUICtrlComboBox_GetCurSel($cmbTroopComp)
-		for $i=0 to Ubound($TroopName) - 1
-			 Assign("Cur" & $TroopName[$i],1)
-		next
-		for $i=0 to Ubound($TroopDarkName) - 1
-			 Assign("Cur" & $TroopDarkName[$i],1)
-		next
+		For $i = 0 To UBound($TroopName) - 1
+			Assign("Cur" & $TroopName[$i], 1)
+		Next
+		For $i = 0 To UBound($TroopDarkName) - 1
+			Assign("Cur" & $TroopDarkName[$i], 1)
+		Next
 		SetComboTroopComp()
 	EndIf
 EndFunc   ;==>cmbTroopComp
@@ -356,30 +356,30 @@ Func SetComboTroopComp()
 			GUICtrlSetState($cmbBarrack4, $GUI_DISABLE)
 			;GUICtrlSetState($txtCapacity, $GUI_ENABLE)
 
-			for $i=0 to Ubound($TroopName) - 1
-				GUICtrlSetState(eval("txtNum" & $TroopName[$i]), $GUI_ENABLE)
-			next
-			for $i=0 to Ubound($TroopDarkName) - 1
-				GUICtrlSetState(eval("txtNum" & $TroopDarkName[$i]), $GUI_ENABLE)
-			next
+			For $i = 0 To UBound($TroopName) - 1
+				GUICtrlSetState(Eval("txtNum" & $TroopName[$i]), $GUI_ENABLE)
+			Next
+			For $i = 0 To UBound($TroopDarkName) - 1
+				GUICtrlSetState(Eval("txtNum" & $TroopDarkName[$i]), $GUI_ENABLE)
+			Next
 
 			GUICtrlSetData($txtNumBarb, "0")
 			GUICtrlSetData($txtNumArch, "100")
 			GUICtrlSetData($txtNumGobl, "0")
 
-			for $i=0 to Ubound($TroopName) - 1
-				_GUICtrlEdit_SetReadOnly(eval("txtNum" & $TroopName[$i]), True)
-			next
-			for $i=0 to Ubound($TroopDarkName) - 1
-				_GUICtrlEdit_SetReadOnly(eval("txtNum" & $TroopDarkName[$i]), True)
-			next
+			For $i = 0 To UBound($TroopName) - 1
+				_GUICtrlEdit_SetReadOnly(Eval("txtNum" & $TroopName[$i]), True)
+			Next
+			For $i = 0 To UBound($TroopDarkName) - 1
+				_GUICtrlEdit_SetReadOnly(Eval("txtNum" & $TroopDarkName[$i]), True)
+			Next
 
-			for $i=0 to Ubound($TroopName) - 1
-				GUICtrlSetData(eval("txtNum" & $TroopName[$i]), "0")
-			next
-			for $i=0 to Ubound($TroopDarkName) - 1
-				GUICtrlSetData(eval("txtNum" & $TroopDarkName[$i]), "0")
-			next
+			For $i = 0 To UBound($TroopName) - 1
+				GUICtrlSetData(Eval("txtNum" & $TroopName[$i]), "0")
+			Next
+			For $i = 0 To UBound($TroopDarkName) - 1
+				GUICtrlSetData(Eval("txtNum" & $TroopDarkName[$i]), "0")
+			Next
 		Case 1
 			GUICtrlSetState($cmbBarrack1, $GUI_DISABLE)
 			GUICtrlSetState($cmbBarrack2, $GUI_DISABLE)
@@ -387,26 +387,26 @@ Func SetComboTroopComp()
 			GUICtrlSetState($cmbBarrack4, $GUI_DISABLE)
 			;GUICtrlSetState($txtCapacity, $GUI_ENABLE)
 
-			for $i=0 to Ubound($TroopName) - 1
-				GUICtrlSetState(eval("txtNum" & $TroopName[$i]), $GUI_ENABLE)
-			next
-			for $i=0 to Ubound($TroopDarkName) - 1
-				GUICtrlSetState(eval("txtNum" & $TroopDarkName[$i]), $GUI_ENABLE)
-			next
+			For $i = 0 To UBound($TroopName) - 1
+				GUICtrlSetState(Eval("txtNum" & $TroopName[$i]), $GUI_ENABLE)
+			Next
+			For $i = 0 To UBound($TroopDarkName) - 1
+				GUICtrlSetState(Eval("txtNum" & $TroopDarkName[$i]), $GUI_ENABLE)
+			Next
 
-			for $i=0 to Ubound($TroopName) - 1
-				_GUICtrlEdit_SetReadOnly(eval("txtNum" & $TroopName[$i]), True)
-			next
-			for $i=0 to Ubound($TroopDarkName) - 1
-				_GUICtrlEdit_SetReadOnly(eval("txtNum" & $TroopDarkName[$i]), True)
-			next
+			For $i = 0 To UBound($TroopName) - 1
+				_GUICtrlEdit_SetReadOnly(Eval("txtNum" & $TroopName[$i]), True)
+			Next
+			For $i = 0 To UBound($TroopDarkName) - 1
+				_GUICtrlEdit_SetReadOnly(Eval("txtNum" & $TroopDarkName[$i]), True)
+			Next
 
-			for $i=0 to Ubound($TroopName) - 1
-				GUICtrlSetData(eval("txtNum" & $TroopName[$i]), "0")
-			next
-			for $i=0 to Ubound($TroopDarkName) - 1
-				GUICtrlSetData(eval("txtNum" & $TroopDarkName[$i]), "0")
-			next
+			For $i = 0 To UBound($TroopName) - 1
+				GUICtrlSetData(Eval("txtNum" & $TroopName[$i]), "0")
+			Next
+			For $i = 0 To UBound($TroopDarkName) - 1
+				GUICtrlSetData(Eval("txtNum" & $TroopDarkName[$i]), "0")
+			Next
 			GUICtrlSetData($txtNumBarb, "100")
 		Case 2
 			GUICtrlSetState($cmbBarrack1, $GUI_DISABLE)
@@ -414,26 +414,26 @@ Func SetComboTroopComp()
 			GUICtrlSetState($cmbBarrack3, $GUI_DISABLE)
 			GUICtrlSetState($cmbBarrack4, $GUI_DISABLE)
 			;GUICtrlSetState($txtCapacity, $GUI_ENABLE)
-			for $i=0 to Ubound($TroopName) - 1
-				GUICtrlSetState(eval("txtNum" & $TroopName[$i]), $GUI_ENABLE)
-			next
-			for $i=0 to Ubound($TroopDarkName) - 1
-				GUICtrlSetState(eval("txtNum" & $TroopDarkName[$i]), $GUI_ENABLE)
-			next
+			For $i = 0 To UBound($TroopName) - 1
+				GUICtrlSetState(Eval("txtNum" & $TroopName[$i]), $GUI_ENABLE)
+			Next
+			For $i = 0 To UBound($TroopDarkName) - 1
+				GUICtrlSetState(Eval("txtNum" & $TroopDarkName[$i]), $GUI_ENABLE)
+			Next
 
-			for $i=0 to Ubound($TroopName) - 1
-				_GUICtrlEdit_SetReadOnly(eval("txtNum" & $TroopName[$i]), True)
-			next
-			for $i=0 to Ubound($TroopDarkName) - 1
-				_GUICtrlEdit_SetReadOnly(eval("txtNum" & $TroopDarkName[$i]), True)
-			next
+			For $i = 0 To UBound($TroopName) - 1
+				_GUICtrlEdit_SetReadOnly(Eval("txtNum" & $TroopName[$i]), True)
+			Next
+			For $i = 0 To UBound($TroopDarkName) - 1
+				_GUICtrlEdit_SetReadOnly(Eval("txtNum" & $TroopDarkName[$i]), True)
+			Next
 
-			for $i=0 to Ubound($TroopName) - 1
-				GUICtrlSetData(eval("txtNum" & $TroopName[$i]), "0")
-			next
-			for $i=0 to Ubound($TroopDarkName) - 1
-				GUICtrlSetData(eval("txtNum" & $TroopDarkName[$i]), "0")
-			next
+			For $i = 0 To UBound($TroopName) - 1
+				GUICtrlSetData(Eval("txtNum" & $TroopName[$i]), "0")
+			Next
+			For $i = 0 To UBound($TroopDarkName) - 1
+				GUICtrlSetData(Eval("txtNum" & $TroopDarkName[$i]), "0")
+			Next
 			GUICtrlSetData($txtNumGobl, "100")
 		Case 3
 			GUICtrlSetState($cmbBarrack1, $GUI_DISABLE)
@@ -441,26 +441,26 @@ Func SetComboTroopComp()
 			GUICtrlSetState($cmbBarrack3, $GUI_DISABLE)
 			GUICtrlSetState($cmbBarrack4, $GUI_DISABLE)
 			;GUICtrlSetState($txtCapacity, $GUI_ENABLE)
-for $i=0 to Ubound($TroopName) - 1
-				GUICtrlSetState(eval("txtNum" & $TroopName[$i]), $GUI_ENABLE)
-			next
-			for $i=0 to Ubound($TroopDarkName) - 1
-				GUICtrlSetState(eval("txtNum" & $TroopDarkName[$i]), $GUI_ENABLE)
-			next
+			For $i = 0 To UBound($TroopName) - 1
+				GUICtrlSetState(Eval("txtNum" & $TroopName[$i]), $GUI_ENABLE)
+			Next
+			For $i = 0 To UBound($TroopDarkName) - 1
+				GUICtrlSetState(Eval("txtNum" & $TroopDarkName[$i]), $GUI_ENABLE)
+			Next
 
-			for $i=0 to Ubound($TroopName) - 1
-				_GUICtrlEdit_SetReadOnly(eval("txtNum" & $TroopName[$i]), True)
-			next
-			for $i=0 to Ubound($TroopDarkName) - 1
-				_GUICtrlEdit_SetReadOnly(eval("txtNum" & $TroopDarkName[$i]), True)
-			next
+			For $i = 0 To UBound($TroopName) - 1
+				_GUICtrlEdit_SetReadOnly(Eval("txtNum" & $TroopName[$i]), True)
+			Next
+			For $i = 0 To UBound($TroopDarkName) - 1
+				_GUICtrlEdit_SetReadOnly(Eval("txtNum" & $TroopDarkName[$i]), True)
+			Next
 
-			for $i=0 to Ubound($TroopName) - 1
-				GUICtrlSetData(eval("txtNum" & $TroopName[$i]), "0")
-			next
-			for $i=0 to Ubound($TroopDarkName) - 1
-				GUICtrlSetData(eval("txtNum" & $TroopDarkName[$i]), "0")
-			next
+			For $i = 0 To UBound($TroopName) - 1
+				GUICtrlSetData(Eval("txtNum" & $TroopName[$i]), "0")
+			Next
+			For $i = 0 To UBound($TroopDarkName) - 1
+				GUICtrlSetData(Eval("txtNum" & $TroopDarkName[$i]), "0")
+			Next
 
 			GUICtrlSetData($txtNumBarb, "50")
 			GUICtrlSetData($txtNumArch, "50")
@@ -470,26 +470,26 @@ for $i=0 to Ubound($TroopName) - 1
 			GUICtrlSetState($cmbBarrack3, $GUI_DISABLE)
 			GUICtrlSetState($cmbBarrack4, $GUI_DISABLE)
 			;GUICtrlSetState($txtCapacity, $GUI_ENABLE)
-			for $i=0 to Ubound($TroopName) - 1
-				GUICtrlSetState(eval("txtNum" & $TroopName[$i]), $GUI_ENABLE)
-			next
-			for $i=0 to Ubound($TroopDarkName) - 1
-				GUICtrlSetState(eval("txtNum" & $TroopDarkName[$i]), $GUI_ENABLE)
-			next
+			For $i = 0 To UBound($TroopName) - 1
+				GUICtrlSetState(Eval("txtNum" & $TroopName[$i]), $GUI_ENABLE)
+			Next
+			For $i = 0 To UBound($TroopDarkName) - 1
+				GUICtrlSetState(Eval("txtNum" & $TroopDarkName[$i]), $GUI_ENABLE)
+			Next
 
-			for $i=0 to Ubound($TroopName) - 1
-				_GUICtrlEdit_SetReadOnly(eval("txtNum" & $TroopName[$i]), True)
-			next
-			for $i=0 to Ubound($TroopDarkName) - 1
-				_GUICtrlEdit_SetReadOnly(eval("txtNum" & $TroopDarkName[$i]), True)
-			next
+			For $i = 0 To UBound($TroopName) - 1
+				_GUICtrlEdit_SetReadOnly(Eval("txtNum" & $TroopName[$i]), True)
+			Next
+			For $i = 0 To UBound($TroopDarkName) - 1
+				_GUICtrlEdit_SetReadOnly(Eval("txtNum" & $TroopDarkName[$i]), True)
+			Next
 
-			for $i=0 to Ubound($TroopName) - 1
-				GUICtrlSetData(eval("txtNum" & $TroopName[$i]), "0")
-			next
-			for $i=0 to Ubound($TroopDarkName) - 1
-				GUICtrlSetData(eval("txtNum" & $TroopDarkName[$i]), "0")
-			next
+			For $i = 0 To UBound($TroopName) - 1
+				GUICtrlSetData(Eval("txtNum" & $TroopName[$i]), "0")
+			Next
+			For $i = 0 To UBound($TroopDarkName) - 1
+				GUICtrlSetData(Eval("txtNum" & $TroopDarkName[$i]), "0")
+			Next
 
 			_GUICtrlEdit_SetReadOnly($txtNumGiant, False)
 
@@ -504,26 +504,26 @@ for $i=0 to Ubound($TroopName) - 1
 			GUICtrlSetState($cmbBarrack3, $GUI_DISABLE)
 			GUICtrlSetState($cmbBarrack4, $GUI_DISABLE)
 			;GUICtrlSetState($txtCapacity, $GUI_ENABLE)
-			for $i=0 to Ubound($TroopName) - 1
-				GUICtrlSetState(eval("txtNum" & $TroopName[$i]), $GUI_ENABLE)
-			next
-			for $i=0 to Ubound($TroopDarkName) - 1
-				GUICtrlSetState(eval("txtNum" & $TroopDarkName[$i]), $GUI_ENABLE)
-			next
+			For $i = 0 To UBound($TroopName) - 1
+				GUICtrlSetState(Eval("txtNum" & $TroopName[$i]), $GUI_ENABLE)
+			Next
+			For $i = 0 To UBound($TroopDarkName) - 1
+				GUICtrlSetState(Eval("txtNum" & $TroopDarkName[$i]), $GUI_ENABLE)
+			Next
 
-			for $i=0 to Ubound($TroopName) - 1
-				_GUICtrlEdit_SetReadOnly(eval("txtNum" & $TroopName[$i]), True)
-			next
-			for $i=0 to Ubound($TroopDarkName) - 1
-				_GUICtrlEdit_SetReadOnly(eval("txtNum" & $TroopDarkName[$i]), True)
-			next
+			For $i = 0 To UBound($TroopName) - 1
+				_GUICtrlEdit_SetReadOnly(Eval("txtNum" & $TroopName[$i]), True)
+			Next
+			For $i = 0 To UBound($TroopDarkName) - 1
+				_GUICtrlEdit_SetReadOnly(Eval("txtNum" & $TroopDarkName[$i]), True)
+			Next
 
-			for $i=0 to Ubound($TroopName) - 1
-				GUICtrlSetData(eval("txtNum" & $TroopName[$i]), "0")
-			next
-			for $i=0 to Ubound($TroopDarkName) - 1
-				GUICtrlSetData(eval("txtNum" & $TroopDarkName[$i]), "0")
-			next
+			For $i = 0 To UBound($TroopName) - 1
+				GUICtrlSetData(Eval("txtNum" & $TroopName[$i]), "0")
+			Next
+			For $i = 0 To UBound($TroopDarkName) - 1
+				GUICtrlSetData(Eval("txtNum" & $TroopDarkName[$i]), "0")
+			Next
 			_GUICtrlEdit_SetReadOnly($txtNumGiant, False)
 
 			GUICtrlSetData($txtNumBarb, "50")
@@ -536,26 +536,26 @@ for $i=0 to Ubound($TroopName) - 1
 			GUICtrlSetState($cmbBarrack3, $GUI_DISABLE)
 			GUICtrlSetState($cmbBarrack4, $GUI_DISABLE)
 			;GUICtrlSetState($txtCapacity, $GUI_ENABLE)
-			for $i=0 to Ubound($TroopName) - 1
-				GUICtrlSetState(eval("txtNum" & $TroopName[$i]), $GUI_ENABLE)
-			next
-			for $i=0 to Ubound($TroopDarkName) - 1
-				GUICtrlSetState(eval("txtNum" & $TroopDarkName[$i]), $GUI_ENABLE)
-			next
+			For $i = 0 To UBound($TroopName) - 1
+				GUICtrlSetState(Eval("txtNum" & $TroopName[$i]), $GUI_ENABLE)
+			Next
+			For $i = 0 To UBound($TroopDarkName) - 1
+				GUICtrlSetState(Eval("txtNum" & $TroopDarkName[$i]), $GUI_ENABLE)
+			Next
 
-			for $i=0 to Ubound($TroopName) - 1
-				_GUICtrlEdit_SetReadOnly(eval("txtNum" & $TroopName[$i]), True)
-			next
-			for $i=0 to Ubound($TroopDarkName) - 1
-				_GUICtrlEdit_SetReadOnly(eval("txtNum" & $TroopDarkName[$i]), True)
-			next
+			For $i = 0 To UBound($TroopName) - 1
+				_GUICtrlEdit_SetReadOnly(Eval("txtNum" & $TroopName[$i]), True)
+			Next
+			For $i = 0 To UBound($TroopDarkName) - 1
+				_GUICtrlEdit_SetReadOnly(Eval("txtNum" & $TroopDarkName[$i]), True)
+			Next
 
-			for $i=0 to Ubound($TroopName) - 1
-				GUICtrlSetData(eval("txtNum" & $TroopName[$i]), "0")
-			next
-			for $i=0 to Ubound($TroopDarkName) - 1
-				GUICtrlSetData(eval("txtNum" & $TroopDarkName[$i]), "0")
-			next
+			For $i = 0 To UBound($TroopName) - 1
+				GUICtrlSetData(Eval("txtNum" & $TroopName[$i]), "0")
+			Next
+			For $i = 0 To UBound($TroopDarkName) - 1
+				GUICtrlSetData(Eval("txtNum" & $TroopDarkName[$i]), "0")
+			Next
 			GUICtrlSetData($txtNumBarb, "60")
 			GUICtrlSetData($txtNumArch, "30")
 			GUICtrlSetData($txtNumGobl, "10")
@@ -565,26 +565,26 @@ for $i=0 to Ubound($TroopName) - 1
 			GUICtrlSetState($cmbBarrack3, $GUI_DISABLE)
 			GUICtrlSetState($cmbBarrack4, $GUI_DISABLE)
 			;GUICtrlSetState($txtCapacity, $GUI_ENABLE)
-			for $i=0 to Ubound($TroopName) - 1
-				GUICtrlSetState(eval("txtNum" & $TroopName[$i]), $GUI_ENABLE)
-			next
-			for $i=0 to Ubound($TroopDarkName) - 1
-				GUICtrlSetState(eval("txtNum" & $TroopDarkName[$i]), $GUI_ENABLE)
-			next
+			For $i = 0 To UBound($TroopName) - 1
+				GUICtrlSetState(Eval("txtNum" & $TroopName[$i]), $GUI_ENABLE)
+			Next
+			For $i = 0 To UBound($TroopDarkName) - 1
+				GUICtrlSetState(Eval("txtNum" & $TroopDarkName[$i]), $GUI_ENABLE)
+			Next
 
-			for $i=0 to Ubound($TroopName) - 1
-				_GUICtrlEdit_SetReadOnly(eval("txtNum" & $TroopName[$i]), True)
-			next
-			for $i=0 to Ubound($TroopDarkName) - 1
-				_GUICtrlEdit_SetReadOnly(eval("txtNum" & $TroopDarkName[$i]), True)
-			next
+			For $i = 0 To UBound($TroopName) - 1
+				_GUICtrlEdit_SetReadOnly(Eval("txtNum" & $TroopName[$i]), True)
+			Next
+			For $i = 0 To UBound($TroopDarkName) - 1
+				_GUICtrlEdit_SetReadOnly(Eval("txtNum" & $TroopDarkName[$i]), True)
+			Next
 
-			for $i=0 to Ubound($TroopName) - 1
-				GUICtrlSetData(eval("txtNum" & $TroopName[$i]), "0")
-			next
-			for $i=0 to Ubound($TroopDarkName) - 1
-				GUICtrlSetData(eval("txtNum" & $TroopDarkName[$i]), "0")
-			next
+			For $i = 0 To UBound($TroopName) - 1
+				GUICtrlSetData(Eval("txtNum" & $TroopName[$i]), "0")
+			Next
+			For $i = 0 To UBound($TroopDarkName) - 1
+				GUICtrlSetData(Eval("txtNum" & $TroopDarkName[$i]), "0")
+			Next
 
 			_GUICtrlEdit_SetReadOnly($txtNumGiant, False)
 			_GUICtrlEdit_SetReadOnly($txtNumWall, False)
@@ -604,63 +604,63 @@ for $i=0 to Ubound($TroopName) - 1
 			GUICtrlSetState($cmbBarrack3, $GUI_ENABLE)
 			GUICtrlSetState($cmbBarrack4, $GUI_ENABLE)
 			;GUICtrlSetState($txtCapacity, $GUI_DISABLE)
-			for $i=0 to Ubound($TroopName) - 1
-				GUICtrlSetState(eval("txtNum" & $TroopName[$i]), $GUI_DISABLE)
-			next
-			for $i=0 to Ubound($TroopDarkName) - 1
-				GUICtrlSetState(eval("txtNum" & $TroopDarkName[$i]), $GUI_DISABLE)
-			next
+			For $i = 0 To UBound($TroopName) - 1
+				GUICtrlSetState(Eval("txtNum" & $TroopName[$i]), $GUI_DISABLE)
+			Next
+			For $i = 0 To UBound($TroopDarkName) - 1
+				GUICtrlSetState(Eval("txtNum" & $TroopDarkName[$i]), $GUI_DISABLE)
+			Next
 		Case 9
 			GUICtrlSetState($cmbBarrack1, $GUI_DISABLE)
 			GUICtrlSetState($cmbBarrack2, $GUI_DISABLE)
 			GUICtrlSetState($cmbBarrack3, $GUI_DISABLE)
 			GUICtrlSetState($cmbBarrack4, $GUI_DISABLE)
 			;GUICtrlSetState($txtCapacity, $GUI_ENABLE)
-			for $i=0 to Ubound($TroopName) - 1
-				GUICtrlSetState(eval("txtNum" & $TroopName[$i]), $GUI_ENABLE)
-			next
-			for $i=0 to Ubound($TroopDarkName) - 1
-				GUICtrlSetState(eval("txtNum" & $TroopDarkName[$i]), $GUI_ENABLE)
-			next
+			For $i = 0 To UBound($TroopName) - 1
+				GUICtrlSetState(Eval("txtNum" & $TroopName[$i]), $GUI_ENABLE)
+			Next
+			For $i = 0 To UBound($TroopDarkName) - 1
+				GUICtrlSetState(Eval("txtNum" & $TroopDarkName[$i]), $GUI_ENABLE)
+			Next
 
-			for $i=0 to Ubound($TroopName) - 1
-				_GUICtrlEdit_SetReadOnly(eval("txtNum" & $TroopName[$i]), False)
-			next
-			for $i=0 to Ubound($TroopDarkName) - 1
-				_GUICtrlEdit_SetReadOnly(eval("txtNum" & $TroopDarkName[$i]), False)
-			next
+			For $i = 0 To UBound($TroopName) - 1
+				_GUICtrlEdit_SetReadOnly(Eval("txtNum" & $TroopName[$i]), False)
+			Next
+			For $i = 0 To UBound($TroopDarkName) - 1
+				_GUICtrlEdit_SetReadOnly(Eval("txtNum" & $TroopDarkName[$i]), False)
+			Next
 
-			for $i=0 to Ubound($TroopName) - 1
-				GUICtrlSetData(eval("txtNum" & $TroopName[$i]), eval($TroopName[$i]&"Comp"))
-			next
-			for $i=0 to Ubound($TroopDarkName) - 1
-				GUICtrlSetData(eval("txtNum" & $TroopDarkName[$i]), eval($TroopDarkName[$i]&"Comp"))
-			next
+			For $i = 0 To UBound($TroopName) - 1
+				GUICtrlSetData(Eval("txtNum" & $TroopName[$i]), Eval($TroopName[$i] & "Comp"))
+			Next
+			For $i = 0 To UBound($TroopDarkName) - 1
+				GUICtrlSetData(Eval("txtNum" & $TroopDarkName[$i]), Eval($TroopDarkName[$i] & "Comp"))
+			Next
 
 	EndSwitch
 	lblTotalCount()
 EndFunc   ;==>SetComboTroopComp
 
 Func cmbBotCond()
-   If _GUICtrlComboBox_GetCurSel($cmbBotCond) = 13 Then
-	  If _GUICtrlComboBox_GetCurSel($cmbHoursStop) = 0 Then _GUICtrlComboBox_SetCurSel($cmbHoursStop, 1)
-	  GUICtrlSetState($cmbHoursStop, $GUI_ENABLE)
-   Else
-	  _GUICtrlComboBox_SetCurSel($cmbHoursStop, 0)
-	  GUICtrlSetState($cmbHoursStop, $GUI_DISABLE)
-   EndIf
-EndFunc	  ;==>cmbBotCond
+	If _GUICtrlComboBox_GetCurSel($cmbBotCond) = 13 Then
+		If _GUICtrlComboBox_GetCurSel($cmbHoursStop) = 0 Then _GUICtrlComboBox_SetCurSel($cmbHoursStop, 1)
+		GUICtrlSetState($cmbHoursStop, $GUI_ENABLE)
+	Else
+		_GUICtrlComboBox_SetCurSel($cmbHoursStop, 0)
+		GUICtrlSetState($cmbHoursStop, $GUI_DISABLE)
+	EndIf
+EndFunc   ;==>cmbBotCond
 
 Func Randomspeedatk()
-   If GUICtrlRead($Randomspeedatk) = $GUI_CHECKED Then
-	  $iRandomspeedatk = 1
-	  GUICtrlSetState($cmbUnitDelay, $GUI_DISABLE)
-	  GUICtrlSetState($cmbWaveDelay, $GUI_DISABLE)
-   Else
-	  $iRandomspeedatk = 0
-	  GUICtrlSetState($cmbUnitDelay, $GUI_ENABLE)
-	  GUICtrlSetState($cmbWaveDelay, $GUI_ENABLE)
-   EndIf
+	If GUICtrlRead($Randomspeedatk) = $GUI_CHECKED Then
+		$iRandomspeedatk = 1
+		GUICtrlSetState($cmbUnitDelay, $GUI_DISABLE)
+		GUICtrlSetState($cmbWaveDelay, $GUI_DISABLE)
+	Else
+		$iRandomspeedatk = 0
+		GUICtrlSetState($cmbUnitDelay, $GUI_ENABLE)
+		GUICtrlSetState($cmbWaveDelay, $GUI_ENABLE)
+	EndIf
 EndFunc   ;==>Randomspeedatk
 
 Func chkSearchReduction()
@@ -677,7 +677,7 @@ Func chkSearchReduction()
 		_GUICtrlEdit_SetReadOnly($txtSearchReduceDark, True)
 		_GUICtrlEdit_SetReadOnly($txtSearchReduceTrophy, True)
 	EndIf
-EndFunc
+EndFunc   ;==>chkSearchReduction
 
 Func chkMeetDE()
 	If GUICtrlRead($chkMeetDE) = $GUI_CHECKED Then
@@ -685,7 +685,7 @@ Func chkMeetDE()
 	Else
 		_GUICtrlEdit_SetReadOnly($txtMinDarkElixir, True)
 	EndIf
-EndFunc
+EndFunc   ;==>chkMeetDE
 
 Func chkMeetTrophy()
 	If GUICtrlRead($chkMeetTrophy) = $GUI_CHECKED Then
@@ -693,7 +693,7 @@ Func chkMeetTrophy()
 	Else
 		_GUICtrlEdit_SetReadOnly($txtMinTrophy, True)
 	EndIf
-EndFunc
+EndFunc   ;==>chkMeetTrophy
 
 Func chkMeetTH()
 	If GUICtrlRead($chkMeetTH) = $GUI_CHECKED Then
@@ -701,7 +701,7 @@ Func chkMeetTH()
 	Else
 		GUICtrlSetState($cmbTH, $GUI_DISABLE)
 	EndIf
-EndFunc
+EndFunc   ;==>chkMeetTH
 
 Func chkBackground()
 	If GUICtrlRead($chkBackground) = $GUI_CHECKED Then
@@ -745,21 +745,21 @@ Func chkAttackNow()
 		GUICtrlSetState($lblAttackNowSec, $GUI_DISABLE)
 		GUICtrlSetState($cmbAttackNowDelay, $GUI_DISABLE)
 	EndIf
-EndFunc
+EndFunc   ;==>chkAttackNow
 
 Func GUILightSpell()
 	If GUICtrlRead($chkLightSpell) = $GUI_CHECKED Then
-	$iChkLightSpell = 1
-	    GUICtrlSetState($lbliLSpellQ, $GUI_ENABLE)
+		$iChkLightSpell = 1
+		GUICtrlSetState($lbliLSpellQ, $GUI_ENABLE)
 		GUICtrlSetState($cmbiLSpellQ, $GUI_ENABLE)
 		GUICtrlSetState($lbliLSpellQ2, $GUI_ENABLE)
 	Else
-	   $iChkLightSpell = 0
+		$iChkLightSpell = 0
 		GUICtrlSetState($lbliLSpellQ, $GUI_DISABLE)
 		GUICtrlSetState($cmbiLSpellQ, $GUI_DISABLE)
 		GUICtrlSetState($lbliLSpellQ2, $GUI_DISABLE)
 	EndIf
-EndFunc
+EndFunc   ;==>GUILightSpell
 
 Func chkBullyMode()
 	If GUICtrlRead($chkBullyMode) = $GUI_CHECKED Then
@@ -771,10 +771,10 @@ Func chkBullyMode()
 		GUICtrlSetState($txtATBullyMode, $GUI_DISABLE)
 		GUICtrlSetState($cmbYourTH, $GUI_DISABLE)
 	EndIf
-EndFunc
+EndFunc   ;==>chkBullyMode
 
 Func chkSnipeMode()
-		If GUICtrlRead($chkTrophyMode) = $GUI_CHECKED Then
+	If GUICtrlRead($chkTrophyMode) = $GUI_CHECKED Then
 		$OptBullyMode = 1
 		GUICtrlSetState($txtTHaddtiles, $GUI_ENABLE)
 		GUICtrlSetState($cmbAttackTHType, $GUI_ENABLE)
@@ -783,7 +783,7 @@ Func chkSnipeMode()
 		GUICtrlSetState($txtTHaddtiles, $GUI_DISABLE)
 		GUICtrlSetState($cmbAttackTHType, $GUI_DISABLE)
 	EndIf
-EndFunc
+EndFunc   ;==>chkSnipeMode
 
 Func chkRequest()
 	If GUICtrlRead($chkRequest) = $GUI_CHECKED Then
@@ -795,385 +795,385 @@ Func chkRequest()
 		GUICtrlSetState($txtRequest, $GUI_DISABLE)
 		GUICtrlSetState($btnLocateClanCastle, $GUI_HIDE)
 	EndIf
-EndFunc
+EndFunc   ;==>chkRequest
 
 Func lblTotalCount()
 	GUICtrlSetData($lblTotalCount, GUICtrlRead($txtNumBarb) + GUICtrlRead($txtNumArch) + GUICtrlRead($txtNumGobl))
-	IF GUICtrlRead($lblTotalCount) = "100" Then
-		GUICtrlSetBkColor ($lblTotalCount, $COLOR_MONEYGREEN)
+	If GUICtrlRead($lblTotalCount) = "100" Then
+		GUICtrlSetBkColor($lblTotalCount, $COLOR_MONEYGREEN)
 	ElseIf GUICtrlRead($lblTotalCount) = "0" Then
-		GUICtrlSetBkColor ($lblTotalCount, $COLOR_ORANGE)
+		GUICtrlSetBkColor($lblTotalCount, $COLOR_ORANGE)
 	Else
-		GUICtrlSetBkColor ($lblTotalCount, $COLOR_RED)
+		GUICtrlSetBkColor($lblTotalCount, $COLOR_RED)
 	EndIf
-EndFunc
+EndFunc   ;==>lblTotalCount
 
 Func btnDonateBarbarians()
 	If GUICtrlGetState($grpBarbarians) = BitOR($GUI_HIDE, $GUI_ENABLE) Then
 		_DonateBtn($grpBarbarians, $txtBlacklistBarbarians) ;Hide/Show controls on Donate tab
 	EndIf
-EndFunc
+EndFunc   ;==>btnDonateBarbarians
 
 Func btnDonateArchers()
 	If GUICtrlGetState($grpArchers) = BitOR($GUI_HIDE, $GUI_ENABLE) Then
 		_DonateBtn($grpArchers, $txtBlacklistArchers)
 	EndIf
-EndFunc
+EndFunc   ;==>btnDonateArchers
 
 Func btnDonateGiants()
 	If GUICtrlGetState($grpGiants) = BitOR($GUI_HIDE, $GUI_ENABLE) Then
 		_DonateBtn($grpGiants, $txtBlacklistGiants)
 	EndIf
-EndFunc
+EndFunc   ;==>btnDonateGiants
 
 Func btnDonateGoblins()
 	If GUICtrlGetState($grpGoblins) = BitOR($GUI_HIDE, $GUI_ENABLE) Then
 		_DonateBtn($grpGoblins, $txtBlacklistGoblins)
 	EndIf
-EndFunc
+EndFunc   ;==>btnDonateGoblins
 
 Func btnDonateWallBreakers()
 	If GUICtrlGetState($grpWallBreakers) = BitOR($GUI_HIDE, $GUI_ENABLE) Then
 		_DonateBtn($grpWallBreakers, $txtBlacklistWallBreakers)
 	EndIf
-EndFunc
+EndFunc   ;==>btnDonateWallBreakers
 
 Func btnDonateBalloons()
 	If GUICtrlGetState($grpBalloons) = BitOR($GUI_HIDE, $GUI_ENABLE) Then
 		_DonateBtn($grpBalloons, $txtBlacklistBalloons)
 	EndIf
-EndFunc
+EndFunc   ;==>btnDonateBalloons
 
 Func btnDonateWizards()
 	If GUICtrlGetState($grpWizards) = BitOR($GUI_HIDE, $GUI_ENABLE) Then
 		_DonateBtn($grpWizards, $txtBlacklistWizards)
-	Endif
-EndFunc
+	EndIf
+EndFunc   ;==>btnDonateWizards
 
 Func btnDonateHealers()
 	If GUICtrlGetState($grpHealers) = BitOR($GUI_HIDE, $GUI_ENABLE) Then
 		_DonateBtn($grpHealers, $txtBlacklistHealers)
-	Endif
-EndFunc
+	EndIf
+EndFunc   ;==>btnDonateHealers
 
 Func btnDonateDragons()
 	If GUICtrlGetState($grpDragons) = BitOR($GUI_HIDE, $GUI_ENABLE) Then
 		_DonateBtn($grpDragons, $txtBlacklistDragons)
-	Endif
-EndFunc
+	EndIf
+EndFunc   ;==>btnDonateDragons
 
 Func btnDonatePekkas()
 	If GUICtrlGetState($grpPekkas) = BitOR($GUI_HIDE, $GUI_ENABLE) Then
 		_DonateBtn($grpPekkas, $txtBlacklistPekkas)
-	Endif
-EndFunc
+	EndIf
+EndFunc   ;==>btnDonatePekkas
 
 Func btnDonateMinions()
 	If GUICtrlGetState($grpMinions) = BitOR($GUI_HIDE, $GUI_ENABLE) Then
 		_DonateBtn($grpMinions, $txtBlacklistMinions)
 	EndIf
-EndFunc
+EndFunc   ;==>btnDonateMinions
 
 Func btnDonateHogRiders()
 	If GUICtrlGetState($grpHogRiders) = BitOR($GUI_HIDE, $GUI_ENABLE) Then
 		_DonateBtn($grpHogRiders, $txtBlacklistHogRiders)
 	EndIf
-EndFunc
+EndFunc   ;==>btnDonateHogRiders
 
 Func btnDonateValkyries()
 	If GUICtrlGetState($grpValkyries) = BitOR($GUI_HIDE, $GUI_ENABLE) Then
 		_DonateBtn($grpValkyries, $txtBlacklistValkyries)
 	EndIf
-EndFunc
+EndFunc   ;==>btnDonateValkyries
 
 Func btnDonateGolems()
 	If GUICtrlGetState($grpGolems) = BitOR($GUI_HIDE, $GUI_ENABLE) Then
 		_DonateBtn($grpGolems, $txtBlacklistGolems)
 	EndIf
-EndFunc
+EndFunc   ;==>btnDonateGolems
 
 Func btnDonateWitches()
 	If GUICtrlGetState($grpWitches) = BitOR($GUI_HIDE, $GUI_ENABLE) Then
 		_DonateBtn($grpWitches, $txtBlacklistWitches)
 	EndIf
-EndFunc
+EndFunc   ;==>btnDonateWitches
 
 Func btnDonateLavaHounds()
 	If GUICtrlGetState($grpLavaHounds) = BitOR($GUI_HIDE, $GUI_ENABLE) Then
 		_DonateBtn($grpLavaHounds, $txtBlacklistLavaHounds)
 	EndIf
-EndFunc
+EndFunc   ;==>btnDonateLavaHounds
 
 Func btnDonateBlacklist()
 	If GUICtrlGetState($grpBlacklist) = BitOR($GUI_HIDE, $GUI_ENABLE) Then
 		_DonateBtn($grpBlacklist, $txtBlacklist)
 	EndIf
-EndFunc
+EndFunc   ;==>btnDonateBlacklist
 
 Func chkDonateAllBarbarians()
-	IF GUICtrlRead($chkDonateAllBarbarians) = $GUI_CHECKED Then
+	If GUICtrlRead($chkDonateAllBarbarians) = $GUI_CHECKED Then
 		_DonateAllControls($eBarb, True)
 	Else
 		_DonateAllControls($eBarb, False)
 	EndIf
-EndFunc
+EndFunc   ;==>chkDonateAllBarbarians
 
 Func chkDonateAllArchers()
-	IF GUICtrlRead($chkDonateAllArchers) = $GUI_CHECKED Then
+	If GUICtrlRead($chkDonateAllArchers) = $GUI_CHECKED Then
 		_DonateAllControls($eArch, True)
 	Else
 		_DonateAllControls($eArch, False)
 	EndIf
-EndFunc
+EndFunc   ;==>chkDonateAllArchers
 
 Func chkDonateAllGiants()
-	IF GUICtrlRead($chkDonateAllGiants) = $GUI_CHECKED Then
+	If GUICtrlRead($chkDonateAllGiants) = $GUI_CHECKED Then
 		_DonateAllControls($eGiant, True)
 	Else
 		_DonateAllControls($eGiant, False)
 	EndIf
-EndFunc
+EndFunc   ;==>chkDonateAllGiants
 
 Func chkDonateAllGoblins()
-	IF GUICtrlRead($chkDonateAllGoblins) = $GUI_CHECKED Then
+	If GUICtrlRead($chkDonateAllGoblins) = $GUI_CHECKED Then
 		_DonateAllControls($eGobl, True)
 	Else
 		_DonateAllControls($eGobl, False)
 	EndIf
-EndFunc
+EndFunc   ;==>chkDonateAllGoblins
 
 Func chkDonateAllWallBreakers()
-	IF GUICtrlRead($chkDonateAllWallBreakers) = $GUI_CHECKED Then
+	If GUICtrlRead($chkDonateAllWallBreakers) = $GUI_CHECKED Then
 		_DonateAllControls($eWall, True)
 	Else
 		_DonateAllControls($eWall, False)
 	EndIf
-EndFunc
+EndFunc   ;==>chkDonateAllWallBreakers
 
 Func chkDonateAllBalloons()
-	IF GUICtrlRead($chkDonateAllBalloons) = $GUI_CHECKED Then
+	If GUICtrlRead($chkDonateAllBalloons) = $GUI_CHECKED Then
 		_DonateAllControls($eBall, True)
 	Else
 		_DonateAllControls($eBall, False)
 	EndIf
-EndFunc
+EndFunc   ;==>chkDonateAllBalloons
 
 Func chkDonateAllWizards()
-	IF GUICtrlRead($chkDonateAllWizards) = $GUI_CHECKED Then
+	If GUICtrlRead($chkDonateAllWizards) = $GUI_CHECKED Then
 		_DonateAllControls($eWiza, True)
 	Else
 		_DonateAllControls($eWiza, False)
 	EndIf
-EndFunc
+EndFunc   ;==>chkDonateAllWizards
 
 Func chkDonateAllHealers()
-	IF GUICtrlRead($chkDonateAllHealers) = $GUI_CHECKED Then
+	If GUICtrlRead($chkDonateAllHealers) = $GUI_CHECKED Then
 		_DonateAllControls($eHeal, True)
 	Else
 		_DonateAllControls($eHeal, False)
 	EndIf
-EndFunc
+EndFunc   ;==>chkDonateAllHealers
 
 Func chkDonateAllDragons()
-	IF GUICtrlRead($chkDonateAllDragons) = $GUI_CHECKED Then
+	If GUICtrlRead($chkDonateAllDragons) = $GUI_CHECKED Then
 		_DonateAllControls($eDrag, True)
 	Else
 		_DonateAllControls($eDrag, False)
 	EndIf
-EndFunc
+EndFunc   ;==>chkDonateAllDragons
 
 Func chkDonateAllPekkas()
-	IF GUICtrlRead($chkDonateAllPekkas) = $GUI_CHECKED Then
+	If GUICtrlRead($chkDonateAllPekkas) = $GUI_CHECKED Then
 		_DonateAllControls($ePekk, True)
 	Else
 		_DonateAllControls($ePekk, False)
 	EndIf
-EndFunc
+EndFunc   ;==>chkDonateAllPekkas
 
 Func chkDonateAllMinions()
-	IF GUICtrlRead($chkDonateAllMinions) = $GUI_CHECKED Then
+	If GUICtrlRead($chkDonateAllMinions) = $GUI_CHECKED Then
 		_DonateAllControls($eMini, True)
 	Else
 		_DonateAllControls($eMini, False)
 	EndIf
-EndFunc
+EndFunc   ;==>chkDonateAllMinions
 
 Func chkDonateAllHogRiders()
-	IF GUICtrlRead($chkDonateAllHogRiders) = $GUI_CHECKED Then
+	If GUICtrlRead($chkDonateAllHogRiders) = $GUI_CHECKED Then
 		_DonateAllControls($eHogs, True)
 	Else
 		_DonateAllControls($eHogs, False)
 	EndIf
-EndFunc
+EndFunc   ;==>chkDonateAllHogRiders
 
 Func chkDonateAllValkyries()
-	IF GUICtrlRead($chkDonateAllValkyries) = $GUI_CHECKED Then
+	If GUICtrlRead($chkDonateAllValkyries) = $GUI_CHECKED Then
 		_DonateAllControls($eValk, True)
 	Else
 		_DonateAllControls($eValk, False)
 	EndIf
-EndFunc
+EndFunc   ;==>chkDonateAllValkyries
 
 Func chkDonateAllGolems()
-	IF GUICtrlRead($chkDonateAllGolems) = $GUI_CHECKED Then
+	If GUICtrlRead($chkDonateAllGolems) = $GUI_CHECKED Then
 		_DonateAllControls($eGole, True)
 	Else
 		_DonateAllControls($eGole, False)
 	EndIf
-EndFunc
+EndFunc   ;==>chkDonateAllGolems
 
 Func chkDonateAllWitches()
-	IF GUICtrlRead($chkDonateAllWitches) = $GUI_CHECKED Then
+	If GUICtrlRead($chkDonateAllWitches) = $GUI_CHECKED Then
 		_DonateAllControls($eWitc, True)
 	Else
 		_DonateAllControls($eWitc, False)
 	EndIf
-EndFunc
+EndFunc   ;==>chkDonateAllWitches
 
 Func chkDonateAllLavaHounds()
-	IF GUICtrlRead($chkDonateAllLavaHounds) = $GUI_CHECKED Then
+	If GUICtrlRead($chkDonateAllLavaHounds) = $GUI_CHECKED Then
 		_DonateAllControls($eLava, True)
 	Else
 		_DonateAllControls($eLava, False)
 	EndIf
-EndFunc
+EndFunc   ;==>chkDonateAllLavaHounds
 
 Func chkDonateBarbarians()
-	IF GUICtrlRead($chkDonateBarbarians) = $GUI_CHECKED Then
+	If GUICtrlRead($chkDonateBarbarians) = $GUI_CHECKED Then
 		_DonateControls($eBarb)
 	Else
 		GUICtrlSetBkColor($lblBtnBarbarians, $GUI_BKCOLOR_TRANSPARENT)
 	EndIf
-EndFunc
+EndFunc   ;==>chkDonateBarbarians
 
 Func chkDonateArchers()
-	IF GUICtrlRead($chkDonateArchers) = $GUI_CHECKED Then
+	If GUICtrlRead($chkDonateArchers) = $GUI_CHECKED Then
 		_DonateControls($eArch)
 	Else
 		GUICtrlSetBkColor($lblBtnArchers, $GUI_BKCOLOR_TRANSPARENT)
 	EndIf
-EndFunc
+EndFunc   ;==>chkDonateArchers
 
 Func chkDonateGiants()
-	IF GUICtrlRead($chkDonateGiants) = $GUI_CHECKED Then
+	If GUICtrlRead($chkDonateGiants) = $GUI_CHECKED Then
 		_DonateControls($eGiant)
 	Else
 		GUICtrlSetBkColor($lblBtnGiants, $GUI_BKCOLOR_TRANSPARENT)
 	EndIf
-EndFunc
+EndFunc   ;==>chkDonateGiants
 
 Func chkDonateGoblins()
-	IF GUICtrlRead($chkDonateGoblins) = $GUI_CHECKED Then
+	If GUICtrlRead($chkDonateGoblins) = $GUI_CHECKED Then
 		_DonateControls($eGobl)
 	Else
 		GUICtrlSetBkColor($lblBtnGoblins, $GUI_BKCOLOR_TRANSPARENT)
 	EndIf
-EndFunc
+EndFunc   ;==>chkDonateGoblins
 
 Func chkDonateWallBreakers()
-	IF GUICtrlRead($chkDonateWallBreakers) = $GUI_CHECKED Then
+	If GUICtrlRead($chkDonateWallBreakers) = $GUI_CHECKED Then
 		_DonateControls($eWall)
 	Else
 		GUICtrlSetBkColor($lblBtnWallBreakers, $GUI_BKCOLOR_TRANSPARENT)
 	EndIf
-EndFunc
+EndFunc   ;==>chkDonateWallBreakers
 
 Func chkDonateBalloons()
-	IF GUICtrlRead($chkDonateBalloons) = $GUI_CHECKED Then
+	If GUICtrlRead($chkDonateBalloons) = $GUI_CHECKED Then
 		_DonateControls($eBall)
 	Else
 		GUICtrlSetBkColor($lblBtnBalloons, $GUI_BKCOLOR_TRANSPARENT)
 	EndIf
-EndFunc
+EndFunc   ;==>chkDonateBalloons
 
 Func chkDonateWizards()
-	IF GUICtrlRead($chkDonateWizards) = $GUI_CHECKED Then
+	If GUICtrlRead($chkDonateWizards) = $GUI_CHECKED Then
 		_DonateControls($eWiza)
 	Else
 		GUICtrlSetBkColor($lblBtnWizards, $GUI_BKCOLOR_TRANSPARENT)
 	EndIf
-EndFunc
+EndFunc   ;==>chkDonateWizards
 
 Func chkDonateHealers()
-	IF GUICtrlRead($chkDonateHealers) = $GUI_CHECKED Then
+	If GUICtrlRead($chkDonateHealers) = $GUI_CHECKED Then
 		_DonateControls($eHeal)
 	Else
 		GUICtrlSetBkColor($lblBtnHealers, $GUI_BKCOLOR_TRANSPARENT)
 	EndIf
-EndFunc
+EndFunc   ;==>chkDonateHealers
 
 Func chkDonateDragons()
-	IF GUICtrlRead($chkDonateDragons) = $GUI_CHECKED Then
+	If GUICtrlRead($chkDonateDragons) = $GUI_CHECKED Then
 		_DonateControls($eDrag)
 	Else
 		GUICtrlSetBkColor($lblBtnDragons, $GUI_BKCOLOR_TRANSPARENT)
 	EndIf
-EndFunc
+EndFunc   ;==>chkDonateDragons
 
 Func chkDonatePekkas()
-	IF GUICtrlRead($chkDonatePekkas) = $GUI_CHECKED Then
+	If GUICtrlRead($chkDonatePekkas) = $GUI_CHECKED Then
 		_DonateControls($ePekk)
 	Else
 		GUICtrlSetBkColor($lblBtnPekkas, $GUI_BKCOLOR_TRANSPARENT)
 	EndIf
-EndFunc
+EndFunc   ;==>chkDonatePekkas
 
 Func chkDonateMinions()
-	IF GUICtrlRead($chkDonateMinions) = $GUI_CHECKED Then
+	If GUICtrlRead($chkDonateMinions) = $GUI_CHECKED Then
 		_DonateControls($eMini)
 	Else
 		GUICtrlSetBkColor($lblBtnMinions, $GUI_BKCOLOR_TRANSPARENT)
 	EndIf
-EndFunc
+EndFunc   ;==>chkDonateMinions
 
 Func chkDonateHogRiders()
-	IF GUICtrlRead($chkDonateHogRiders) = $GUI_CHECKED Then
+	If GUICtrlRead($chkDonateHogRiders) = $GUI_CHECKED Then
 		_DonateControls($eHogs)
 	Else
 		GUICtrlSetBkColor($lblBtnHogRiders, $GUI_BKCOLOR_TRANSPARENT)
 	EndIf
-EndFunc
+EndFunc   ;==>chkDonateHogRiders
 
 Func chkDonateValkyries()
-	IF GUICtrlRead($chkDonateValkyries) = $GUI_CHECKED Then
+	If GUICtrlRead($chkDonateValkyries) = $GUI_CHECKED Then
 		_DonateControls($eValk)
 	Else
 		GUICtrlSetBkColor($lblBtnValkyries, $GUI_BKCOLOR_TRANSPARENT)
 	EndIf
-EndFunc
+EndFunc   ;==>chkDonateValkyries
 
 Func chkDonateGolems()
-	IF GUICtrlRead($chkDonateGolems) = $GUI_CHECKED Then
+	If GUICtrlRead($chkDonateGolems) = $GUI_CHECKED Then
 		_DonateControls($eGole)
 	Else
 		GUICtrlSetBkColor($lblBtnGolems, $GUI_BKCOLOR_TRANSPARENT)
 	EndIf
-EndFunc
+EndFunc   ;==>chkDonateGolems
 
 Func chkDonateWitches()
-	IF GUICtrlRead($chkDonateWitches) = $GUI_CHECKED Then
+	If GUICtrlRead($chkDonateWitches) = $GUI_CHECKED Then
 		_DonateControls($eWitc)
 	Else
 		GUICtrlSetBkColor($lblBtnWitches, $GUI_BKCOLOR_TRANSPARENT)
 	EndIf
-EndFunc
+EndFunc   ;==>chkDonateWitches
 
 Func chkDonateLavaHounds()
-	IF GUICtrlRead($chkDonateLavaHounds) = $GUI_CHECKED Then
+	If GUICtrlRead($chkDonateLavaHounds) = $GUI_CHECKED Then
 		_DonateControls($eLava)
 	Else
 		GUICtrlSetBkColor($lblBtnLavaHounds, $GUI_BKCOLOR_TRANSPARENT)
 	EndIf
-EndFunc
+EndFunc   ;==>chkDonateLavaHounds
 
 Func chkWalls()
-	IF GUICtrlRead($chkWalls) = $GUI_CHECKED Then
+	If GUICtrlRead($chkWalls) = $GUI_CHECKED Then
 		GUICtrlSetState($UseGold, $GUI_ENABLE)
-;		GUICtrlSetState($UseElixir, $GUI_ENABLE)
-;		GUICtrlSetState($UseElixirGold, $GUI_ENABLE)
+		;		GUICtrlSetState($UseElixir, $GUI_ENABLE)
+		;		GUICtrlSetState($UseElixirGold, $GUI_ENABLE)
 		GUICtrlSetState($cmbWalls, $GUI_ENABLE)
 		GUICtrlSetState($txtWallMinGold, $GUI_ENABLE)
-;		GUICtrlSetState($txtWallMinElixir, $GUI_ENABLE)
+		;		GUICtrlSetState($txtWallMinElixir, $GUI_ENABLE)
 		cmbWalls()
 	Else
 		GUICtrlSetState($UseGold, $GUI_DISABLE)
@@ -1183,7 +1183,7 @@ Func chkWalls()
 		GUICtrlSetState($txtWallMinGold, $GUI_DISABLE)
 		GUICtrlSetState($txtWallMinElixir, $GUI_DISABLE)
 	EndIf
-EndFunc
+EndFunc   ;==>chkWalls
 
 Func cmbWalls()
 	Switch _GUICtrlComboBox_GetCurSel($cmbWalls)
@@ -1191,50 +1191,50 @@ Func cmbWalls()
 			$WallCost = 30000
 			GUICtrlSetData($lblWallCost, StringRegExpReplace($WallCost, "(\A\d{1,3}(?=(\d{3})+\z)|\d{3}(?=\d))", "\1 "))
 			GUICtrlSetState($UseGold, $GUI_CHECKED)
-		  GUICtrlSetState($UseElixir, $GUI_DISABLE)
-		  GUICtrlSetState($UseElixirGold, $GUI_DISABLE)
-		  GUICtrlSetState($txtWallMinElixir, $GUI_DISABLE)
+			GUICtrlSetState($UseElixir, $GUI_DISABLE)
+			GUICtrlSetState($UseElixirGold, $GUI_DISABLE)
+			GUICtrlSetState($txtWallMinElixir, $GUI_DISABLE)
 		Case 1
 			$WallCost = 75000
 			GUICtrlSetData($lblWallCost, StringRegExpReplace($WallCost, "(\A\d{1,3}(?=(\d{3})+\z)|\d{3}(?=\d))", "\1 "))
 			GUICtrlSetState($UseGold, $GUI_CHECKED)
-		  GUICtrlSetState($UseElixir, $GUI_DISABLE)
-		  GUICtrlSetState($UseElixirGold, $GUI_DISABLE)
-		  GUICtrlSetState($txtWallMinElixir, $GUI_DISABLE)
+			GUICtrlSetState($UseElixir, $GUI_DISABLE)
+			GUICtrlSetState($UseElixirGold, $GUI_DISABLE)
+			GUICtrlSetState($txtWallMinElixir, $GUI_DISABLE)
 		Case 2
 			$WallCost = 200000
 			GUICtrlSetData($lblWallCost, StringRegExpReplace($WallCost, "(\A\d{1,3}(?=(\d{3})+\z)|\d{3}(?=\d))", "\1 "))
 			GUICtrlSetState($UseGold, $GUI_CHECKED)
-		  GUICtrlSetState($UseElixir, $GUI_DISABLE)
-		  GUICtrlSetState($UseElixirGold, $GUI_DISABLE)
-		  GUICtrlSetState($txtWallMinElixir, $GUI_DISABLE)
+			GUICtrlSetState($UseElixir, $GUI_DISABLE)
+			GUICtrlSetState($UseElixirGold, $GUI_DISABLE)
+			GUICtrlSetState($txtWallMinElixir, $GUI_DISABLE)
 		Case 3
 			$WallCost = 500000
 			GUICtrlSetData($lblWallCost, StringRegExpReplace($WallCost, "(\A\d{1,3}(?=(\d{3})+\z)|\d{3}(?=\d))", "\1 "))
 			GUICtrlSetState($UseGold, $GUI_CHECKED)
-		  GUICtrlSetState($UseElixir, $GUI_DISABLE)
-		  GUICtrlSetState($UseElixirGold, $GUI_DISABLE)
-		  GUICtrlSetState($txtWallMinElixir, $GUI_DISABLE)
+			GUICtrlSetState($UseElixir, $GUI_DISABLE)
+			GUICtrlSetState($UseElixirGold, $GUI_DISABLE)
+			GUICtrlSetState($txtWallMinElixir, $GUI_DISABLE)
 		Case 4
 			$WallCost = 1000000
 			GUICtrlSetData($lblWallCost, StringRegExpReplace($WallCost, "(\A\d{1,3}(?=(\d{3})+\z)|\d{3}(?=\d))", "\1 "))
-		  GUICtrlSetState($UseElixir, $GUI_ENABLE)
-		  GUICtrlSetState($UseElixirGold, $GUI_ENABLE)
-		  GUICtrlSetState($txtWallMinElixir, $GUI_ENABLE)
+			GUICtrlSetState($UseElixir, $GUI_ENABLE)
+			GUICtrlSetState($UseElixirGold, $GUI_ENABLE)
+			GUICtrlSetState($txtWallMinElixir, $GUI_ENABLE)
 		Case 5
 			$WallCost = 3000000
 			GUICtrlSetData($lblWallCost, StringRegExpReplace($WallCost, "(\A\d{1,3}(?=(\d{3})+\z)|\d{3}(?=\d))", "\1 "))
-		  GUICtrlSetState($UseElixir, $GUI_ENABLE)
-		  GUICtrlSetState($UseElixirGold, $GUI_ENABLE)
-		  GUICtrlSetState($txtWallMinElixir, $GUI_ENABLE)
+			GUICtrlSetState($UseElixir, $GUI_ENABLE)
+			GUICtrlSetState($UseElixirGold, $GUI_ENABLE)
+			GUICtrlSetState($txtWallMinElixir, $GUI_ENABLE)
 		Case 6
 			$WallCost = 4000000
 			GUICtrlSetData($lblWallCost, StringRegExpReplace($WallCost, "(\A\d{1,3}(?=(\d{3})+\z)|\d{3}(?=\d))", "\1 "))
-		  GUICtrlSetState($UseElixir, $GUI_ENABLE)
-		  GUICtrlSetState($UseElixirGold, $GUI_ENABLE)
-		  GUICtrlSetState($txtWallMinElixir, $GUI_ENABLE)
+			GUICtrlSetState($UseElixir, $GUI_ENABLE)
+			GUICtrlSetState($UseElixirGold, $GUI_ENABLE)
+			GUICtrlSetState($txtWallMinElixir, $GUI_ENABLE)
 	EndSwitch
-EndFunc
+EndFunc   ;==>cmbWalls
 
 Func chkTrap()
 	If GUICtrlRead($chkTrap) = $GUI_CHECKED Then
@@ -1244,7 +1244,7 @@ Func chkTrap()
 		$ichkTrap = 0
 		GUICtrlSetState($btnLocateTownHall, $GUI_HIDE)
 	EndIf
-EndFunc
+EndFunc   ;==>chkTrap
 
 Func sldVSDelay()
 	$iVSDelay = GUICtrlRead($sldVSDelay)
@@ -1255,7 +1255,7 @@ Func sldVSDelay()
 	Else
 		GUICtrlSetData($lbltxtVSDelay, "seconds")
 	EndIf
-EndFunc
+EndFunc   ;==>sldVSDelay
 
 Func tabMain()
 	If GUICtrlRead($tabMain, 1) = $tabGeneral Then
@@ -1263,7 +1263,7 @@ Func tabMain()
 	Else
 		ControlHide("", "", $txtLog)
 	EndIf
-EndFunc ;==>tabMain
+EndFunc   ;==>tabMain
 
 Func DisableBS($HWnD, $iButton)
 	ConsoleWrite('+ Window Handle: ' & $HWnD & @CRLF)
@@ -1320,11 +1320,11 @@ Func btnLocateUp4()
 EndFunc   ;==>btnLocateUp4
 
 Func btnLoots()
-    Run ("Explorer.exe " & @ScriptDir & "\Loots")
+	Run("Explorer.exe " & @ScriptDir & "\Loots")
 EndFunc   ;==>btnLoots
 
 Func btnLogs()
-    Run ("Explorer.exe " & @ScriptDir & "\Logs")
+	Run("Explorer.exe " & @ScriptDir & "\Logs")
 EndFunc   ;==>btnLogs
 
 
@@ -1334,7 +1334,7 @@ EndFunc   ;==>btnLogs
 
 Func _DonateAllControls($TroopType, $Set)
 	If $Set = True Then
-		For $i = 0 to Ubound($aLblBtnControls) - 1
+		For $i = 0 To UBound($aLblBtnControls) - 1
 			If $i = $TroopType Then
 				GUICtrlSetBkColor($aLblBtnControls[$i], $COLOR_NAVY)
 			Else
@@ -1342,21 +1342,21 @@ Func _DonateAllControls($TroopType, $Set)
 			EndIf
 		Next
 
-		For $i = 0 to Ubound($aChkDonateAllControls) - 1
+		For $i = 0 To UBound($aChkDonateAllControls) - 1
 			If $i <> $TroopType Then
 				GUICtrlSetState($aChkDonateAllControls[$i], $GUI_UNCHECKED)
 			EndIf
 		Next
 
-		For $i = 0 to UBound($aChkDonateControls) - 1
+		For $i = 0 To UBound($aChkDonateControls) - 1
 			GUICtrlSetState($aChkDonateControls[$i], $GUI_UNCHECKED)
 		Next
 
-		For $i = 0 to UBound($aTxtDonateControls) - 1
+		For $i = 0 To UBound($aTxtDonateControls) - 1
 			If BitAND(GUICtrlGetState($aTxtDonateControls[$i]), $GUI_ENABLE) = $GUI_ENABLE Then GUICtrlSetState($aTxtDonateControls[$i], $GUI_DISABLE)
 		Next
 
-		For $i = 0 to UBound($aTxtBlacklistControls) - 1
+		For $i = 0 To UBound($aTxtBlacklistControls) - 1
 			If BitAND(GUICtrlGetState($aTxtBlacklistControls[$i]), $GUI_ENABLE) = $GUI_ENABLE Then GUICtrlSetState($aTxtBlacklistControls[$i], $GUI_DISABLE)
 		Next
 
@@ -1364,20 +1364,20 @@ Func _DonateAllControls($TroopType, $Set)
 	Else
 		GUICtrlSetBkColor($aLblBtnControls[$TroopType], $GUI_BKCOLOR_TRANSPARENT)
 
-		For $i = 0 to UBound($aTxtDonateControls) - 1
+		For $i = 0 To UBound($aTxtDonateControls) - 1
 			If BitAND(GUICtrlGetState($aTxtDonateControls[$i]), $GUI_DISABLE) = $GUI_DISABLE Then GUICtrlSetState($aTxtDonateControls[$i], $GUI_ENABLE)
 		Next
 
-		For $i = 0 to UBound($aTxtBlacklistControls) - 1
+		For $i = 0 To UBound($aTxtBlacklistControls) - 1
 			If BitAND(GUICtrlGetState($aTxtBlacklistControls[$i]), $GUI_DISABLE) = $GUI_DISABLE Then GUICtrlSetState($aTxtBlacklistControls[$i], $GUI_ENABLE)
 		Next
 
 		If BitAND(GUICtrlGetState($txtBlacklist), $GUI_DISABLE) = $GUI_DISABLE Then GUICtrlSetState($txtBlacklist, $GUI_ENABLE)
 	EndIf
-EndFunc
+EndFunc   ;==>_DonateAllControls
 
 Func _DonateControls($TroopType)
-	For $i = 0 to Ubound($aLblBtnControls) - 1
+	For $i = 0 To UBound($aLblBtnControls) - 1
 		If $i = $TroopType Then
 			GUICtrlSetBkColor($aLblBtnControls[$i], $COLOR_GREEN)
 		Else
@@ -1385,18 +1385,18 @@ Func _DonateControls($TroopType)
 		EndIf
 	Next
 
-	For $i = 0 to Ubound($aChkDonateAllControls) - 1
+	For $i = 0 To UBound($aChkDonateAllControls) - 1
 		GUICtrlSetState($aChkDonateAllControls[$i], $GUI_UNCHECKED)
 	Next
 
-	For $i = 0 to UBound($aTxtDonateControls) - 1
+	For $i = 0 To UBound($aTxtDonateControls) - 1
 		If BitAND(GUICtrlGetState($aTxtDonateControls[$i]), $GUI_DISABLE) = $GUI_DISABLE Then GUICtrlSetState($aTxtDonateControls[$i], $GUI_ENABLE)
 	Next
 
-	For $i = 0 to UBound($aTxtBlacklistControls) - 1
+	For $i = 0 To UBound($aTxtBlacklistControls) - 1
 		If BitAND(GUICtrlGetState($aTxtBlacklistControls[$i]), $GUI_DISABLE) = $GUI_DISABLE Then GUICtrlSetState($aTxtBlacklistControls[$i], $GUI_ENABLE)
 	Next
-EndFunc
+EndFunc   ;==>_DonateControls
 
 Func _DonateBtn($FirstControl, $LastControl)
 	; Hide Controls
@@ -1417,7 +1417,7 @@ Func _DonateBtn($FirstControl, $LastControl)
 	For $i = $FirstControl To $LastControl ; Show these controls on Donate Tab
 		GUICtrlSetState($i, $GUI_SHOW)
 	Next
-EndFunc
+EndFunc   ;==>_DonateBtn
 
 ;---------------------------------------------------
 If FileExists($config) Then

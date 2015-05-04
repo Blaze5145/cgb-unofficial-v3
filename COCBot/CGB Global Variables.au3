@@ -299,6 +299,7 @@ Global $BarrackDarkStatus[2] = [false,false]
 Global $listResourceLocation = ""
 Global $isNormalBuild = ""
 Global $isDarkBuild = ""
+Global $TrainPos = ""
 
 for $i=0 to Ubound($TroopGroup,1) - 1
 	$TroopName[$i]         = $TroopGroup[$i][0]
