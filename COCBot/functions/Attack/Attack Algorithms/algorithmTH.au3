@@ -450,8 +450,8 @@ EndFunc   ;==>AttackTHXtreme
 
 Func AttackTHgbarch()
 	Setlog("Sending 20 archers.")
-	AttackTHGrid($eArcher, 4, 2, 2000, 1, 4, 0) ; deploys 8 archers among 4 spots - take out possible bombs
-	AttackTHGrid($eArcher, 1, 12, 25000, 1, 4, 0) ; deploys 12 archers & wait 25s to check for star
+	AttackTHGrid($eArch, 4, 2, 2000, 1, 4, 0) ; deploys 8 archers among 4 spots - take out possible bombs
+	AttackTHGrid($eArch, 1, 12, 25000, 1, 4, 0) ; deploys 12 archers & wait 25s to check for star
 	_Sleep(200)
 	_CaptureRegion()
 	If _ColorCheck(_GetPixelColor(746, 498), Hex(0xc8cac7, 6), 20) = True Then
@@ -473,10 +473,10 @@ Func AttackTHgbarch()
 	Setlog("I smell a trap! Let's send in more diverse troops...")
 	AttackTHGrid($eGiant, 2, 1, 1500, 1, 2, 0) ;releases 2 giants in case of spring traps
 	AttackTHGrid($eGiant, 2, 7, 1500, 2, 2, 0) ;releases up to 14 giants to take heat
-	AttackTHGrid($eBarbarian, 4, 6, 1000, 1, 5, 0) ; deploys up to 24 barbarians on 4 spots
-	AttackTHGrid($eBarbarian, 4, 6, 1500, 1, 5, 0) ; deploys up to 24 barbarians on 4 spots
-	AttackTHGrid($eArcher, 4, 5, 1500, 3, 4, 0) ; deploys 20 archers
-	AttackTHGrid($eArcher, 4, 5, 1500, 3, 4, 0) ; deploys 20 archers
+	AttackTHGrid($eBarb, 4, 6, 1000, 1, 5, 0) ; deploys up to 24 barbarians on 4 spots
+	AttackTHGrid($eBarb, 4, 6, 1500, 1, 5, 0) ; deploys up to 24 barbarians on 4 spots
+	AttackTHGrid($eArch, 4, 5, 1500, 3, 4, 0) ; deploys 20 archers
+	AttackTHGrid($eArch, 4, 5, 1500, 3, 4, 0) ; deploys 20 archers
 	_Sleep(200)
 	_CaptureRegion()
 	If _ColorCheck(_GetPixelColor(746, 498), Hex(0xc8cac7, 6), 20) = True Then
@@ -487,12 +487,12 @@ Func AttackTHgbarch()
 
 	Setlog("Hope the rest of your troops can finish the job!")
 	AttackTHGrid($eGiant, 3, 6, 1500, 3, 2, 0) ;releases up to 18 giants (in case numbers are off)
-	AttackTHGrid($eBarbarian, 4, 8, 2000, 2, 5, 0) ; deploys up to 32 barbarians on 4 spots
-	AttackTHGrid($eBarbarian, 4, 8, 2000, 2, 5, 0) ; deploys up to 32 barbarians on 4 spots
-	AttackTHGrid($eBarbarian, 4, 8, 2000, 2, 5, 1) ; deploys up to 32 barbarians on 4 spots
-	AttackTHGrid($eArcher, 5, 4, 1500, 4, 4, 0) ;releases 20 archers
-	AttackTHGrid($eArcher, 4, 5, 1500, 4, 4, 0) ;releases 20 archers
-	AttackTHGrid($eArcher, 5, 4, 1000, 4, 4, 0) ;releases 20 archers
+	AttackTHGrid($eBarb, 4, 8, 2000, 2, 5, 0) ; deploys up to 32 barbarians on 4 spots
+	AttackTHGrid($eBarb, 4, 8, 2000, 2, 5, 0) ; deploys up to 32 barbarians on 4 spots
+	AttackTHGrid($eBarb, 4, 8, 2000, 2, 5, 1) ; deploys up to 32 barbarians on 4 spots
+	AttackTHGrid($eArch, 5, 4, 1500, 4, 4, 0) ;releases 20 archers
+	AttackTHGrid($eArch, 4, 5, 1500, 4, 4, 0) ;releases 20 archers
+	AttackTHGrid($eArch, 5, 4, 1000, 4, 4, 0) ;releases 20 archers
 	_Sleep(200)
 	_CaptureRegion()
 	If _ColorCheck(_GetPixelColor(746, 498), Hex(0xc8cac7, 6), 20) = True Then
