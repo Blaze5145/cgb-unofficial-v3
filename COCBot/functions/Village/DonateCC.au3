@@ -292,21 +292,21 @@ EndFunc   ;==>DonateCC
 
 Func CheckDonateTroop($Type, $aDonTroop, $aBlkTroop, $aBlackList, $ClanString)
 
-	For $i = 0 To UBound($aBlackList) - 1
+	For $i = 1 To UBound($aBlackList) - 1
 		If CheckDonateString($aBlackList[$i], $ClanString) Then
 			SetLog("General Blacklist Keyword found: " & $aBlackList[$i], $COLOR_RED)
 			Return False
 		EndIf
 	Next
 
-	For $i = 0 To UBound($aBlkTroop) - 1
+	For $i = 1 To UBound($aBlkTroop) - 1
 		If CheckDonateString($aBlkTroop[$i], $ClanString) Then
 			SetLog(NameOfTroop($Type) & " Blacklist Keyword found: " & $aBlkTroop[$i], $COLOR_RED)
 			Return False
 		EndIf
 	Next
 
-	For $i = 0 To UBound($aDonTroop) - 1
+	For $i = 1 To UBound($aDonTroop) - 1
 		If CheckDonateString($aDonTroop[$i], $ClanString) Then
 			Setlog(NameOfTroop($Type) & " Keyword found: " & $aDonTroop[$i], $COLOR_GREEN)
 			Return True
