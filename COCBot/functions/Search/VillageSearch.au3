@@ -85,24 +85,7 @@ Func VillageSearch() ;Control for searching a village that meets conditions
 		if $iVSDelay > 0 then
 			If _Sleep(1000 * $iVSDelay) Then Return
 		endif
-		$icount = 0
-		while _ColorCheck(_GetPixelColor(26, 486, "Y"), Hex(0x063359, 6), 50)
-			If _Sleep(100) Then Return
-			$icount +=1
-			if $icount = 40 then exitloop
-		wend
-		$icount = 0
-		while not _ColorCheck(_GetPixelColor(26, 486, "Y"), Hex(0x063359, 6), 50)
-			If _Sleep(500) Then Return
-			$icount +=1
-			if $icount = 20 then 
-				SetLog("Cannot locate Next button, Restarting Bot", $COLOR_RED)
-				$Is_ClientSyncError = True
-				checkMainScreen()
-				$Restart = True
-				Return
-			endif
-		wend
+		
 		GetResources() ;Reads Resource Values
 		If $Restart = True Then Return ; exit func
 		If $iChkAttackNow = 1 Then
