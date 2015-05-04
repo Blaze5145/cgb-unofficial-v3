@@ -85,18 +85,7 @@ Func VillageSearch() ;Control for searching a village that meets conditions
 		if $iVSDelay > 0 then
 			If _Sleep(1000 * $iVSDelay) Then Return
 		endif
-		$icount = 0
-		while not _ColorCheck(_GetPixelColor(26, 486, "Y"), Hex(0x063359, 6), 20)
-			If _Sleep(500) Then Return
-			$icount +=1
-			if $icount = 20 then 
-				SetLog("Cannot locate Next button, Restarting Bot", $COLOR_RED)
-				$Is_ClientSyncError = True
-				checkMainScreen()
-				$Restart = True
-				Return
-			endif
-		wend
+
 		GetResources() ;Reads Resource Values
 		If $Restart = True Then Return ; exit func
 		If $iChkAttackNow = 1 Then
@@ -148,7 +137,7 @@ Func VillageSearch() ;Control for searching a village that meets conditions
 					Local $resultHere = DllCall($LibDir & "\CGBfunctions.dll", "str", "CheckConditionForWeakBase", "ptr", $hBitmapFirst ,"int",($iWBMortar+1),"int",($iWBWizTower+1),"int",10)
 					if $resultHere[0] = "Y" then
 						SetLog(_PadStringCenter(" Weak Base Found! ", 50, "~"), $COLOR_GREEN)
-						ExitLoop	
+						ExitLoop
 					else
 						If $bBtnAttackNowPressed = True then ExitLoop
 						SetLog(_PadStringCenter(" Not a Weak Base, Skipping ", 50, "~"), $COLOR_ORANGE)

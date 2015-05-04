@@ -4,16 +4,17 @@
 Func GetResources() ;Reads resources
 	Local $i = 0
 	;_CaptureRegion()
-	If _Sleep(100) Then Return
+	If _Sleep(500) Then Return
 	$searchGold = "" 
-	While $searchGold = "" ; Loops until gold is readable
-		If _Sleep(100) Then Return
+	While $searchGold = "" or $searchGold = $searchGold2; Loops until gold is readable
+		If _Sleep(500) Then Return
 		$searchGold = getGold(51, 66)
 		if $searchGold < 1000 then
-			$searchGold = ""
+			If _Sleep(500) Then Return
+			$searchGold = getGold(51, 66)
 		endif
 		$i += 1
-		If $i >= 100 Then ; wait max 10 sec then Restart Bot
+		If $i >= 40 Then ; wait max 20 sec then Restart Bot
 			SetLog("Cannot locate Next button, Restarting Bot", $COLOR_RED)
 			$Is_ClientSyncError = True
 			$iStuck = 0
