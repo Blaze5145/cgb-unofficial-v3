@@ -79,136 +79,15 @@ Func DonateCC($Check = False)
 					SetLog("Chat Request: " & $ClanString)
 				EndIf
 
-				If $iChkDonateBarbarians = 1 Then
-					If CheckDonateTroop($eBarb, $aDonBarbarians, $aBlkBarbarians, $aBlackList, $ClanString) Then
-						DonateTroopType($eBarb)
+				If $iChkDonateLavaHounds = 1 Then
+					If CheckDonateTroop($eLava, $aDonLavaHounds, $aBlkLavaHounds, $aBlackList, $ClanString) Then
+						DonateTroopType($eLava)
 					EndIf
 					If $Donate Then
 						$y = $DonatePixel[1] + 10
 						ContinueLoop
 					EndIf
 				EndIf
-
-				If $iChkDonateArchers = 1 Then
-					If CheckDonateTroop($eArch, $aDonArchers, $aBlkArchers, $aBlackList, $ClanString) Then
-						DonateTroopType($eArch)
-					EndIf
-					If $Donate Then
-						$y = $DonatePixel[1] + 10
-						ContinueLoop
-					EndIf
-				EndIf
-
-				If $iChkDonateGiants = 1 Then
-					If CheckDonateTroop($eGiant, $aDonGiants, $aBlkGiants, $aBlackList, $ClanString) Then
-						DonateTroopType($eGiant)
-					EndIf
-					If $Donate Then
-						$y = $DonatePixel[1] + 10
-						ContinueLoop
-					EndIf
-				EndIf
-
-				If $iChkDonateGoblins = 1 Then
-					If CheckDonateTroop($eGobl, $aDonGoblins, $aBlkGoblins, $aBlackList, $ClanString) Then
-						DonateTroopType($eGobl)
-					EndIf
-					If $Donate Then
-						$y = $DonatePixel[1] + 10
-						ContinueLoop
-					EndIf
-				EndIf
-
-				If $iChkDonateWallBreakers = 1 Then
-					If CheckDonateTroop($eWall, $aDonWallBreakers, $aBlkWallBreakers, $aBlackList, $ClanString) Then
-						DonateTroopType($eWall)
-					EndIf
-					If $Donate Then
-						$y = $DonatePixel[1] + 10
-						ContinueLoop
-					EndIf
-				EndIf
-
-				If $iChkDonateBalloons = 1 Then
-					If CheckDonateTroop($eBall, $aDonBalloons, $aBlkBalloons, $aBlackList, $ClanString) Then
-						DonateTroopType($eBall)
-					EndIf
-					If $Donate Then
-						$y = $DonatePixel[1] + 10
-						ContinueLoop
-					EndIf
-				EndIf
-
-				If $iChkDonateWizards = 1 Then
-					If CheckDonateTroop($eWiza, $aDonWizards, $aBlkWizards, $aBlackList, $ClanString) Then
-						DonateTroopType($eWiza)
-					EndIf
-					If $Donate Then
-						$y = $DonatePixel[1] + 10
-						ContinueLoop
-					EndIf
-				EndIf
-
-				If $iChkDonateHealers = 1 Then
-					If CheckDonateTroop($eHeal, $aDonHealers, $aBlkHealers, $aBlackList, $ClanString) Then
-						DonateTroopType($eHeal)
-					EndIf
-					If $Donate Then
-						$y = $DonatePixel[1] + 10
-						ContinueLoop
-					EndIf
-				EndIf
-
-				If $iChkDonateDragons = 1 Then
-					If CheckDonateTroop($eDrag, $aDonDragons, $aBlkDragons, $aBlackList, $ClanString) Then
-						DonateTroopType($eDrag)
-					EndIf
-					If $Donate Then
-						$y = $DonatePixel[1] + 10
-						ContinueLoop
-					EndIf
-				EndIf
-
-				If $iChkDonatePekkas = 1 Then
-					If CheckDonateTroop($ePekk, $aDonPekkas, $aBlkPekkas, $aBlackList, $ClanString) Then
-						DonateTroopType($ePekk)
-					EndIf
-					If $Donate Then
-						$y = $DonatePixel[1] + 10
-						ContinueLoop
-					EndIf
-				EndIf
-
-				If $iChkDonateMinions = 1 Then
-					If CheckDonateTroop($eMini, $aDonMinions, $aBlkMinions, $aBlackList, $ClanString) Then
-						DonateTroopType($eMini)
-					EndIf
-					If $Donate Then
-						$y = $DonatePixel[1] + 10
-						ContinueLoop
-					EndIf
-				EndIf
-
-				If $iChkDonateHogRiders = 1 Then
-					If CheckDonateTroop($eHogs, $aDonHogRiders, $aBlkHogRiders, $aBlackList, $ClanString) Then
-						DonateTroopType($eHogs)
-					EndIf
-					If $Donate Then
-						$y = $DonatePixel[1] + 10
-						ContinueLoop
-					EndIf
-				EndIf
-
-				If $iChkDonateValkyries = 1 Then
-					If CheckDonateTroop($eValk, $aDonValkyries, $aBlkValkyries, $aBlackList, $ClanString) Then
-						DonateTroopType($eValk)
-					EndIf
-					If $Donate Then
-						$y = $DonatePixel[1] + 10
-						ContinueLoop
-					EndIf
-				EndIf
-
 				If $iChkDonateGolems = 1 Then
 					If CheckDonateTroop($eGole, $aDonGolems, $aBlkGolems, $aBlackList, $ClanString) Then
 						DonateTroopType($eGole)
@@ -218,7 +97,33 @@ Func DonateCC($Check = False)
 						ContinueLoop
 					EndIf
 				EndIf
-
+				If $iChkDonatePekkas = 1 Then
+					If CheckDonateTroop($ePekk, $aDonPekkas, $aBlkPekkas, $aBlackList, $ClanString) Then
+						DonateTroopType($ePekk)
+					EndIf
+					If $Donate Then
+						$y = $DonatePixel[1] + 10
+						ContinueLoop
+					EndIf
+				EndIf
+				If $iChkDonateDragons = 1 Then
+					If CheckDonateTroop($eDrag, $aDonDragons, $aBlkDragons, $aBlackList, $ClanString) Then
+						DonateTroopType($eDrag)
+					EndIf
+					If $Donate Then
+						$y = $DonatePixel[1] + 10
+						ContinueLoop
+					EndIf
+				EndIf
+				If $iChkDonateHealers = 1 Then
+					If CheckDonateTroop($eHeal, $aDonHealers, $aBlkHealers, $aBlackList, $ClanString) Then
+						DonateTroopType($eHeal)
+					EndIf
+					If $Donate Then
+						$y = $DonatePixel[1] + 10
+						ContinueLoop
+					EndIf
+				EndIf
 				If $iChkDonateWitches = 1 Then
 					If CheckDonateTroop($eWitc, $aDonWitches, $aBlkWitches, $aBlackList, $ClanString) Then
 						DonateTroopType($eWitc)
@@ -228,10 +133,90 @@ Func DonateCC($Check = False)
 						ContinueLoop
 					EndIf
 				EndIf
-
-				If $iChkDonateLavaHounds = 1 Then
-					If CheckDonateTroop($eLava, $aDonLavaHounds, $aBlkLavaHounds, $aBlackList, $ClanString) Then
-						DonateTroopType($eLava)
+				If $iChkDonateValkyries = 1 Then
+					If CheckDonateTroop($eValk, $aDonValkyries, $aBlkValkyries, $aBlackList, $ClanString) Then
+						DonateTroopType($eValk)
+					EndIf
+					If $Donate Then
+						$y = $DonatePixel[1] + 10
+						ContinueLoop
+					EndIf
+				EndIf
+				If $iChkDonateGiants = 1 Then
+					If CheckDonateTroop($eGiant, $aDonGiants, $aBlkGiants, $aBlackList, $ClanString) Then
+						DonateTroopType($eGiant)
+					EndIf
+					If $Donate Then
+						$y = $DonatePixel[1] + 10
+						ContinueLoop
+					EndIf
+				EndIf
+				If $iChkDonateBalloons = 1 Then
+					If CheckDonateTroop($eBall, $aDonBalloons, $aBlkBalloons, $aBlackList, $ClanString) Then
+						DonateTroopType($eBall)
+					EndIf
+					If $Donate Then
+						$y = $DonatePixel[1] + 10
+						ContinueLoop
+					EndIf
+				EndIf
+				If $iChkDonateHogRiders = 1 Then
+					If CheckDonateTroop($eHogs, $aDonHogRiders, $aBlkHogRiders, $aBlackList, $ClanString) Then
+						DonateTroopType($eHogs)
+					EndIf
+					If $Donate Then
+						$y = $DonatePixel[1] + 10
+						ContinueLoop
+					EndIf
+				EndIf
+				If $iChkDonateWizards = 1 Then
+					If CheckDonateTroop($eWiza, $aDonWizards, $aBlkWizards, $aBlackList, $ClanString) Then
+						DonateTroopType($eWiza)
+					EndIf
+					If $Donate Then
+						$y = $DonatePixel[1] + 10
+						ContinueLoop
+					EndIf
+				EndIf
+				If $iChkDonateWallBreakers = 1 Then
+					If CheckDonateTroop($eWall, $aDonWallBreakers, $aBlkWallBreakers, $aBlackList, $ClanString) Then
+						DonateTroopType($eWall)
+					EndIf
+					If $Donate Then
+						$y = $DonatePixel[1] + 10
+						ContinueLoop
+					EndIf
+				EndIf
+				If $iChkDonateMinions = 1 Then
+					If CheckDonateTroop($eMini, $aDonMinions, $aBlkMinions, $aBlackList, $ClanString) Then
+						DonateTroopType($eMini)
+					EndIf
+					If $Donate Then
+						$y = $DonatePixel[1] + 10
+						ContinueLoop
+					EndIf
+				EndIf
+				If $iChkDonateGoblins = 1 Then
+					If CheckDonateTroop($eGobl, $aDonGoblins, $aBlkGoblins, $aBlackList, $ClanString) Then
+						DonateTroopType($eGobl)
+					EndIf
+					If $Donate Then
+						$y = $DonatePixel[1] + 10
+						ContinueLoop
+					EndIf
+				EndIf
+				If $iChkDonateBarbarians = 1 Then
+					If CheckDonateTroop($eBarb, $aDonBarbarians, $aBlkBarbarians, $aBlackList, $ClanString) Then
+						DonateTroopType($eBarb)
+					EndIf
+					If $Donate Then
+						$y = $DonatePixel[1] + 10
+						ContinueLoop
+					EndIf
+				EndIf
+				If $iChkDonateArchers = 1 Then
+					If CheckDonateTroop($eArch, $aDonArchers, $aBlkArchers, $aBlackList, $ClanString) Then
+						DonateTroopType($eArch)
 					EndIf
 					If $Donate Then
 						$y = $DonatePixel[1] + 10
@@ -243,38 +228,38 @@ Func DonateCC($Check = False)
 
 			If $DonateAllTroop Then
 				Select
+					Case $iChkDonateAllLavaHounds = 1
+						DonateTroopType($eLava)
+					Case $iChkDonateAllGolems = 1
+						DonateTroopType($eGole)
+					Case $iChkDonateAllPekkas = 1
+						DonateTroopType($ePekk)
+					Case $iChkDonateAllDragons = 1
+						DonateTroopType($eDrag)
+					Case $iChkDonateAllHealers = 1
+						DonateTroopType($eHeal)
+					Case $iChkDonateAllWitches = 1
+						DonateTroopType($eWitc)
+					Case $iChkDonateAllValkyries = 1
+						DonateTroopType($eValk)
+					Case $iChkDonateAllGiants = 1
+						DonateTroopType($eGiant)
+					Case $iChkDonateAllBalloons = 1
+						DonateTroopType($eBall)
+					Case $iChkDonateAllHogRiders = 1
+						DonateTroopType($eHogs)
+					Case $iChkDonateAllWizards = 1
+						DonateTroopType($eWiza)
+					Case $iChkDonateAllWallBreakers = 1
+						DonateTroopType($eWall)
+					Case $iChkDonateAllMinions = 1
+						DonateTroopType($eMini)
+					Case $iChkDonateAllGoblins = 1
+						DonateTroopType($eGobl)
 					Case $iChkDonateAllBarbarians = 1
 						DonateTroopType($eBarb)
 					Case $iChkDonateAllArchers = 1
 						DonateTroopType($eArch)
-					Case $iChkDonateAllGiants = 1
-						DonateTroopType($eGiant)
-					Case $iChkDonateAllGoblins = 1
-						DonateTroopType($eGobl)
-					Case $iChkDonateAllWallBreakers = 1
-						DonateTroopType($eWall)
-					Case $iChkDonateAllBalloons = 1
-						DonateTroopType($eBall)
-					Case $iChkDonateAllWizards = 1
-						DonateTroopType($eWiza)
-					Case $iChkDonateAllHealers = 1
-						DonateTroopType($eHeal)
-					Case $iChkDonateAllDragons = 1
-						DonateTroopType($eDrag)
-					Case $iChkDonateAllPekkas = 1
-						DonateTroopType($ePekk)
-					Case $iChkDonateAllMinions = 1
-						DonateTroopType($eMini)
-					Case $iChkDonateAllHogRiders = 1
-						DonateTroopType($eHogs)
-					Case $iChkDonateAllValkyries = 1
-						DonateTroopType($eValk)
-					Case $iChkDonateAllGolems = 1
-						DonateTroopType($eGole)
-					Case $iChkDonateAllWitches = 1
-						DonateTroopType($eWitc)
-					Case $iChkDonateAllLavaHounds = 1
-						DonateTroopType($eLava)
 				EndSelect
 			EndIf
 
@@ -365,18 +350,18 @@ Func DonateTroopType($Type)
 	EndSwitch
 
 	Click($DonatePixel[0], $DonatePixel[1] + 11)
-	If _Sleep(250) Then Return	
+	If _Sleep(250) Then Return
 	_CaptureRegion(0, 0, 766, $DonatePixel[1] + 50 + $YComp)
 	$icount = 0
 	while not (_ColorCheck(_GetPixelColor(237 + ($Slot * 82), $DonatePixel[1] - 5 + $YComp), Hex(0x507C00, 6), 10) Or _
 			_ColorCheck(_GetPixelColor(237 + ($Slot * 82), $DonatePixel[1] - 10 + $YComp), Hex(0x507C00, 6), 10) Or _
 			_ColorCheck(_GetPixelColor(237 + ($Slot * 82), $DonatePixel[1] - 16 + $YComp), Hex(0x507C00, 6), 10))
-		If _Sleep(250) Then Return	
+		If _Sleep(250) Then Return
 		_CaptureRegion(0, 0, 766, $DonatePixel[1] + 50 + $YComp)
 		$icount += 1
 		if $icount = 10 then exitloop
 	wend
-	
+
 	If _ColorCheck(_GetPixelColor(237 + ($Slot * 82), $DonatePixel[1] - 5 + $YComp), Hex(0x507C00, 6), 10) Or _
 			_ColorCheck(_GetPixelColor(237 + ($Slot * 82), $DonatePixel[1] - 10 + $YComp), Hex(0x507C00, 6), 10) Or _
 			_ColorCheck(_GetPixelColor(237 + ($Slot * 82), $DonatePixel[1] - 16 + $YComp), Hex(0x507C00, 6), 10) Then
@@ -398,7 +383,7 @@ Func DonateTroopType($Type)
 							assign(eval("Cur" & $TroopDarkName[$i]),eval("Cur" & $TroopDarkName[$i]) + 5)
 						else
 							assign(eval("Cur" & $TroopDarkName[$i]),eval("Cur" & $TroopDarkName[$i]) + 1)
-						endif                
+						endif
 					endif
 				next
 
