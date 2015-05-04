@@ -1,4 +1,4 @@
-version: 3.0.1.{build}
+version: 3.0.3.{build}
 
 platform:
     - x86
@@ -16,7 +16,7 @@ build_script:
     - del .gitignore
     - del appveyor.yml
     - aut2exe /in "CGB Bot.au3"
-    - 7z a "CGBv3.0.1 build %APPVEYOR_BUILD_NUMBER%.zip" .\*
+    - 7z a "CGBv3.0.3 build %APPVEYOR_BUILD_NUMBER%.zip" .\*
 
 artifacts:
-  - path: CGBv3.0.1 build *.zip
+  - path: CGBv3.0.3 build *.zip
