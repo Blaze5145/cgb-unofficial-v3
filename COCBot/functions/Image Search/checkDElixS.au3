@@ -47,18 +47,18 @@ If $iChkLightSpell = 1 Then
 	 If $DESLoc = 1 Then
 	    $DESLocx += 230
 		$DESLocy += 170
-	    SetLog("== DarkElix pic:[" & $i+1 & "] " & " • [" & $DESLocx & ", " & $DESLocy & "] • Tolerance [" & $Tolerance3 &"] found ==")
+	    SetLog("== DarkElix pic:[" & $i+1 & "] " & " â€¢ [" & $DESLocx & ", " & $DESLocy & "] â€¢ Tolerance [" & $Tolerance3 &"] found ==")
 		Return $DESLoc
      EndIf
    Next
 	  If $DESLoc = 0 Then
-	   SetLog(" == DarkElix() :("& $i+1 & ")" & "• Storage Empty or Not Found")
+	   SetLog(" == DarkElix() :("& $i+1 & ")" & "â€¢ Storage Empty or Not Found")
 	   $DESLocx = 0
 	   $DESLocy = 0
 	   Return $DESLoc
      EndIf
   Else
-   ;SetLog("== Attacking DE Storage • Unchecked ==")
+   ;SetLog("== Attacking DE Storage â€¢ Unchecked ==")
 Endif
 EndFunc
 	;######################################### INFO ####################################
@@ -85,7 +85,7 @@ Func DropLSpell ()
 	   Next
 
 	    If (($DESLoc = 1) And $LSpell <> -1 ) Then
-			If (Number($searchDark) >= Number($AimDark)) then
+			If (Number($searchDark) >= Number($SpellMinDarkStorage)) then
 			     If $LSpellQ >= $iLSpellQ then
 				   Click(68 + (72 * $LSpell), 595) ;Select Troop
 				   If _Sleep(SetSleep(1)) Then Return
