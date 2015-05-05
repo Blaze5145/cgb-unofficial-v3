@@ -76,11 +76,11 @@ Func VillageReport()
 		If $i >= 20 Then ExitLoop
 	WEnd
 If $iAlertPBVillage = 1 Then
-     _PushBullet("My Village:", " [G]: " & $GoldCount & " [E]: " & $ElixirCount & " [D]: " & $DarkCount & "  [T]: " & $TrophyCount & " [FB]: " & $FreeBuilder)
+     _PushBullet("My Village:", " [G]: " & $GoldCount & " [E]: " & $ElixirCount & " [D]: " & $DarkCount & "  [T]: " & $TrophyCount & " [FreeBuilders]: " & $FreeBuilder)
 Endif
 
 If $iLastAttack = 1 Then
-     _PushBullet("Last Attack:", " [G]: " & $GoldLast & " [E]: " & $ElixirLast & " [D]: " & $DarkLast & "  [T]: " & $TrophyLast)
+     _PushBullet("Last Gain:", " [G]: " & $GoldLast & " [E]: " & $ElixirLast & " [D]: " & $DarkLast & "  [T]: " & $TrophyLast)
 Endif
 
 EndFunc   ;==>VillageReport
