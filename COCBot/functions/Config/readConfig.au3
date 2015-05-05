@@ -1,7 +1,7 @@
 ;Reads config file and sets variables
 
 Func readConfig() ;Reads config and sets it to the variables
-	If FileExists($building) Then		
+	If FileExists($building) Then
 		$TownHallPos[0] = IniRead($building, "other", "xTownHall", "-1")
 		$TownHallPos[1] = IniRead($building, "other", "yTownHall", "-1")
 
@@ -16,12 +16,12 @@ Func readConfig() ;Reads config and sets it to the variables
 
 		$SFPos[0] = IniRead($building, "other", "xspellfactory", "-1")
 		$SFPos[1] = IniRead($building, "other", "yspellfactory", "-1")
-		
+
 		$barrackNum = IniRead($building, "other", "barrackNum", "0")
 		$barrackDarkNum = IniRead($building, "other", "barrackDarkNum", "0")
-		
+
 		$listResourceLocation = IniRead($building, "other", "listResource", "")
-		
+
 		$ichkUpgrade1 = IniRead($building, "other", "BuildUpgrade1", "0")
 		$ichkUpgrade2 = IniRead($building, "other", "BuildUpgrade2", "0")
 		$ichkUpgrade3 = IniRead($building, "other", "BuildUpgrade3", "0")
@@ -55,7 +55,7 @@ Func readConfig() ;Reads config and sets it to the variables
 
 		$iChkBackToAllMode = IniRead($config, "search", "backAllBase", "0")
 		$iTxtBackAllBase = IniRead($config, "search", "txtBackAllBase", "150")
-		
+
 		$iChkSearchReduction = IniRead($config, "search", "reduction", "1")
 		$ReduceCount = IniRead($config, "search", "reduceCount", "20")
 		$ReduceGold = IniRead($config, "search", "reduceGold", "2000")
@@ -115,7 +115,7 @@ Func readConfig() ;Reads config and sets it to the variables
 		$iAttackNowDelay = IniRead($config, "advanced", "attacknowdelay", "3")
 
 		$chkATH = IniRead($config, "advanced", "townhall", "0")
-		
+
 		$iChkLightSpell = IniRead($config, "advanced", "hitDElightning", "0")
 		$SpellMinDarkStorage = IniRead($config, "advanced", "txtMinDarkStorage", "500")
         	$iLSpellQ = IniRead ($config, "advanced", "QLSpell", "3")
@@ -132,6 +132,7 @@ Func readConfig() ;Reads config and sets it to the variables
 
 		$iAlertPBVillage = IniRead($config, "advanced", "AlertPBVillage", "0")
         $iLastAttack = IniRead($config, "advanced", "AlertPBLastAttack", "0")
+		$iAlertPBJPGLastAttack = IniRead($config, "advanced", "AlertPBJPGLastAttack", "0")
 
 		;atk their king
 		;atk their queen

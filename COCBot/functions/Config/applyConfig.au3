@@ -44,7 +44,7 @@ Func applyConfig() ;Applies the data from config to the controls in GUI
 	EndIf
 	GUICtrlSetData($txtBackToAllMode, $iTxtBackAllBase)
 	chkBackToAllMode()
-	
+
 	If $iChkSearchReduction = 1 Then
 		GUICtrlSetState($chkSearchReduction, $GUI_CHECKED)
 	Else
@@ -270,6 +270,12 @@ Func applyConfig() ;Applies the data from config to the controls in GUI
 	   GUICtrlSetState($chkAlertPBLastAttack, $GUI_UNCHECKED)
     EndIf
 
+
+	If $iAlertPBJPGLastAttack  = 1 Then
+	   GUICtrlSetState($chkAlertPBJPGLastAttack, $GUI_CHECKED)
+	Elseif $iAlertPBJPGLastAttack = 0 Then
+	   GUICtrlSetState($chkAlertPBJPGLastAttack, $GUI_UNCHECKED)
+    EndIf
 
 	;attk their king
 	;attk their queen
@@ -542,10 +548,10 @@ Func applyConfig() ;Applies the data from config to the controls in GUI
 	EndIf
 
 	;Troop Settings--------------------------------------------------------------------------
-	for $i=0 to Ubound($TroopName) - 1 
+	for $i=0 to Ubound($TroopName) - 1
 		GUICtrlSetData(eval("txtNum" & $TroopName[$i]), eval($TroopName[$i]&"Comp"))
 	next
-	for $i=0 to Ubound($TroopDarkName) - 1 
+	for $i=0 to Ubound($TroopDarkName) - 1
 		GUICtrlSetData(eval("txtNum" & $TroopDarkName[$i]), eval($TroopDarkName[$i]&"Comp"))
 	next
 	SetComboTroopComp()
