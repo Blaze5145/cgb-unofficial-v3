@@ -140,6 +140,7 @@ Func VillageSearch() ;Control for searching a village that meets conditions
 						ExitLoop	
 					else
 						If $bBtnAttackNowPressed = True then ExitLoop
+						If $iChkBackToAllMode = 1 And Number($iSkipped) > Number($iTxtBackAllBase) Then ExitLoop
 						SetLog(_PadStringCenter(" Not a Weak Base, Skipping ", 50, "~"), $COLOR_ORANGE)
 						Click(750, 500) ;Click Next
 						$iSkipped = $iSkipped + 1
@@ -149,6 +150,7 @@ Func VillageSearch() ;Control for searching a village that meets conditions
 				Else
 					;If _Sleep(1000) Then Return
 					If $bBtnAttackNowPressed = True then ExitLoop
+					If $iChkBackToAllMode = 1 And Number($iSkipped) > Number($iTxtBackAllBase) Then ExitLoop
 					SetLog(_PadStringCenter(" Not a Dead Base, Skipping ", 50, "~"), $COLOR_ORANGE)
 					Click(750, 500) ;Click Next
 					$iSkipped = $iSkipped + 1
@@ -190,6 +192,10 @@ Func VillageSearch() ;Control for searching a village that meets conditions
 		$bBtnAttackNowPressed = False
 	EndIf
 
+	If $iChkBackToAllMode = 1 And Number($iSkipped) > Number($iTxtBackAllBase) Then
+		SetLog(_PadStringCenter(" Max " & $iTxtBackAllBase & " Searches, Attacking All Base! ", 50, "~"), $COLOR_RED)
+	EndIf
+	
 	If GUICtrlRead($chkAlertSearch) = $GUI_CHECKED Then
 		TrayTip("Match Found!", "Gold: " & $searchGold & "; Elixir: " & $searchElixir & "; Dark: " & $searchDark & "; Trophy: " & $searchTrophy, "", 0)
 		If FileExists(@WindowsDir & "\media\Festival\Windows Exclamation.wav") Then
