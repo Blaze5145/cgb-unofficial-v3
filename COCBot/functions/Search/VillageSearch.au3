@@ -112,9 +112,13 @@ Func VillageSearch() ;Control for searching a village that meets conditions
 					Else
 						;If _Sleep(1000) Then Return
 						If $bBtnAttackNowPressed = True then ExitLoop
+						If $iChkBackToAllMode = 1 And Number($iSkipped) > Number($iTxtBackAllBase) Then ExitLoop
 						SetLog(_PadStringCenter(" Not a Dead Base, Not TH Bully Level, Skipping ", 50, "~"), $COLOR_ORANGE)
 						Click(750, 500) ;Click Next
 						$iSkipped = $iSkipped + 1
+						If $iChkBackToAllMode = 1 And Number($iSkipped) = Number($iTxtBackAllBase) Then
+							SetLog(_PadStringCenter(" Max " & $iTxtBackAllBase & " searches, switch to All Base! ", 50, "~"), $COLOR_RED)
+						EndIf
 						GUICtrlSetData($lblresultvillagesskipped, GUICtrlRead($lblresultvillagesskipped) + 1)
 						ContinueLoop
 					EndIf
@@ -125,9 +129,13 @@ Func VillageSearch() ;Control for searching a village that meets conditions
 					Else
 						;If _Sleep(1000) Then Return
 						If $bBtnAttackNowPressed = True then ExitLoop
+						If $iChkBackToAllMode = 1 And Number($iSkipped) > Number($iTxtBackAllBase) Then ExitLoop
 						SetLog(_PadStringCenter(" Not a Dead base, Not TH Outside!, Skipping ", 50, "~"), $COLOR_ORANGE)
 						Click(750, 500) ;Click Next
 						$iSkipped = $iSkipped + 1
+						If $iChkBackToAllMode = 1 And Number($iSkipped) = Number($iTxtBackAllBase) Then
+							SetLog(_PadStringCenter(" Max " & $iTxtBackAllBase & " searches, switch to All Base! ", 50, "~"), $COLOR_RED)
+						EndIf
 						GUICtrlSetData($lblresultvillagesskipped, GUICtrlRead($lblresultvillagesskipped) + 1)
 						ContinueLoop
 					EndIf
@@ -144,6 +152,9 @@ Func VillageSearch() ;Control for searching a village that meets conditions
 						SetLog(_PadStringCenter(" Not a Weak Base, Skipping ", 50, "~"), $COLOR_ORANGE)
 						Click(750, 500) ;Click Next
 						$iSkipped = $iSkipped + 1
+						If $iChkBackToAllMode = 1 And Number($iSkipped) = Number($iTxtBackAllBase) Then
+							SetLog(_PadStringCenter(" Max " & $iTxtBackAllBase & " searches, switch to All Base! ", 50, "~"), $COLOR_RED)
+						EndIf
 						GUICtrlSetData($lblresultvillagesskipped, GUICtrlRead($lblresultvillagesskipped) + 1)
 						ContinueLoop
 					endif
@@ -154,6 +165,9 @@ Func VillageSearch() ;Control for searching a village that meets conditions
 					SetLog(_PadStringCenter(" Not a Dead Base, Skipping ", 50, "~"), $COLOR_ORANGE)
 					Click(750, 500) ;Click Next
 					$iSkipped = $iSkipped + 1
+					If $iChkBackToAllMode = 1 And Number($iSkipped) = Number($iTxtBackAllBase) Then
+						SetLog(_PadStringCenter(" Max " & $iTxtBackAllBase & " searches, switch to All Base! ", 50, "~"), $COLOR_RED)
+					EndIf
 					GUICtrlSetData($lblresultvillagesskipped, GUICtrlRead($lblresultvillagesskipped) + 1)
 					ContinueLoop
 				EndIf
@@ -167,8 +181,12 @@ Func VillageSearch() ;Control for searching a village that meets conditions
 			Else
 				;If _Sleep(1000) Then Return
 				If $bBtnAttackNowPressed = True then ExitLoop
+				If $iChkBackToAllMode = 1 And Number($iSkipped) > Number($iTxtBackAllBase) Then ExitLoop
 				Click(750, 500) ;Click Next
 				$iSkipped = $iSkipped + 1
+				If $iChkBackToAllMode = 1 And Number($iSkipped) = Number($iTxtBackAllBase) Then
+					SetLog(_PadStringCenter(" Max " & $iTxtBackAllBase & " searches, switch to All Base! ", 50, "~"), $COLOR_RED)
+				EndIf
 				GUICtrlSetData($lblresultvillagesskipped, GUICtrlRead($lblresultvillagesskipped) + 1)
 				ContinueLoop
 			EndIf
@@ -177,6 +195,9 @@ Func VillageSearch() ;Control for searching a village that meets conditions
 			If $bBtnAttackNowPressed = True then ExitLoop
 			Click(750, 500) ;Click Next
 			$iSkipped = $iSkipped + 1
+			If $iChkBackToAllMode = 1 And Number($iSkipped) = Number($iTxtBackAllBase) Then
+				SetLog(_PadStringCenter(" Max " & $iTxtBackAllBase & " searches, switch to All Base! ", 50, "~"), $COLOR_RED)
+			EndIf
 			GUICtrlSetData($lblresultvillagesskipped, GUICtrlRead($lblresultvillagesskipped) + 1)
 			ContinueLoop
 		EndIf
@@ -193,7 +214,7 @@ Func VillageSearch() ;Control for searching a village that meets conditions
 	EndIf
 
 	If $iChkBackToAllMode = 1 And Number($iSkipped) > Number($iTxtBackAllBase) Then
-		SetLog(_PadStringCenter(" Max " & $iTxtBackAllBase & " Searches, Attacking All Base! ", 50, "~"), $COLOR_RED)
+		SetLog(_PadStringCenter(" Attacking All Base! ", 50, "~"), $COLOR_RED)
 	EndIf
 	
 	If GUICtrlRead($chkAlertSearch) = $GUI_CHECKED Then
