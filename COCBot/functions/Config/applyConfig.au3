@@ -226,9 +226,9 @@ Func applyConfig() ;Applies the data from config to the controls in GUI
 	Else
 		GUICtrlSetState($chkLightSpell, $GUI_UNCHECKED)
 	EndIf
-	GUILightSpell()
-
+	GUICtrlSetData($txtMinDarkStorage, $SpellMinDarkStorage)
 	_GUICtrlComboBox_SetCurSel($cmbiLSpellQ, $iLSpellQ - 1)
+	GUILightSpell()
 
 	If $OptBullyMode = 1 Then
 		GUICtrlSetState($chkBullyMode, $GUI_CHECKED)
