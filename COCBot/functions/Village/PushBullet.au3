@@ -50,5 +50,33 @@ Func _Push($pTitle, $pMessage)
     $oHTTP.Send($pPush)
 EndFunc   ;==>_Push
 
+Func _PushImage($FullImagePath,$MymeType="image/jpeg")
+	; Upload Request
+	$oHTTP = ObjCreate("WinHTTP.WinHTTPRequest.5.1")
+	$oHTTP.Open("Post", "https://api.pushbullet.com/v2/upload-request", False)
+	$oHTTP.SetCredentials($access_token, "", 0)
+	$oHTTP.SetRequestHeader("Content-Type", "application/json")
+	Local $pPush = '{"file_name": "' & $FullImagePath & '", "file_type": "' & $Mymetype & '"}'
+	$oHTTP.Send($pPush)
+	$Result = $oHTTP.ResponseText
+	; Upload Image
+	Local $upload_url = _StringBetween($Result, 'upload_url":"', '"')
+	Local $awsaccesskeyid = _StringBetween($Result, 'awsaccesskeyid":"', '"')
+	Local $acl = _StringBetween($Result, 'acl":"', '"')
+	Local $key = _StringBetween($Result, 'key":"', '"')
+	Local $signature = _StringBetween($Result, 'signature":"', '"')
+	Local $policy = _StringBetween($Result, 'policy":"', '"')
+	Local $file_url = _StringBetween($Result, 'file_url":"', '"')
+	$result=run(@ScriptDir & "\bin\curl.exe -i -X POST " & $upload_url[0] & " -F awsaccesskeyid=" & $awsaccesskeyid[0] & " -F acl=" & $acl[0] & " -F key=" & $key[0] & " -F signature=" & $signature[0] & " -F policy=" & $policy[0] & " -F content-type=$MimeType" & " -F file=@" & $FullImagePath,"",@SW_HIDE)
+	; Push File
+	$oHTTP.Open("Post", "https://api.pushbullet.com/v2/pushes", False)
+	$oHTTP.SetCredentials($access_token, "", 0)
+	$oHTTP.SetRequestHeader("Content-Type", "application/json")
+	Local $pPush = '{"type": "file", "file_name": "' & $FullImagePath & '", "file_type": "' & $MymeType & '", "file_url": "' & $file_url[0] & '", "body": "' & "Image Sent" & '"}'
+	$oHTTP.Send($pPush)
+	$Result = $oHTTP.ResponseText
+EndFunc   ;==>_PushImage
+
+
 ; _PushBullet()
 ;_Push("CGB Notifications", "Message")
