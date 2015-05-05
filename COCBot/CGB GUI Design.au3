@@ -488,6 +488,12 @@ GUICtrlCreateTabItem("")
 		$chkLightSpell = GUICtrlCreateCheckbox("Hit Dark Elixir storage with Lightning Spell", $x, $y, -1, -1)
 			GUICtrlSetTip(-1, "Check this if you want to use lightning spells to steal Dark Elixir when bot meet Minimum Dark Elixir.")
 			GUICtrlSetOnEvent(-1, "GUILightSpell")
+	    	$txtMinDarkStorage = GUICtrlCreateInput("500", $x + 280, $y, 30, 21, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
+			GUICtrlSetLimit(-1, 4)
+			GUICtrlSetState(-1, $GUI_DISABLE)
+		$lblSpellDarkStorage = GUICtrlCreateLabel("Dark Elixir", $x + 315, $y + 4, -1, -1)
+			GUICtrlSetTip(-1, "Check this if you want to use Lightning Spells to steal Dark Elixir when bot meet Minimum Dark Elixir.")
+			GUICtrlSetState(-1, $GUI_DISABLE)
 		$y +=22
         $lbliLSpellQ = GUICtrlCreateLabel("Have:", $x + 20, $y + 4, -1, -1)
 			$txtTip = "Set the minimum amount of spells needed. Never attack with less."
