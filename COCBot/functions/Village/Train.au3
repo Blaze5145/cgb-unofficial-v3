@@ -242,15 +242,25 @@ Func Train()
 			$brrNum += 1
 			Switch $barrackTroop[$brrNum-1]
 				Case 0
-						Click(220, 320, 25, 10)
+					Click(220, 320, 18, 10) ;Barbarian
 				Case 1
-						Click(331, 320, 25, 10)
+					Click(331, 320, 14, 10) ;Archer
 				Case 2
-						Click(432, 320, 25, 10)
+					Click(432, 320, 3, 10) ;Giant
 				Case 3
-						Click(546, 320, 25, 10)
+					Click(546, 320, 12, 10) ;Goblin
 				Case 4
-						Click(647, 320, 25, 10)
+					Click(647, 320, 3, 10) ;Wall Breaker
+				Case 5
+					Click(220, 425, 3, 10) ;Balloon
+				Case 6
+					Click(331, 425, 3, 10) ;Wizard
+				Case 7
+					Click(432, 425, 3, 10) ;Healer
+				Case 8
+					Click(546, 425, 3, 10) ;Dragon
+				Case 9
+					Click(647, 425, 3, 10) ;PEKKA
 			EndSwitch
 
 		    If _Sleep(500) Then ExitLoop
