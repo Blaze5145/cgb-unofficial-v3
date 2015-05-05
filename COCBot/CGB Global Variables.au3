@@ -221,7 +221,7 @@ Global $ArmyComp
 
 ;Global $barrackPos[4][2] ;Positions of each barracks
 Global $barrackPos[2] ;Positions of each barracks
-Global $barrackTroop[5] ;Barrack troop set
+Global $barrackTroop[10] ;Barrack troop set
 Global $ArmyPos[2]
 Global $barrackNum = 0
 Global $barrackDarkNum = 0
