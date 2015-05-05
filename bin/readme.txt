@@ -1,0 +1,1 @@
+Folder reserved to stored curl utility.
