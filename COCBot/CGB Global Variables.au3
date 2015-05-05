@@ -120,7 +120,8 @@ Global $OptTrophyMode
 Global $ATBullyMode
 Global $YourTH
 Global $AttackTHType
-Global $chklightspell
+Global $chkLightSpell
+Global $SpellMinDarkStorage = 500
 Global $iLSpellQ
 
 Global $TrainSpecial=1 ;0=Only trains after atk. Setting is automatic
