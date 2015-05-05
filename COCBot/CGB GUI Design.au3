@@ -202,7 +202,7 @@ $tabSearch = GUICtrlCreateTabItem("Search")
 		GUICtrlSetData(-1, "0|1|2|3", "0")
 		GUICtrlSetState(-1, $GUI_DISABLE)
 
-#cs	Local $x = 30, $y = 230
+	Local $x = 30, $y = 230
 		$chkBackToAllMode = GUICtrlCreateCheckbox("All Base after:", $x, $y, -1, -1)
 			$txtTip = "Release Dead Base or Weak Base search and switch to All Base after No. of searches."
 			GUICtrlSetTip(-1, $txtTip)
@@ -214,7 +214,7 @@ $tabSearch = GUICtrlCreateTabItem("Search")
 			GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetState(-1, $GUI_DISABLE)
 		$lblBackToAllMode = GUICtrlCreateLabel("search(es).", $x + 137, $y + 5, -1, -1)
-#ce			GUICtrlSetState(-1, $GUI_DISABLE)
+			GUICtrlSetState(-1, $GUI_DISABLE)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
 Local $x = 30, $y = 285
