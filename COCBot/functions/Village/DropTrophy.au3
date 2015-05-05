@@ -45,10 +45,9 @@ if ($CurCamp >= ($TotalCamp * 70/100)) then
  		      EndIf
 
                 If _Sleep(1500) Then Return
-
-	            For $i = 0 To 8
-		            $King = -1
+                    $King = -1
 		            $Queen = -1
+	            For $i = 0 To 8
 			     If $atkTroops[$i][0] = $eKing Then
 				    $King = $i
 			     ElseIf $atkTroops[$i][0] = $eQueen Then
@@ -93,17 +92,17 @@ if ($CurCamp >= ($TotalCamp * 70/100)) then
 				   Case $atkTroops[0][0] = $eGiant
 					  Click(34, 310) ;Drop one troop
                       $CurGiant += 1
-					  $ArmyComp -=1
+					  $ArmyComp -=5
 					  SetLog("Deploying 1 Giant", $COLOR_BLUE)
 				   Case $atkTroops[0][0] = $eWall
 					  Click(34, 310) ;Drop one troop
                       $CurWall += 1
-					  $ArmyComp -=5
+					  $ArmyComp -=2
 					  SetLog("Deploying 1 WallBreaker", $COLOR_BLUE)
 				   Case $atkTroops[0][0] = $eGobl
 					  Click(34, 310) ;Drop one troop
                       $CurGobl += 1
-					  $ArmyComp -=2
+					  $ArmyComp -=1
 					  SetLog("Deploying 1 Goblins", $COLOR_BLUE)
 				   Case $atkTroops[0][0] = $eMini
 				  	  Click(34, 310) ;Drop one troop
