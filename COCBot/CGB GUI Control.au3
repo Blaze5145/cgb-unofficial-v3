@@ -733,6 +733,16 @@ Func radNotWeakBases()
 	GUICtrlSetState($cmbWBXbow, $GUI_DISABLE)
 EndFunc   ;==>radNotWeakBases
 
+Func chkBackToAllMode()
+	If GUICtrlRead($chkBackToAllMode) = $GUI_CHECKED Then
+	   GUICtrlSetState($txtBackToAllMode, $GUI_ENABLE)
+	   GUICtrlSetState($lblBackToAllMode, $GUI_ENABLE)
+	Else
+	   GUICtrlSetState($txtBackToAllMode, $GUI_DISABLE)
+	   GUICtrlSetState($lblBackToAllMode, $GUI_DISABLE)
+    EndIf
+EndFunc   ;==>chkBackToAllMode
+
 Func chkAttackNow()
 	If GUICtrlRead($chkAttackNow) = $GUI_CHECKED Then
 		$iChkAttackNow = 1
