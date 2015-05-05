@@ -96,6 +96,8 @@ Global $searchGold, $searchElixir, $searchDark, $searchTrophy, $searchTH ;Resour
 Global $SearchGold2=0, $SearchElixir2=0, $iStuck=0, $iNext=0
 Global $MinGold, $MinElixir, $MinDark, $MinTrophy, $MaxTH ; Minimum Resources conditions
 Global $AimGold, $AimElixir, $AimDark, $AimTrophy, $AimTHtext ; Aiming Resource values
+Global $iChkBackToAllMode ;Back to All Base
+Global $iTxtBackAllBase = 150 ;Number of searches before back to All Base
 Global $iChkSearchReduction
 Global $ReduceCount, $ReduceGold, $ReduceElixir, $ReduceDark, $ReduceTrophy ; Reducing values
 Global $chkConditions[6], $ichkMeetOne ;Conditions (meet gold...)
