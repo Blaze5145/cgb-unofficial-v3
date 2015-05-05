@@ -210,6 +210,7 @@ Func saveConfig() ;Saves the controls settings to the config
 	Else
 		IniWrite($config, "advanced", "hitDElightning", 0)
 	EndIf
+	IniWrite($config, "advanced", "txtMinDarkStorage", GUICtrlRead($txtMinDarkStorage))
 	IniWrite($config, "advanced", "QLSpell", _GUICtrlComboBox_GetCurSel($cmbiLSpellQ) + 1)
 
 	If GUICtrlRead($chkBullyMode) = $GUI_CHECKED Then
