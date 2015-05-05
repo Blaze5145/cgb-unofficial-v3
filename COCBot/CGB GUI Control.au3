@@ -750,11 +750,15 @@ EndFunc   ;==>chkAttackNow
 Func GUILightSpell()
 	If GUICtrlRead($chkLightSpell) = $GUI_CHECKED Then
 		$iChkLightSpell = 1
+		GUICtrlSetState($txtMinDarkStorage, $GUI_ENABLE)
+		GUICtrlSetState($lblSpellDarkStorage, $GUI_ENABLE)
 		GUICtrlSetState($lbliLSpellQ, $GUI_ENABLE)
 		GUICtrlSetState($cmbiLSpellQ, $GUI_ENABLE)
 		GUICtrlSetState($lbliLSpellQ2, $GUI_ENABLE)
 	Else
 		$iChkLightSpell = 0
+		GUICtrlSetState($txtMinDarkStorage, $GUI_DISABLE)
+		GUICtrlSetState($lblSpellDarkStorage, $GUI_DISABLE)
 		GUICtrlSetState($lbliLSpellQ, $GUI_DISABLE)
 		GUICtrlSetState($cmbiLSpellQ, $GUI_DISABLE)
 		GUICtrlSetState($lbliLSpellQ2, $GUI_DISABLE)
