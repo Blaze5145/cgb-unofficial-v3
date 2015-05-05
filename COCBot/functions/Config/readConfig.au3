@@ -53,6 +53,9 @@ Func readConfig() ;Reads config and sets it to the variables
 		$iWBWizTower = IniRead($config, "search", "iwbwiztower", "5")
 		$iWBXbow = IniRead($config, "search", "iwbxbow", "0")
 
+		$iChkBackToAllMode = IniRead($config, "search", "backAllBase", "0")
+		$iTxtBackAllBase = IniRead($config, "search", "txtBackAllBase", "150")
+		
 		$iChkSearchReduction = IniRead($config, "search", "reduction", "1")
 		$ReduceCount = IniRead($config, "search", "reduceCount", "20")
 		$ReduceGold = IniRead($config, "search", "reduceGold", "2000")
