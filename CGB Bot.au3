@@ -30,11 +30,11 @@ Global $sBotDll = @ScriptDir & "\CGBPlugin.dll"
 If _Singleton($sBotTitle, 1) = 0 Then
 	MsgBox(0, "", "Bot is already running.")
 	Exit
- EndIf
+EndIf
 
 If @AutoItX64 = 1 Then
 	MsgBox(0, "", "Don't Run/Compile the Script as (x64)! try to Run/Compile the Script as (x86) to get the bot to work." & @CRLF & _
-				  "If this message still appears, try to re-install AutoIt.")
+			"If this message still appears, try to re-install AutoIt.")
 	Exit
 EndIf
 
@@ -50,14 +50,14 @@ EndIf
 
 DirCreate($dirLogs)
 DirCreate($dirLoots)
-FileChangeDir ( $LibDir )
+FileChangeDir($LibDir)
 
 While 1
 	Switch TrayGetMsg()
-        Case $tiAbout
+		Case $tiAbout
 			MsgBox(64 + $MB_APPLMODAL + $MB_TOPMOST, $sBotTitle, "Clash of Clans Bot" & @CRLF & @CRLF & _
-				"Version: " & $sBotVersion & @CRLF & _
-				"Released under the GNU GPLv3 license.", 0, $frmBot)
+					"Version: " & $sBotVersion & @CRLF & _
+					"Released under the GNU GPLv3 license.", 0, $frmBot)
 		Case $tiExit
 			ExitLoop
 	EndSwitch
@@ -73,75 +73,75 @@ Func runBot() ;Bot that runs everything in order
 		If _Sleep(1000) Then Return
 		ZoomOut()
 		If $Is_ClientSyncError = False Then
-				If _Sleep(1000) Then Return
-				checkMainScreen(False)
-				If $Restart = True Then ContinueLoop
+			If _Sleep(1000) Then Return
+			checkMainScreen(False)
+			If $Restart = True Then ContinueLoop
 			If BotCommand() Then btnStop()
-				If _Sleep(1000) Then Return
-				checkMainScreen(False)
-				If $Restart = True Then ContinueLoop
-;			BotDetectFirstTime()
-;				If _Sleep(1000) Then Return
-;				checkMainScreen(False)
-;				If $Restart = True Then ContinueLoop
+			If _Sleep(1000) Then Return
+			checkMainScreen(False)
+			If $Restart = True Then ContinueLoop
+			;			BotDetectFirstTime()
+			;				If _Sleep(1000) Then Return
+			;				checkMainScreen(False)
+			;				If $Restart = True Then ContinueLoop
 			Collect()
-				If _Sleep(1000) Then Return
-				checkMainScreen(False)
-				If $Restart = True Then ContinueLoop
+			If _Sleep(1000) Then Return
+			checkMainScreen(False)
+			If $Restart = True Then ContinueLoop
 			ReArm()
-				If _Sleep(1000) Then Return
-				checkMainScreen(False)
-				If $Restart = True Then ContinueLoop
+			If _Sleep(1000) Then Return
+			checkMainScreen(False)
+			If $Restart = True Then ContinueLoop
 			VillageReport()
-				If _Sleep(1000) Then Return
-				checkMainScreen(False)
-				If $Restart = True Then ContinueLoop
+			If _Sleep(1000) Then Return
+			checkMainScreen(False)
+			If $Restart = True Then ContinueLoop
 			DonateCC()
-				If _Sleep(1000) Then Return
-				checkMainScreen(False)
-				If $Restart = True Then ContinueLoop
+			If _Sleep(1000) Then Return
+			checkMainScreen(False)
+			If $Restart = True Then ContinueLoop
 			Train()
-				If _Sleep(1000) Then Return
-				checkMainScreen(False)
-				If $Restart = True Then ContinueLoop
+			If _Sleep(1000) Then Return
+			checkMainScreen(False)
+			If $Restart = True Then ContinueLoop
 			BoostBarracks()
-				If _Sleep(1000) Then Return
-				checkMainScreen(False)
-				If $Restart = True Then ContinueLoop
+			If _Sleep(1000) Then Return
+			checkMainScreen(False)
+			If $Restart = True Then ContinueLoop
 			BoostSpellFactory()
-			    If _Sleep(1000) Then Return
-				checkMainScreen(False)
-				If $Restart = True Then ContinueLoop
+			If _Sleep(1000) Then Return
+			checkMainScreen(False)
+			If $Restart = True Then ContinueLoop
 			RequestCC()
-				If _Sleep(1000) Then Return
-				checkMainScreen(False)
-				If $Restart = True Then ContinueLoop
+			If _Sleep(1000) Then Return
+			checkMainScreen(False)
+			If $Restart = True Then ContinueLoop
 			UpgradeWall()
-				If _Sleep(1000) Then Return
-				checkMainScreen(False)
-				If $Restart = True Then ContinueLoop
+			If _Sleep(1000) Then Return
+			checkMainScreen(False)
+			If $Restart = True Then ContinueLoop
 			UpgradeBuilding()
-				If _Sleep(1000) Then Return
-				checkMainScreen(False)
-				If $Restart = True Then ContinueLoop
+			If _Sleep(1000) Then Return
+			checkMainScreen(False)
+			If $Restart = True Then ContinueLoop
 			Idle()
-				If _Sleep(1000) Then Return
-				If $Restart = True Then ContinueLoop
+			If _Sleep(1000) Then Return
+			If $Restart = True Then ContinueLoop
 			If $CommandStop <> 0 And $CommandStop <> 3 Then
 				AttackMain()
-					If _Sleep(1000) Then Return
-					checkMainScreen(False)
-					If $Restart = True Then ContinueLoop
+				If _Sleep(1000) Then Return
+				checkMainScreen(False)
+				If $Restart = True Then ContinueLoop
 			EndIf
-				;checkMainScreen(False)
-				;If $Restart = True Then ContinueLoop
+			;checkMainScreen(False)
+			;If $Restart = True Then ContinueLoop
 
 		Else ;When error occours directly goes to attack
 			SetLog("Restarted after Out of Sync Error: Attack Now", $COLOR_RED)
 			AttackMain()
-				If _Sleep(1000) Then Return
-				checkMainScreen(False)
-				If $Restart = True Then ContinueLoop
+			If _Sleep(1000) Then Return
+			checkMainScreen(False)
+			If $Restart = True Then ContinueLoop
 		EndIf
 	WEnd
 EndFunc   ;==>runBot
@@ -155,9 +155,9 @@ Func Idle() ;Sequence that runs until Full Army
 		Local $iReHere = 0
 		While $iReHere < 10
 			$iReHere += 1
-			DonateCC(true)
+			DonateCC(True)
 			If _Sleep(3000) Then ExitLoop
-		    If $Restart = True Then ExitLoop
+			If $Restart = True Then ExitLoop
 		WEnd
 		If _Sleep(1500) Then ExitLoop
 		checkMainScreen(False)
@@ -183,7 +183,7 @@ Func Idle() ;Sequence that runs until Full Army
 			$fullArmy = False
 		EndIf
 		If $CommandStop = -1 Then
-			   DropTrophy()
+			DropTrophy()
 			If $fullArmy Then ExitLoop
 			If _Sleep(1000) Then ExitLoop
 			checkMainScreen(False)
@@ -197,17 +197,17 @@ EndFunc   ;==>Idle
 Func AttackMain() ;Main control for attack functions
 
 	PrepareSearch()
-		If _Sleep(1500) Then Return
+	If _Sleep(1500) Then Return
 	VillageSearch()
-		If _Sleep(1500) Or $Restart = True Then Return
+	If _Sleep(1500) Or $Restart = True Then Return
 	PrepareAttack()
-		If _Sleep(1500) Then Return
+	If _Sleep(1500) Then Return
 	;checkDarkElix()
 	DEAttack()
-	    If _Sleep(4000) Then Return
+	If _Sleep(4000) Then Return
 	Attack()
 	ReturnHome($TakeLootSnapShot)
-		If _Sleep(1500) Then Return
+	If _Sleep(1500) Then Return
 EndFunc   ;==>AttackMain
 
 Func Attack() ;Selects which algorithm
