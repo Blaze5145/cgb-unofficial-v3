@@ -258,6 +258,12 @@ Func saveConfig() ;Saves the controls settings to the config
 		IniWrite($config, "advanced", "AlertPBLastAttack", 0)
 	EndIf
 
+	If  GUICtrlRead($chkPushRemote) = $GUI_CHECKED Then
+		IniWrite($config, "advanced", "PushRemote", 1)
+	Else
+		IniWrite($config, "advanced", "PushRemote", 0)
+	EndIf
+
 	;atk their king
 	;attk their queen
 
