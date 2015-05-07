@@ -40,6 +40,10 @@ Func ReturnHome($TakeSS = 1, $GoldChangeCheck = True) ;Return main screen
 		_CaptureRegion(0, 0, 860, 675)
 		$hBitmap_Scaled = _GDIPlus_ImageResize($hBitmap, _GDIPlus_ImageGetWidth($hBitmap) / 2, _GDIPlus_ImageGetHeight($hBitmap) / 2) ;resize image
 		_GDIPlus_ImageSaveToFile($hBitmap_Scaled, $dirLoots & $Date & "_" & $Time & ".jpg")
+		$FileName = $Date & "_" & $Time & ".jpg"
+		If $iAlertPBJPGLastAttack = 1 Then
+       _PushFile($FileName, "loots", "image/jpeg", "Last Raid", $FileName)
+        Endif
 		;attackReport()
 	EndIf
 

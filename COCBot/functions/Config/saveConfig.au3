@@ -42,7 +42,7 @@ Func saveConfig() ;Saves the controls settings to the config
 		IniWrite($config, "search", "backAllBase", 0)
 	EndIf
 	IniWrite($config, "search", "txtBackAllBase", GUICtrlRead($txtBackToAllMode))
-	
+
 	If GUICtrlRead($chkSearchReduction) = $GUI_CHECKED Then
 		IniWrite($config, "search", "reduction", 1)
 	Else
@@ -250,6 +250,12 @@ Func saveConfig() ;Saves the controls settings to the config
         IniWrite($config, "advanced", "AlertPBLastAttack", 1)
     Else
 	    IniWrite($config, "advanced", "AlertPBLastAttack", 0)
+	 EndIf
+
+	  If  GUICtrlRead($chkAlertPBJPGLastAttack) = $GUI_CHECKED Then
+        IniWrite($config, "advanced", "AlertPBJPGLastAttack", 1)
+    Else
+	    IniWrite($config, "advanced", "AlertPBJPGLastAttack", 0)
 	 EndIf
 
 	;atk their king
@@ -507,13 +513,13 @@ Func saveConfig() ;Saves the controls settings to the config
 	IniWrite($config, "donate", "txtBlacklist", StringReplace(GUICtrlRead($txtBlacklist), @CRLF, "|"))
 
 	;Troop Settings--------------------------------------------------------------------------
-	for $i=0 to Ubound($TroopName) - 1 
+	for $i=0 to Ubound($TroopName) - 1
 		IniWrite($config, "troop", $TroopName[$i], GUICtrlRead(eval("txtNum" & $TroopName[$i])))
 	next
-	for $i=0 to Ubound($TroopDarkName) - 1 
+	for $i=0 to Ubound($TroopDarkName) - 1
 		IniWrite($config, "troop", $TroopDarkName[$i], GUICtrlRead(eval("txtNum" & $TroopDarkName[$i])))
 	next
-	
+
 	IniWrite($config, "troop", "troop1", _GUICtrlComboBox_GetCurSel($cmbBarrack1))
 	IniWrite($config, "troop", "troop2", _GUICtrlComboBox_GetCurSel($cmbBarrack2))
 	IniWrite($config, "troop", "troop3", _GUICtrlComboBox_GetCurSel($cmbBarrack3))
@@ -605,10 +611,10 @@ Func saveConfig() ;Saves the controls settings to the config
 
     IniWrite($building, "other", "xArmy", $ArmyPos[0])
     IniWrite($building, "other", "yArmy", $ArmyPos[1])
-	
+
     IniWrite($building, "other", "barrackNum", $barrackNum)
     IniWrite($building, "other", "barrackDarkNum", $barrackDarkNum)
-	
+
     IniWrite($building, "other", "listResource", $listResourceLocation)
 
 	;For $i = 0 To 3 ;Covers all 4 Barracks

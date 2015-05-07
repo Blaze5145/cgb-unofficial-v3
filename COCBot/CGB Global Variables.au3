@@ -71,6 +71,8 @@ Global $iChkAttackNow, $iAttackNowDelay, $bBtnAttackNowPressed = False
 Global $PushToken = ""
 Global $iLastAttack
 Global $iAlertPBVillage
+Global $iAlertPBJPGLastAttack
+Global $FileName = ""
 
 Global $cmbTroopComp ;For Event change on ComboBox Troop Compositions
 Global $iCollectCounter = 0 ; Collect counter, when reaches $COLLECTATCOUNT, it will collect
