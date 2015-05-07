@@ -105,50 +105,56 @@ Func VillageSearch() ;Control for searching a village that meets conditions
 				If checkDeadBase() Then
 					SetLog(_PadStringCenter(" Dead Base Found! ", 50, "~"), $COLOR_GREEN)
 					ExitLoop
-				EndIf
-				Local $msg =  "Not a Dead Base"
-				If $OptBullyMode = 1 And ($SearchCount >= $ATBullyMode) Then
+				ElseIf $OptBullyMode = 1 And ($SearchCount >= $ATBullyMode) Then
 					If $SearchTHLResult = 1 Then
 						SetLog(_PadStringCenter(" Not a Dead Base, but TH Bully Level Found! ", 50, "~"), $COLOR_GREEN)
 						ExitLoop
 					Else
 						;If _Sleep(1000) Then Return
 						If $bBtnAttackNowPressed = True then ExitLoop
-						$msg &= ", Not TH Bully Level"
+						SetLog(_PadStringCenter(" Not a Dead Base, Not TH Bully Level, Skipping ", 50, "~"), $COLOR_ORANGE)
+						Click(750, 500) ;Click Next
+						$iSkipped = $iSkipped + 1
+						GUICtrlSetData($lblresultvillagesskipped, GUICtrlRead($lblresultvillagesskipped) + 1)
+						ContinueLoop
 					EndIf
-
-				EndIf
-				If $OptTrophyMode = 1 Then ;Enables Triple Mode Settings
+				ElseIf $OptTrophyMode = 1 Then ;Enables Triple Mode Settings
 					If SearchTownHallLoc() Then
 						SetLog(_PadStringCenter(" Not a Dead Base, but TH Outside Found! ", 50, "~"), $COLOR_GREEN)
 						ExitLoop
 					Else
 						;If _Sleep(1000) Then Return
 						If $bBtnAttackNowPressed = True then ExitLoop
-						$msg &= ", Not TH Outside!"
+						SetLog(_PadStringCenter(" Not a Dead base, Not TH Outside!, Skipping ", 50, "~"), $COLOR_ORANGE)
+						Click(750, 500) ;Click Next
+						$iSkipped = $iSkipped + 1
+						GUICtrlSetData($lblresultvillagesskipped, GUICtrlRead($lblresultvillagesskipped) + 1)
+						ContinueLoop
 					EndIf
-				EndIf
-				If $iradAttackMode = 1 Then
+				ElseIf $iradAttackMode = 1 Then
 					_WinAPI_DeleteObject($hBitmapFirst)
 					$hBitmapFirst = _CaptureRegion2()
 					Local $resultHere = DllCall($LibDir & "\CGBfunctions.dll", "str", "CheckConditionForWeakBase", "ptr", $hBitmapFirst ,"int",($iWBMortar+1),"int",($iWBWizTower+1),"int",10)
 					if $resultHere[0] = "Y" then
 						SetLog(_PadStringCenter(" Weak Base Found! ", 50, "~"), $COLOR_GREEN)
-						ExitLoop
+						ExitLoop	
 					else
 						If $bBtnAttackNowPressed = True then ExitLoop
-						$msg &= ", Not a Weak Base"
+						SetLog(_PadStringCenter(" Not a Weak Base, Skipping ", 50, "~"), $COLOR_ORANGE)
+						Click(750, 500) ;Click Next
+						$iSkipped = $iSkipped + 1
+						GUICtrlSetData($lblresultvillagesskipped, GUICtrlRead($lblresultvillagesskipped) + 1)
+						ContinueLoop
 					endif
+				Else
+					;If _Sleep(1000) Then Return
+					If $bBtnAttackNowPressed = True then ExitLoop
+					SetLog(_PadStringCenter(" Not a Dead Base, Skipping ", 50, "~"), $COLOR_ORANGE)
+					Click(750, 500) ;Click Next
+					$iSkipped = $iSkipped + 1
+					GUICtrlSetData($lblresultvillagesskipped, GUICtrlRead($lblresultvillagesskipped) + 1)
+					ContinueLoop
 				EndIf
-
-				;If _Sleep(1000) Then Return
-				If $bBtnAttackNowPressed = True then ExitLoop
-				SetLog(_PadStringCenter($msg, 50, "~"), $COLOR_ORANGE)
-				Click(750, 500) ;Click Next
-				$iSkipped = $iSkipped + 1
-				GUICtrlSetData($lblresultvillagesskipped, GUICtrlRead($lblresultvillagesskipped) + 1)
-				ContinueLoop
-
 			Else
 				ExitLoop ; attack Allbase
 			EndIf

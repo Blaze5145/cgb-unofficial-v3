@@ -39,7 +39,6 @@
 #include "functions\Main Screen\checkObstacles.au3"
 #include "functions\Main Screen\waitMainScreen.au3"
 #include "functions\Main Screen\ZoomOut.au3"
-#include "functions\Main Screen\isProblemAffect.au3"
 
 #include "functions\Other\_NumberFormat.au3"
 #include "functions\Other\_PadStringCenter.au3"
