@@ -1543,11 +1543,14 @@ GUICtrlCreateTabItem("")
 $tabPushBullet = GUICtrlCreateTabItem("PushBullet")
 	Local $x = 30, $y = 130
 	$grpPushBullet = GUICtrlCreateGroup("PushBullet Alert ", $x - 20, $y - 20, 450, 375)
-	  $lblPushBTokenN = GUICtrlCreateLabel("Access Token:", $x, $y+3, 80, 17, $SS_CENTER)
-      $PushBTokenN = GUICtrlCreateInput("", $x + 90, $y, 260, 19)
-	  $chkAlertPBVillage = GUICtrlCreateCheckbox("Alert My Village", $x + 20, $y + 25, -1, -1)
-	  $chkAlertPBLastAttack = GUICtrlCreateCheckbox("Alert Last Attack", $x + 115, $y+25, -1, -1)
+		$lblPushBTokenN = GUICtrlCreateLabel("Access Token:", $x, $y+3, 80, 17, $SS_CENTER)
+		$PushBTokenN = GUICtrlCreateInput("", $x + 90, $y, 260, 19)
+		$chkAlertPBVillage = GUICtrlCreateCheckbox("Alert My Village", $x + 20, $y + 25, -1, -1)
+		$chkAlertPBLastAttack = GUICtrlCreateCheckbox("Alert Last Attack", $x + 115, $y+25, -1, -1)
+		$chkPushRemote = GUICtrlCreateCheckbox("Remote control", $x + 20, $y+45, -1, -1)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
+	$lblpushbullet = GUICtrlCreateGroup("PushBullet Remote Rontrol", 20, 210, 370, 140)
+		$pushbullettoken1 = GUICtrlCreateLabel("You can remotely control your bot by entering the bot command in the title of the message. The command format as follows:" & @CRLF & "Bot <command>" & @CRLF & "    the valid <command> options are:" & @CRLF & "            Pause - pause the bot" & @CRLF & "            Resume - resume the bot" & @CRLF & "            Stats - sends current statistics" & @CRLF & "            Logs - sends the current log file" & @CRLF & "            Help - sends this help message", 25, 230, 340, 350, $SS_LEFT)
 GUICtrlCreateTabItem("")
 
 ;~ -------------------------------------------------------------

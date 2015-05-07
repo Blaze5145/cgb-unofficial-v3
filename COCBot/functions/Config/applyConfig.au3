@@ -270,6 +270,11 @@ Func applyConfig() ;Applies the data from config to the controls in GUI
 	   GUICtrlSetState($chkAlertPBLastAttack, $GUI_UNCHECKED)
     EndIf
 
+	If $iPushBulletRemote  = 1 Then
+		GUICtrlSetState($chkPushRemote, $GUI_CHECKED)
+	Elseif $iPushBulletRemote = 0 Then
+		GUICtrlSetState($chkPushRemote, $GUI_UNCHECKED)
+	EndIf
 
 	;attk their king
 	;attk their queen

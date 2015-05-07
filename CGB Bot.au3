@@ -68,6 +68,7 @@ Func runBot() ;Bot that runs everything in order
 		$Restart = False
 		$fullArmy = False
 		$CommandStop = -1
+		PushBulletRemote()
 		If _Sleep(1000) Then Return
 		checkMainScreen()
 		If _Sleep(1000) Then Return
@@ -150,6 +151,7 @@ Func Idle() ;Sequence that runs until Full Army
 	Local $TimeIdle = 0 ;In Seconds
 
 	While $fullArmy = False
+		PushBulletRemote(True)
 		If $CommandStop = -1 Then SetLog("====== Waiting for full army ======", $COLOR_GREEN)
 		Local $hTimer = TimerInit()
 		Local $iReHere = 0
