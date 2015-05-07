@@ -53,6 +53,16 @@ EndFunc   ;==>_Push
 ; _PushBullet()
 ;_Push("CGB Notifications", "Message")
 
+Func _DeletePush()
+	SetLog("Del all push messages...", $COLOR_ORANGE)
+	$oHTTP = ObjCreate("WinHTTP.WinHTTPRequest.5.1")
+	$access_token = $PushToken
+	$oHTTP.Open("Delete", "https://api.pushbullet.com/v2/pushes", False)
+	$oHTTP.SetCredentials($access_token, "", 0)
+	$oHTTP.SetRequestHeader("Content-Type", "application/json")
+	$oHTTP.Send()
+EndFunc   ;==>_DeletePush
+
 Func _DeleteMessage($iden)
 	$oHTTP = ObjCreate("WinHTTP.WinHTTPRequest.5.1")
 	$access_token = $PushToken
