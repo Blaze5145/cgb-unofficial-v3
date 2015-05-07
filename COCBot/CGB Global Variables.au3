@@ -69,6 +69,8 @@ Global $TakeLootSnapShot = True
 Global $AlertSearch = True
 Global $iChkAttackNow, $iAttackNowDelay, $bBtnAttackNowPressed = False
 Global $PushToken = ""
+Global $iPushBulletRemote
+Global $iPushBulletDelete
 Global $iLastAttack
 Global $iAlertPBVillage
 

@@ -132,6 +132,8 @@ Func readConfig() ;Reads config and sets it to the variables
 
 		$iAlertPBVillage = IniRead($config, "advanced", "AlertPBVillage", "0")
         $iLastAttack = IniRead($config, "advanced", "AlertPBLastAttack", "0")
+		$iPushBulletDelete = IniRead($config, "advanced", "PushDelAll", "0")
+		$iPushBulletRemote = IniRead($config, "advanced", "PushRemote", "0")
 
 		;atk their king
 		;atk their queen

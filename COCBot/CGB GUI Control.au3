@@ -114,6 +114,10 @@ Func Initiate()
 		SetLog($Compiled & " running on " & @OSArch & " OS", $COLOR_GREEN)
 		SetLog("Bot is starting...", $COLOR_ORANGE)
 
+		If $iPushBulletDelete  = 1 Then
+			SetLog("Delete all PushBullet...", $COLOR_BLUE)
+			_DeletePush()
+		EndIf
 		$AttackNow = False
 		$FirstStart = True
 		$Checkrearm = True
