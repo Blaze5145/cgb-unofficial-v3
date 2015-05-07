@@ -1,6 +1,7 @@
 ; Uses the getGold,getElixir... functions and uses CompareResources until it meets conditions.
 ; Will wait ten seconds until getGold returns a value other than "", if longer than 10 seconds exits
 
+;HungLe from gamebot.org
 Func GetResources() ;Reads resources
 	Local $i = 0
 	;_CaptureRegion()
@@ -14,8 +15,8 @@ Func GetResources() ;Reads resources
 			$searchGold = getGold(51, 66)
 		endif
 		$i += 1
-		If $i >= 40 Then ; wait max 20 sec then Restart Bot
-			SetLog("Cannot locate Next button, Restarting Bot", $COLOR_RED)
+		If $i >= 40 or isProblemAffect(true) Then ; wait max 20 sec then Restart Bot
+			SetLog("Cannot locate Next button, Restarting Bot..." , $COLOR_RED)
 			$Is_ClientSyncError = True
 			$iStuck = 0
 			checkMainScreen()
