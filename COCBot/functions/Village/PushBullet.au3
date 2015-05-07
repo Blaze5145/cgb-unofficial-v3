@@ -35,7 +35,7 @@ Func _PushBullet($pTitle = "", $pMessage = "")
     $oHTTP.SetRequestHeader("Content-Type", "application/json")
     Local $pPush = '{"type": "note", "title": "' & $pTitle & '", "body": "' & $pMessage & '"}'
     $oHTTP.Send($pPush)
-EndFunc   ;==>_PushBullet
+EndFunc   ;==>PushBullet
 
 Func _Push($pTitle, $pMessage)
     $oHTTP = ObjCreate("WinHTTP.WinHTTPRequest.5.1")
@@ -48,7 +48,30 @@ Func _Push($pTitle, $pMessage)
     Local $pPush = '{"type": "note", "title": "' & $pTitle & '", "body": "' & $pMessage & '"}'
     ;Local $pPush = '{"type": "note", "title": "' & $pTitle & '", "body": "' & $pMessage & '","device_iden": "' & $device_iden[$pDevice - 1] & '"}'
     $oHTTP.Send($pPush)
-EndFunc   ;==>_Push
+EndFunc   ;==>Push
 
-; _PushBullet()
-;_Push("CGB Notifications", "Message")
+Func ReportPushBullet()
+
+	If $iAlertPBVillage = 1 Then
+		_PushBullet("My Village:", " [G]: " &  _NumberFormat($GoldCount) & " [E]: " &  _NumberFormat($ElixirCount) & " [D]: " &  _NumberFormat($DarkCount) & "  [T]: " &  _NumberFormat($TrophyCount) & " [FB]: " &  _NumberFormat($FreeBuilder))
+	EndIf
+
+	If $iLastAttack = 1 Then
+		If $GoldLast = "" And $ElixirLast = "" Then
+			_PushBullet("First time run", "remember: Last gain is : Attack Loot & Bonus - Cost of troops & Cost of searchs ")
+		Else
+			_PushBullet("Last Gain :", " [G]: " &  _NumberFormat($GoldLast) & " [E]: " &  _NumberFormat($ElixirLast) & " [D]: " &  _NumberFormat($DarkLast) & "  [T]: " & _NumberFormat($TrophyLast))
+		EndIf
+	EndIf
+
+EndFunc   ;==>ReportPushBullet
+
+
+Func _DeletePush()
+	$oHTTP = ObjCreate("WinHTTP.WinHTTPRequest.5.1")
+	$access_token = $PushToken
+	$oHTTP.Open("Delete", "https://api.pushbullet.com/v2/pushes", False)
+	$oHTTP.SetCredentials($access_token, "", 0)
+	$oHTTP.SetRequestHeader("Content-Type", "application/json")
+	$oHTTP.Send()
+EndFunc   ;==>DeletePush

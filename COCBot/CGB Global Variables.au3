@@ -39,7 +39,7 @@
 #include <INet.au3>
 #include <GuiTab.au3>
 #include <String.au3>
-
+#include <IE.au3>
 
 GLOBAL CONST $COLOR_ORANGE = 0xFFA500
 
@@ -299,7 +299,6 @@ Global $BarrackDarkStatus[2] = [false,false]
 Global $listResourceLocation = ""
 Global $isNormalBuild = ""
 Global $isDarkBuild = ""
-Global $TrainPos = ""
 
 for $i=0 to Ubound($TroopGroup,1) - 1
 	$TroopName[$i]         = $TroopGroup[$i][0]
@@ -337,3 +336,4 @@ Global $debugRedArea = 0
 Global $DESTOLoc = ""
 
 Global $dropAllOnSide=1
+Global $checkHeroesByHealth = False
