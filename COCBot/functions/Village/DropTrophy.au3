@@ -57,7 +57,6 @@ Func DropTrophy()
 						EndIf
 					Next
 
-
 					If $King <> -1 Then
 						SetLog("Deploying King", $COLOR_BLUE)
 						Click(68 + (72 * $King), 595) ;Select King
