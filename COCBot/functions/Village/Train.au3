@@ -58,17 +58,14 @@ Func Train()
 
 	If _Sleep(500) Then Return
 
-	if $TrainPos = "" then
+	Local $TrainPos = _PixelSearch(155, 603, 694, 605, Hex(0x9C7C37, 6), 5) ;Finds Train Troops button
+	$icount = 0
+	while not IsArray($TrainPos)
+		If _Sleep(500) Then Return
+		$icount = $icount + 1
 		$TrainPos = _PixelSearch(155, 603, 694, 605, Hex(0x9C7C37, 6), 5) ;Finds Train Troops button
-
-		$icount = 0
-		while not IsArray($TrainPos)
-			If _Sleep(100) Then Return
-			$icount = $icount + 1
-			$TrainPos = _PixelSearch(155, 603, 694, 605, Hex(0x9C7C37, 6), 5) ;Finds Train Troops button
-			if $icount = 20 then ExitLoop
-		wend
-	endif
+		if $icount = 4 then ExitLoop
+	wend
 	
 	If IsArray($TrainPos) = False Then
 		SetLog("Your Barrack is not available. (Upgrading? Locate another Barrack on the 'Misc' tab)", $COLOR_RED)
@@ -258,25 +255,15 @@ Func Train()
 			$brrNum += 1
 			Switch $barrackTroop[$brrNum-1]
 				Case 0
-					Click(220, 320, 18, 10) ;Barbarian
+						Click(220, 320, 25, 10)
 				Case 1
-					Click(331, 320, 14, 10) ;Archer
+						Click(331, 320, 25, 10)
 				Case 2
-					Click(432, 320, 3, 10) ;Giant
+						Click(432, 320, 25, 10)
 				Case 3
-					Click(546, 320, 12, 10) ;Goblin
+						Click(546, 320, 25, 10)
 				Case 4
-					Click(647, 320, 3, 10) ;Wall Breaker
-				Case 5
-					Click(220, 425, 3, 10) ;Balloon
-				Case 6
-					Click(331, 425, 3, 10) ;Wizard
-				Case 7
-					Click(432, 425, 3, 10) ;Healer
-				Case 8
-					Click(546, 425, 3, 10) ;Dragon
-				Case 9
-					Click(647, 425, 3, 10) ;PEKKA
+						Click(647, 320, 25, 10)
 			EndSwitch
 
 		    If _Sleep(500) Then ExitLoop
@@ -383,7 +370,7 @@ Func Train()
 		   If _Sleep(500) Then ExitLoop
 			$icount = 0
 			while not isBarrack()
-				If _Sleep(100) Then ExitLoop
+				If _Sleep(200) Then ExitLoop
 				$icount = $icount + 1
 				if $icount = 5 then ExitLoop
 			wend
@@ -512,7 +499,7 @@ Func Train()
 			   If _Sleep(500) Then ExitLoop
 				$icount = 0
 				while not isDarkBarrack()
-					If _Sleep(100) Then ExitLoop
+					If _Sleep(200) Then ExitLoop
 					$icount = $icount + 1
 					if $icount = 5 then ExitLoop
 				wend

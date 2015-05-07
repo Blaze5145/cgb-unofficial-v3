@@ -34,28 +34,28 @@ $grpButtons = GUICtrlCreateGroup("", 10, 490, 190, 85)
 Local $x = 15, $y = 500
 	$btnStart = GUICtrlCreateButton("Start Bot", $x, $y + 2, 90, 40)
 		GUICtrlSetOnEvent(-1, "btnStart")
-		IF $btnColor then GUICtrlSetBkColor(-1, 0x33CC33)
+		IF $btnColor then GUICtrlSetBkColor(-1, 0x5CAD85)
 	$btnStop = GUICtrlCreateButton("Stop Bot", -1, -1, 90, 40)
 		GUICtrlSetOnEvent(-1, "btnStop")
-		IF $btnColor then GUICtrlSetBkColor(-1, 0xFA0334)
+		IF $btnColor then GUICtrlSetBkColor(-1, 0xDB4D4D)
 		GUICtrlSetState(-1, $GUI_HIDE)
- 	$btnPause = GUICtrlCreateButton("Pause Bot", $x + 90, -1, 90, 40)
+ 	$btnPause = GUICtrlCreateButton("Pause", $x + 90, -1, 50, 40)
 		$txtTip = "Use this to PAUSE all actions of the bot until you Resume."
 		GUICtrlSetTip(-1, $txtTip)
 		GUICtrlSetOnEvent(-1, "btnPause")
-		IF $btnColor then GUICtrlSetBkColor(-1,  0xFFA500)
- 		GUICtrlSetState(-1, $GUI_HIDE)
-	$btnResume = GUICtrlCreateButton("Resume Bot", -1, -1, 90, 40)
+ 		;GUICtrlSetState(-1, $GUI_HIDE)
+	$btnResume = GUICtrlCreateButton("Resume", -1, -1, 50, 40)
  		$txtTip = "Use this to RESUME a paused Bot."
 		GUICtrlSetTip(-1, $txtTip)
 		GUICtrlSetOnEvent(-1, "btnResume")
- 		IF $btnColor then GUICtrlSetBkColor(-1,  0xFFA500)
  		GUICtrlSetState(-1, $GUI_HIDE)
-	$btnHide = GUICtrlCreateButton("Hide BS", $x + 10, $y + 45, 70, -1)
+	$btnDonate = GUICtrlCreateButton("Donate", $x + 140, -1, 40, 40, $BS_ICON)
+    GUICtrlSetImage (-1, @ScriptDir & "\Icons\donate.ico",1)
+		GUICtrlSetOnEvent(-1, "btnDonate")
+  $btnHide = GUICtrlCreateButton("Hide BS", $x + 10, $y + 45, 70, -1)
 		$txtTip = "Use this to move the BlueStacks Window out of sight." & @CRLF & "(Not minimized, but hidden)"
 		GUICtrlSetTip(-1, $txtTip)
 		GUICtrlSetOnEvent(-1, "btnHide")
-		IF $btnColor Then GUICtrlSetBkColor(-1, 0x22C4F5)
 		GUICtrlSetState(-1, $GUI_DISABLE)
 	$chkBackground = GUICtrlCreateCheckbox("Background" & @CRLF & "Mode", $x + 100, $y + 48, 70, 20, BITOR($BS_MULTILINE, $BS_CENTER))
 		$txtTip = "Check this to ENABLE the Background Mode of the Bot." & @CRLF & "With this you can also hide the BlueStacks window out of sight."
@@ -202,7 +202,7 @@ $tabSearch = GUICtrlCreateTabItem("Search")
 		GUICtrlSetData(-1, "0|1|2|3", "0")
 		GUICtrlSetState(-1, $GUI_DISABLE)
 
-	Local $x = 30, $y = 230
+#cs	Local $x = 30, $y = 230
 		$chkBackToAllMode = GUICtrlCreateCheckbox("All Base after:", $x, $y, -1, -1)
 			$txtTip = "Release Dead Base or Weak Base search and switch to All Base after No. of searches."
 			GUICtrlSetTip(-1, $txtTip)
@@ -214,7 +214,7 @@ $tabSearch = GUICtrlCreateTabItem("Search")
 			GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetState(-1, $GUI_DISABLE)
 		$lblBackToAllMode = GUICtrlCreateLabel("search(es).", $x + 137, $y + 5, -1, -1)
-			GUICtrlSetState(-1, $GUI_DISABLE)
+#ce			GUICtrlSetState(-1, $GUI_DISABLE)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
 Local $x = 30, $y = 285
@@ -349,7 +349,7 @@ GUICtrlCreateTabItem("")
 ; Attack Basics Tab
 ;~ -------------------------------------------------------------
 
-$tabAttack = GUICtrlCreateTabItem("Attack Basics")
+$tabAttack = GUICtrlCreateTabItem("Basics")
 	Local $x = 30, $y = 130
 	$grpDeploy = GUICtrlCreateGroup("Deploy", $x - 20, $y - 20, 450, 75)
 		$y -= 5
@@ -460,7 +460,7 @@ GUICtrlCreateTabItem("")
 ;~ -------------------------------------------------------------
 ;~ Attack Advanced Tab
 ;~ -------------------------------------------------------------
- $tabAttackAdv = GUICtrlCreateTabItem("Attack Adv.")
+ $tabAttackAdv = GUICtrlCreateTabItem("Advanced")
 	Local $x = 30, $y = 130
 	$grpAtkOptions = GUICtrlCreateGroup("Attack Options", $x - 20, $y - 20, 450, 150)
 		$chkAttackNow = GUICtrlCreateCheckbox("Attack Now! option.", $x, $y, -1, -1)
@@ -488,12 +488,6 @@ GUICtrlCreateTabItem("")
 		$chkLightSpell = GUICtrlCreateCheckbox("Hit Dark Elixir storage with Lightning Spell", $x, $y, -1, -1)
 			GUICtrlSetTip(-1, "Check this if you want to use lightning spells to steal Dark Elixir when bot meet Minimum Dark Elixir.")
 			GUICtrlSetOnEvent(-1, "GUILightSpell")
-	    	$txtMinDarkStorage = GUICtrlCreateInput("500", $x + 280, $y, 30, 21, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
-			GUICtrlSetLimit(-1, 4)
-			GUICtrlSetState(-1, $GUI_DISABLE)
-		$lblSpellDarkStorage = GUICtrlCreateLabel("Dark Elixir", $x + 315, $y + 4, -1, -1)
-			GUICtrlSetTip(-1, "Check this if you want to use Lightning Spells to steal Dark Elixir when bot meet Minimum Dark Elixir.")
-			GUICtrlSetState(-1, $GUI_DISABLE)
 		$y +=22
         $lbliLSpellQ = GUICtrlCreateLabel("Have:", $x + 20, $y + 4, -1, -1)
 			$txtTip = "Set the minimum amount of spells needed. Never attack with less."
@@ -548,7 +542,7 @@ GUICtrlCreateTabItem("")
 		$y+=22
 		$lblAttackTHType = GUICtrlCreateLabel("Attack Type:", $x + 20 , $y + 5, -1, 17, $SS_RIGHT)
 		$cmbAttackTHType = GUICtrlCreateCombo("",  $x + 100, $y, 120, 21, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
-			GUICtrlSetData(-1, "Barch|Attack1:Normal|Attack2:eXtreme|Attack3:Gbarch", "Attack1:Normal")
+			GUICtrlSetData(-1, "Barch|Attack1:Normal|Attack2:eXtreme", "Attack1:Normal")
 			GUICtrlSetState(-1, $GUI_DISABLE)
     GUICtrlCreateGroup("", -99, -99, 1, 1)
 
@@ -1189,25 +1183,25 @@ $tabTroops = GUICtrlCreateTabItem("Troops")
 		$lblBarrack1 = GUICtrlCreateLabel("1:", $x - 5, $y + 5, -1, -1)
 		$cmbBarrack1 = GUICtrlCreateCombo("", $x + 10, $y, 75, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 			GUICtrlSetTip(-1, "Set the Troops to make in Barrack 1.")
-			GUICtrlSetData(-1, "Barbarians|Archers|Giants|Goblins|WallBreakers|Balloons|Wizards|Healers|Dragons|Pekkas", "Barbarians") ; "Barbarians|Archers|Giants|Goblins|WallBreakers|Balloons|Wizards|Healers|Dragons|Pekkas"
+			GUICtrlSetData(-1, "Barbarians|Archers|Giants|Goblins", "Barbarians") ; "Barbarians|Archers|Giants|Goblins"
 			GUICtrlSetState(-1, $GUI_DISABLE)
 		$y += 2
 		$lblBarrack2 = GUICtrlCreateLabel("2:", $x - 5, $y + 26, -1, -1)
 		$cmbBarrack2 = GUICtrlCreateCombo("", $x + 10, $y + 21, 75, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 			GUICtrlSetTip(-1, "Set the Troops to make in Barrack 2.")
-			GUICtrlSetData(-1, "Barbarians|Archers|Giants|Goblins|WallBreakers|Balloons|Wizards|Healers|Dragons|Pekkas", "Archers") ; "Barbarians|Archers|Giants|Goblins|WallBreakers|Balloons|Wizards|Healers|Dragons|Pekkas"
+			GUICtrlSetData(-1, "Barbarians|Archers|Giants|Goblins", "Archers") ; "Barbarians|Archers|Giants|Goblins"
 			GUICtrlSetState(-1, $GUI_DISABLE)
 		$y -= 2
 		$lblBarrack3 = GUICtrlCreateLabel("3:", $x + 100, $y + 5, -1, -1)
 		$cmbBarrack3 = GUICtrlCreateCombo("", $x + 115, $y, 75, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 			GUICtrlSetTip(-1, "Set the Troops to make in Barrack 3.")
-			GUICtrlSetData(-1, "Barbarians|Archers|Giants|Goblins|WallBreakers|Balloons|Wizards|Healers|Dragons|Pekkas", "Archers") ; "Barbarians|Archers|Giants|Goblins|WallBreakers|Balloons|Wizards|Healers|Dragons|Pekkas"
+			GUICtrlSetData(-1, "Barbarians|Archers|Giants|Goblins", "Archers") ; "Barbarians|Archers|Giants|Goblins"
 			GUICtrlSetState(-1, $GUI_DISABLE)
 		$y += 2
 		$lblBarrack4 = GUICtrlCreateLabel("4:", $x + 100, $y + 26, -1, -1)
 		$cmbBarrack4 = GUICtrlCreateCombo("", $x + 115, $y + 21, 75, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 			GUICtrlSetTip(-1, "Set the Troops to make in Barrack 4.")
-			GUICtrlSetData(-1, "Barbarians|Archers|Giants|Goblins|WallBreakers|Balloons|Wizards|Healers|Dragons|Pekkas", "Goblins") ; "Barbarians|Archers|Giants|Goblins|WallBreakers|Balloons|Wizards|Healers|Dragons|Pekkas"
+			GUICtrlSetData(-1, "Barbarians|Archers|Giants|Goblins", "Goblins") ; "Barbarians|Archers|Giants|Goblins"
 			GUICtrlSetState(-1, $GUI_DISABLE)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
@@ -1560,7 +1554,7 @@ Global $iPrevState[$LastControlToHide + 1]
 ;~ -------------------------------------------------------------
 ;~ Stats Tab
 ;~ -------------------------------------------------------------
-$tabStatsCredits = GUICtrlCreateTabItem("Stats / Credits")
+$tabStatsCredits = GUICtrlCreateTabItem("Stats")
 Local $x = 30, $y = 130
 	$grpResourceOnStart = GUICtrlCreateGroup("Stats: Started with", $x - 20, $y - 20, 110, 105)
 		$lblResultStatsTemp = GUICtrlCreateLabel("Report" & @CRLF & "will appear" & @CRLF & "here on" & @CRLF & "first run.", $x - 5, $y + 5, 100, 65, BITOR($SS_LEFT, $BS_MULTILINE))

@@ -39,7 +39,7 @@
 #include <INet.au3>
 #include <GuiTab.au3>
 #include <String.au3>
-
+#include <IE.au3>
 
 GLOBAL CONST $COLOR_ORANGE = 0xFFA500
 
@@ -96,8 +96,6 @@ Global $searchGold, $searchElixir, $searchDark, $searchTrophy, $searchTH ;Resour
 Global $SearchGold2=0, $SearchElixir2=0, $iStuck=0, $iNext=0
 Global $MinGold, $MinElixir, $MinDark, $MinTrophy, $MaxTH ; Minimum Resources conditions
 Global $AimGold, $AimElixir, $AimDark, $AimTrophy, $AimTHtext ; Aiming Resource values
-Global $iChkBackToAllMode ;Back to All Base
-Global $iTxtBackAllBase = 150 ;Number of searches before back to All Base
 Global $iChkSearchReduction
 Global $ReduceCount, $ReduceGold, $ReduceElixir, $ReduceDark, $ReduceTrophy ; Reducing values
 Global $chkConditions[6], $ichkMeetOne ;Conditions (meet gold...)
@@ -122,8 +120,7 @@ Global $OptTrophyMode
 Global $ATBullyMode
 Global $YourTH
 Global $AttackTHType
-Global $chkLightSpell
-Global $SpellMinDarkStorage = 500
+Global $chklightspell
 Global $iLSpellQ
 
 Global $TrainSpecial=1 ;0=Only trains after atk. Setting is automatic
@@ -224,7 +221,7 @@ Global $ArmyComp
 
 ;Global $barrackPos[4][2] ;Positions of each barracks
 Global $barrackPos[2] ;Positions of each barracks
-Global $barrackTroop[10] ;Barrack troop set
+Global $barrackTroop[5] ;Barrack troop set
 Global $ArmyPos[2]
 Global $barrackNum = 0
 Global $barrackDarkNum = 0
@@ -289,7 +286,7 @@ Global $TPaused, $BlockInputPause=0
 Global $iWBMortar
 Global $iWBWizTower
 Global $iWBXbow
-Global $TroopGroup[10][3] = [["Pekk",9,25],["Drag",8,20],["Heal",7,14],["Wiza",6,4],["Ball",5,5],["Wall",4,2],["Giant",2,5],["Gobl",3,1],["Arch",1,1],["Barb",0,1]]
+Global $TroopGroup[10][3] = [["Arch",1,1],["Giant",2,5],["Wall",4,2],["Barb",0,1],["Gobl",3,1],["Heal",7,14],["Pekk",9,25],["Ball",5,5],["Wiza",6,4],["Drag",8,20]]
 Global $TroopName[Ubound($TroopGroup,1)]
 Global $TroopNamePosition[Ubound($TroopGroup,1)]
 Global $TroopHeight[Ubound($TroopGroup,1)]
@@ -302,7 +299,6 @@ Global $BarrackDarkStatus[2] = [false,false]
 Global $listResourceLocation = ""
 Global $isNormalBuild = ""
 Global $isDarkBuild = ""
-Global $TrainPos = ""
 
 for $i=0 to Ubound($TroopGroup,1) - 1
 	$TroopName[$i]         = $TroopGroup[$i][0]
@@ -340,3 +336,4 @@ Global $debugRedArea = 0
 Global $DESTOLoc = ""
 
 Global $dropAllOnSide=1
+Global $checkHeroesByHealth = False
