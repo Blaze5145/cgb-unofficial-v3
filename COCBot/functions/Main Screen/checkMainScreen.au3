@@ -7,7 +7,8 @@ Func checkMainScreen($Check = True) ;Checks if in main screen
 		_WinAPI_EmptyWorkingSet(WinGetProcess($Title)) ; Reduce BlueStacks Memory Usage
 	EndIf
 	
-	While _ColorCheck(_GetPixelColor(284, 28,"Y"), Hex(0x41B1CD, 6), 20) = False
+	_CaptureRegion()
+	While _ColorCheck(_GetPixelColor(284, 28), Hex(0x41B1CD, 6), 20) = False
 		$HWnD = WinGetHandle($Title)
 
 		If _Sleep(1000) Then Return
@@ -18,8 +19,7 @@ Func checkMainScreen($Check = True) ;Checks if in main screen
 	    Else
 			$Restart = True
 		EndIf
-		waitMainScreen()		
+		waitMainScreen()
 	WEnd
-	ZoomOut()
 	If $Check = True Then SetLog("Main Screen Located", $COLOR_GREEN)
 EndFunc   ;==>checkMainScreen

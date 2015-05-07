@@ -5,7 +5,7 @@ Func PrepareAttack($Remaining = False) ;Assigns troops
   If $Remaining Then
 	  SetLog("Checking remaining unused troops", $COLOR_BLUE)
    Else
-	  SetLog("Initiating attack", $COLOR_RED)
+	  SetLog("Preparing to attack", $COLOR_RED)
    EndIf
   _CaptureRegion()
   For $i = 0 To 8

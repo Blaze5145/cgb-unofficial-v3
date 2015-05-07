@@ -20,10 +20,10 @@
 #pragma compile(ProductName, Clash Game Bot)
 
 #pragma compile(ProductVersion, 3.0)
-#pragma compile(FileVersion, 3.0.4)
+#pragma compile(FileVersion, 3.0.3)
 #pragma compile(LegalCopyright, © http://gamebot.org)
 
-$sBotVersion = "v3.0.4"
+$sBotVersion = "v3.0.3"
 $sBotTitle = "Clash Game Bot " & $sBotVersion
 Global $sBotDll = @ScriptDir & "\CGBPlugin.dll"
 
@@ -70,61 +70,59 @@ Func runBot() ;Bot that runs everything in order
 		$CommandStop = -1
 		If _Sleep(1000) Then Return
 		checkMainScreen()
+		If _Sleep(1000) Then Return
+		ZoomOut()
 		If $Is_ClientSyncError = False Then
 				If _Sleep(1000) Then Return
-
+				checkMainScreen(False)
 				If $Restart = True Then ContinueLoop
 			If BotCommand() Then btnStop()
 				If _Sleep(1000) Then Return
-
+				checkMainScreen(False)
 				If $Restart = True Then ContinueLoop
 ;			BotDetectFirstTime()
 ;				If _Sleep(1000) Then Return
-;
+;				checkMainScreen(False)
 ;				If $Restart = True Then ContinueLoop
 			Collect()
 				If _Sleep(1000) Then Return
-
+				checkMainScreen(False)
 				If $Restart = True Then ContinueLoop
 			ReArm()
 				If _Sleep(1000) Then Return
-
+				checkMainScreen(False)
 				If $Restart = True Then ContinueLoop
 			VillageReport()
-		     	If _Sleep(1000) Then Return
-
-				If $Restart = True Then ContinueLoop
-			ReportPushBullet()
 				If _Sleep(1000) Then Return
-
+				checkMainScreen(False)
 				If $Restart = True Then ContinueLoop
 			DonateCC()
 				If _Sleep(1000) Then Return
-
+				checkMainScreen(False)
 				If $Restart = True Then ContinueLoop
 			Train()
 				If _Sleep(1000) Then Return
-
+				checkMainScreen(False)
 				If $Restart = True Then ContinueLoop
 			BoostBarracks()
 				If _Sleep(1000) Then Return
-
+				checkMainScreen(False)
 				If $Restart = True Then ContinueLoop
 			BoostSpellFactory()
 			    If _Sleep(1000) Then Return
-
+				checkMainScreen(False)
 				If $Restart = True Then ContinueLoop
 			RequestCC()
 				If _Sleep(1000) Then Return
-
+				checkMainScreen(False)
 				If $Restart = True Then ContinueLoop
 			UpgradeWall()
 				If _Sleep(1000) Then Return
-
+				checkMainScreen(False)
 				If $Restart = True Then ContinueLoop
 			UpgradeBuilding()
 				If _Sleep(1000) Then Return
-
+				checkMainScreen(False)
 				If $Restart = True Then ContinueLoop
 			Idle()
 				If _Sleep(1000) Then Return
@@ -132,17 +130,17 @@ Func runBot() ;Bot that runs everything in order
 			If $CommandStop <> 0 And $CommandStop <> 3 Then
 				AttackMain()
 					If _Sleep(1000) Then Return
-
+					checkMainScreen(False)
 					If $Restart = True Then ContinueLoop
 			EndIf
-				;
+				;checkMainScreen(False)
 				;If $Restart = True Then ContinueLoop
 
 		Else ;When error occours directly goes to attack
 			SetLog("Restarted after Out of Sync Error: Attack Now", $COLOR_RED)
 			AttackMain()
 				If _Sleep(1000) Then Return
-
+				checkMainScreen(False)
 				If $Restart = True Then ContinueLoop
 		EndIf
 	WEnd
@@ -162,19 +160,22 @@ Func Idle() ;Sequence that runs until Full Army
 		    If $Restart = True Then ExitLoop
 		WEnd
 		If _Sleep(1500) Then ExitLoop
-
+		checkMainScreen(False)
+		If _Sleep(1000) Then ExitLoop
+		ZoomOut()
+		checkMainScreen(False)
 		If _Sleep(1000) Then ExitLoop
 		If $iCollectCounter > $COLLECTATCOUNT Then ; This is prevent from collecting all the time which isn't needed anyway
 			Collect()
 			If _Sleep(1000) Or $RunState = False Then ExitLoop
-
+			checkMainScreen(False)
 			$iCollectCounter = 0
 		EndIf
 		$iCollectCounter = $iCollectCounter + 1
 		If $CommandStop <> 3 Then
 			Train()
 			If _Sleep(1000) Then ExitLoop
-
+			checkMainScreen(False)
 		EndIf
 		If $CommandStop = 0 And $fullArmy Then
 			SetLog("Army Camp and Barracks are full, stop Training...", $COLOR_ORANGE)
@@ -185,7 +186,7 @@ Func Idle() ;Sequence that runs until Full Army
 			   DropTrophy()
 			If $fullArmy Then ExitLoop
 			If _Sleep(1000) Then ExitLoop
-
+			checkMainScreen(False)
 		EndIf
 
 		$TimeIdle += Round(TimerDiff($hTimer) / 1000, 2) ;In Seconds
