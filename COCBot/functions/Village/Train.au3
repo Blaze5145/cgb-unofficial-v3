@@ -58,14 +58,17 @@ Func Train()
 
 	If _Sleep(500) Then Return
 
-	Local $TrainPos = _PixelSearch(155, 603, 694, 605, Hex(0x9C7C37, 6), 5) ;Finds Train Troops button
-	$icount = 0
-	while not IsArray($TrainPos)
-		If _Sleep(500) Then Return
-		$icount = $icount + 1
+	if $TrainPos = "" then
 		$TrainPos = _PixelSearch(155, 603, 694, 605, Hex(0x9C7C37, 6), 5) ;Finds Train Troops button
-		if $icount = 4 then ExitLoop
-	wend
+
+		$icount = 0
+		while not IsArray($TrainPos)
+			If _Sleep(100) Then Return
+			$icount = $icount + 1
+			$TrainPos = _PixelSearch(155, 603, 694, 605, Hex(0x9C7C37, 6), 5) ;Finds Train Troops button
+			if $icount = 20 then ExitLoop
+		wend
+	endif
 	
 	If IsArray($TrainPos) = False Then
 		SetLog("Your Barrack is not available. (Upgrading? Locate another Barrack on the 'Misc' tab)", $COLOR_RED)
@@ -370,7 +373,7 @@ Func Train()
 		   If _Sleep(500) Then ExitLoop
 			$icount = 0
 			while not isBarrack()
-				If _Sleep(200) Then ExitLoop
+				If _Sleep(100) Then ExitLoop
 				$icount = $icount + 1
 				if $icount = 5 then ExitLoop
 			wend
@@ -499,7 +502,7 @@ Func Train()
 			   If _Sleep(500) Then ExitLoop
 				$icount = 0
 				while not isDarkBarrack()
-					If _Sleep(200) Then ExitLoop
+					If _Sleep(100) Then ExitLoop
 					$icount = $icount + 1
 					if $icount = 5 then ExitLoop
 				wend

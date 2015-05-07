@@ -63,9 +63,7 @@ Func GUIControl($hWind, $iMsg, $wParam, $lParam)
 					If $RunState Then btnHide()
 				Case $btnAttackNow
 					If $RunState Then btnAttackNow()
-			  Case $btnDonate
-					ShellExecute("https://gamebot.org/forums/misc.php?action=mydonations")
-      EndSwitch
+			EndSwitch
 		Case 274
 			Switch $wParam
 				Case 0xf060
@@ -777,11 +775,11 @@ EndFunc   ;==>chkBullyMode
 
 Func chkSnipeMode()
 	If GUICtrlRead($chkTrophyMode) = $GUI_CHECKED Then
-		$OptTrophyMode = 1
+		$OptBullyMode = 1
 		GUICtrlSetState($txtTHaddtiles, $GUI_ENABLE)
 		GUICtrlSetState($cmbAttackTHType, $GUI_ENABLE)
 	Else
-		$OptTrophyMode = 0
+		$OptBullyMode = 0
 		GUICtrlSetState($txtTHaddtiles, $GUI_DISABLE)
 		GUICtrlSetState($cmbAttackTHType, $GUI_DISABLE)
 	EndIf

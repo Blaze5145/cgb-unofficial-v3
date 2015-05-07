@@ -203,8 +203,7 @@ Func LaunchTroop2($listInfoDeploy, $CC, $King, $Queen)
 				$listListInfoDeployTroopPixel[$waveNb - 1] = $listInfoDeployTroopPixel
 			EndIf
 		Next
-		Local $isCCDropped = False
-		Local $isHeroesDropped = False
+
 		If ($iCmbSmartDeploy = 0) Then
 			For $numWave = 0 To UBound($listListInfoDeployTroopPixel) - 1
 				Local $listInfoDeployTroopPixel = $listListInfoDeployTroopPixel[$numWave]
@@ -216,7 +215,6 @@ Func LaunchTroop2($listInfoDeploy, $CC, $King, $Queen)
 							dropCC($pixelRandomDrop[0], $pixelRandomDrop[1], $CC)
 						ElseIf ($infoPixelDropTroop[0] = "HEROES") Then
 							dropHeroes($pixelRandomDrop[0], $pixelRandomDrop[1], $King, $Queen)
-							$isHeroesDropped = True
 						EndIf
 					Else
 						If _Sleep(100) Then Return
@@ -230,15 +228,17 @@ Func LaunchTroop2($listInfoDeploy, $CC, $King, $Queen)
 
 
 						DropOnPixel($infoPixelDropTroop[0], $infoPixelDropTroop[1], $infoPixelDropTroop[2], $infoPixelDropTroop[3])
-					EndIf
-					If ($isHeroesDropped) Then
-						CheckHeroesHealth()
+						Local $numberLeft = $infoPixelDropTroop[4] -  $infoPixelDropTroop[2] * UBound($infoPixelDropTroop[1])
+						IF($numberLeft > 0) Then
+							DropOnPixel($infoPixelDropTroop[0], $infoPixelDropTroop[1], Ceiling($numberLeft/UBound($infoPixelDropTroop[1])), $infoPixelDropTroop[3])
+						EndIf
 					EndIf
 					If _Sleep(SetSleep(1)) Then Return
 				Next
 			Next
 		Else
-
+			Local $isCCDropped = False
+			Local $isHeroesDropped = False
 			For $numWave = 0 To UBound($listListInfoDeployTroopPixel) - 1
 				Local $listInfoDeployTroopPixel = $listListInfoDeployTroopPixel[$numWave]
 				If (UBound($listInfoDeployTroopPixel) > 0) Then
@@ -278,9 +278,6 @@ Func LaunchTroop2($listInfoDeploy, $CC, $King, $Queen)
 									Local $pixelDropTroop[1] = [$listPixel]
 									DropOnPixel($infoTroopListArrPixel[0], $pixelDropTroop, $infoTroopListArrPixel[2], $infoTroopListArrPixel[3])
 								EndIf
-								If ($isHeroesDropped) Then
-									CheckHeroesHealth()
-								EndIf
 							Next
 						Next
 					EndIf
@@ -288,25 +285,6 @@ Func LaunchTroop2($listInfoDeploy, $CC, $King, $Queen)
 				If _Sleep(SetSleep(1)) Then Return
 			Next
 		EndIf
-		For $numWave = 0 To UBound($listListInfoDeployTroopPixel) - 1
-			Local $listInfoDeployTroopPixel = $listListInfoDeployTroopPixel[$numWave]
-			For $i = 0 To UBound($listInfoDeployTroopPixel) - 1
-				Local $infoPixelDropTroop = $listInfoDeployTroopPixel[$i]
-				If Not(IsString($infoPixelDropTroop[0]) And ($infoPixelDropTroop[0] = "CC" Or $infoPixelDropTroop[0] = "HEROES")) Then
-					Local $numberLeft = ReadTroopQuantity($infoPixelDropTroop[0])
-					SetLog("NumberLeft : "&$numberLeft)
-					If ($numberLeft > 0) Then
-						If _Sleep(100) Then Return
-						SelectDropTroop($infoPixelDropTroop[0]) ;Select Troop
-						If _Sleep(300) Then Return
-						SetLog("Dropping last " & $numberLeft & "  of " & $infoPixelDropTroop[5], $COLOR_GREEN)
-
-						DropOnPixel($infoPixelDropTroop[0], $infoPixelDropTroop[1], Ceiling($numberLeft / UBound($infoPixelDropTroop[1])), $infoPixelDropTroop[3])
-					EndIf
-				EndIf
-			Next
-		Next
-
 	Else
 		For $i = 0 To UBound($listInfoDeploy) - 1
 			If (IsString($listInfoDeploy[$i][0]) And ($listInfoDeploy[$i][0] = "CC" Or $listInfoDeploy[$i][0] = "HEROES")) Then
@@ -323,30 +301,28 @@ Func LaunchTroop2($listInfoDeploy, $CC, $King, $Queen)
 				EndIf
 			EndIf
 		Next
-
 	EndIf
 	Return True
-
 EndFunc   ;==>LaunchTroop2
 
 
 Func algorithm_AllTroops() ;Attack Algorithm for all existing troops
 	If ($chkRedArea) Then
-		SetLog("Calculating Smart Attack Strategy", $COLOR_BLUE)
+		SetLog("==> Search red area <==")
 		Local $hTimer = TimerInit()
 		_WinAPI_DeleteObject($hBitmapFirst)
 		$hBitmapFirst = _CaptureRegion2()
 		_GetRedArea()
 
-		SetLog("Calculated  (in " & Round(TimerDiff($hTimer) / 1000, 2) & " seconds) :")
-		;SetLog("	[" & UBound($PixelTopLeft) & "] pixels TopLeft")
-		;SetLog("	[" & UBound($PixelTopRight) & "] pixels TopRight")
-		;SetLog("	[" & UBound($PixelBottomLeft) & "] pixels BottomLeft")
-		;SetLog("	[" & UBound($PixelBottomRight) & "] pixels BottomRight")
+		SetLog("==> Found  (in " & Round(TimerDiff($hTimer) / 1000, 2) & " seconds) :")
+		SetLog("	[" & UBound($PixelTopLeft) & "] pixels TopLeft")
+		SetLog("	[" & UBound($PixelTopRight) & "] pixels TopRight")
+		SetLog("	[" & UBound($PixelBottomLeft) & "] pixels BottomLeft")
+		SetLog("	[" & UBound($PixelBottomRight) & "] pixels BottomRight")
 
 
 		If ($chkSmartAttack[0] = 1 Or $chkSmartAttack[1] = 1 Or $chkSmartAttack[2] = 1) Then
-			SetLog("Locating Village Pump & Mines", $COLOR_BLUE)
+			SetLog("==> Search smart attack <==")
 			$hTimer = TimerInit()
 			Global $PixelMine[0]
 			Global $PixelElixir[0]
@@ -373,10 +349,10 @@ Func algorithm_AllTroops() ;Attack Algorithm for all existing troops
 					_ArrayAdd($PixelNearCollector, $PixelDarkElixir)
 				EndIf
 			EndIf
-			SetLog("Located  (in " & Round(TimerDiff($hTimer) / 1000, 2) & " seconds) :")
-			SetLog("[" & UBound($PixelMine) & "] Gold Mines")
-			SetLog("[" & UBound($PixelElixir) & "] Elixir Collectors")
-			SetLog("[" & UBound($PixelDarkElixir) & "] Dark Elixir Drill/s")
+			SetLog("==> Found  (in " & Round(TimerDiff($hTimer) / 1000, 2) & " seconds) :")
+			SetLog("	[" & UBound($PixelMine) & "] pixels gold mine")
+			SetLog("	[" & UBound($PixelElixir) & "] pixels elixir collector")
+			SetLog("	[" & UBound($PixelDarkElixir) & "] pixels dark elixir drill")
 		EndIf
 
 	EndIf
@@ -407,7 +383,7 @@ Func algorithm_AllTroops() ;Attack Algorithm for all existing troops
 				AttackTHXtreme();Good for Champ
 		EndSwitch
 
-		If $OptTrophyMode = 1 And SearchTownHallLoc() Then; Return ;Exit attacking if trophy hunting and not bullymode
+		If $OptBullyMode = 0 And $OptTrophyMode = 1 And SearchTownHallLoc() Then; Return ;Exit attacking if trophy hunting and not bullymode
 
 			For $i = 1 To 30
 				_CaptureRegion()
@@ -428,21 +404,70 @@ Func algorithm_AllTroops() ;Attack Algorithm for all existing troops
 	Local $nbSides = 0
 	Switch $deploySettings
 		Case 0 ;Single sides ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-			SetLog("Attacking on a single side", $COLOR_BLUE)
+			SetLog("~Attacking on a single side...")
 			$nbSides = 1
 		Case 1 ;Two sides ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-			SetLog("Attacking on two sides", $COLOR_BLUE)
+			SetLog("~Attacking on two sides...")
 			$nbSides = 2
 		Case 2 ;Three sides ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-			SetLog("Attacking on three sides", $COLOR_BLUE)
+			SetLog("~Attacking on three sides...")
 			$nbSides = 3
 		Case 3 ;Two sides ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-			SetLog("Attacking on all sides", $COLOR_BLUE)
+			SetLog("~Attacking on all sides...")
 			$nbSides = 4
 	EndSwitch
 	If ($nbSides = 0) Then Return
 	If _Sleep(1000) Then Return
 
+	#cs
+		; ================================================================================?
+		; ========= Here is coded the main attack strategy ===============================
+		; ========= Feel free to experiment something else ===============================
+		; ================================================================================?
+		;         algorithmTH()
+		if LauchTroop($eGiant, $nbSides, 1, 1, 2) Then
+		If _Sleep(SetSleep(1)) Then Return
+		EndIf
+		if LauchTroop($eBarb, $nbSides, 1, 2) Then
+		If _Sleep(SetSleep(1)) Then Return
+		EndIf
+		if LauchTroop($eWall, $nbSides, 1, 1, 1) Then
+		If _Sleep(SetSleep(1)) Then Return
+		EndIf
+		if LauchTroop($eArch, $nbSides, 1, 2) Then
+		If _Sleep(SetSleep(1)) Then Return
+		EndIf
+		If LauchTroop($eBarb, $nbSides, 2, 2) Then
+		If _Sleep(SetSleep(1)) Then Return
+		EndIf
+		If LauchTroop($eGobl, $nbSides, 1, 2) Then
+		If _Sleep(SetSleep(1)) Then Return
+		EndIf
+
+		$RandomEdge = $Edges[Round(Random(0, 3))]
+		$RandomXY = Round(Random(0, 4))
+		dropCC($RandomEdge[$RandomXY][0], $RandomEdge[$RandomXY][1], $CC)
+
+		if LauchTroop($eHogs, $nbSides, 1, 1, 1) Then
+		If _Sleep(SetSleep(1)) Then Return
+		EndIf
+
+		if LauchTroop($eWiza, $nbSides, 1, 1) Then
+		If _Sleep(SetSleep(1)) Then Return
+		EndIf
+
+		if LauchTroop($eMini, $nbSides, 1, 1) Then
+		If _Sleep(SetSleep(1)) Then Return
+		EndIf
+
+		If LauchTroop($eArch, $nbSides, 2, 2) Then
+		If _Sleep(SetSleep(1)) Then Return
+		EndIf
+		If LauchTroop($eGobl, $nbSides, 2, 2) Then
+		If _Sleep(SetSleep(1)) Then Return
+		EndIf
+		; ================================================================================
+	#ce
 	Local $listInfoDeploy[13][5] = [[$eGiant, $nbSides, 1, 1, 2] _
 			, [$eBarb, $nbSides, 1, 2, 0] _
 			, [$eWall, $nbSides, 1, 1, 1] _
@@ -468,7 +493,6 @@ Func algorithm_AllTroops() ;Attack Algorithm for all existing troops
 		For $i = $eBarb To $eLava ; lauch all remaining troops
 			;If $i = $eBarb Or $i = $eArch Then
 			LauchTroop($i, $nbSides, 0, 1)
-			CheckHeroesHealth()
 			;Else
 			;	 LauchTroop($i, $nbSides, 0, 1, 2)
 			;EndIf
@@ -492,7 +516,7 @@ Func algorithm_AllTroops() ;Attack Algorithm for all existing troops
 		EndIf
 	EndIf
 
-	SetLog("Finished Attacking, waiting for the battle to end")
+	SetLog("~Finished Attacking, waiting to end battle", $COLOR_GREEN)
 EndFunc   ;==>algorithm_AllTroops
 
 Func GetLocationMine()
@@ -597,6 +621,37 @@ EndFunc   ;==>_GetRedArea
 Func GetPixelSide($listPixel, $index)
 	Return GetListPixel($listPixel[$index])
 EndFunc   ;==>GetPixelSide
+
+
+;~ Func GetListPixel($listPixel)
+;~     Local $listPixelSideStr = StringSplit($listPixel, "|")
+;~     Local $listPixelSide[0]
+;~     If($listPixelSideStr[0] > 1) Then
+;~         Redim $listPixelSide[ UBound($listPixelSideStr)-1]
+;~         For $i=0 to UBound($listPixelSide)-1
+;~             Local $pixelStr=StringSplit($listPixelSideStr[$i+1], "-")
+;~             If($pixelStr[0] > 1) Then
+;~                 Local $pixel[2]=[$pixelStr[1],$pixelStr[2]]
+;~                 $listPixelSide[$i] = $pixel
+;~             EndIf
+;~         Next
+
+;~     Else
+;~         Local $pixelStr=StringSplit($listPixel, "-")
+;~             If($pixelStr[0] > 1) Then
+;~                 Redim $listPixelSide[1]
+;~                 Local $pixel[2]=[$pixelStr[1],$pixelStr[2]]
+;~                 $listPixelSide[0] = $pixel
+;~             EndIf
+;~     EndIf
+;~     If UBound($listPixelSide) > 0 Then
+;~         return $listPixelSide
+;~     Else
+;~         return -1
+;~     EndIf
+;~ EndFunc
+
+
 
 ; Search the closer array of pixel in the array of pixel
 Func _FindPixelCloser($arrPixel, $pixel, $nb = 1)
@@ -1048,9 +1103,8 @@ Func DropTroop2($troop, $nbSides, $number, $slotsPerEdge = 0, $name = "")
 			Else
 				For $i = 0 To $nbSides - 1
 					If $nbSides = 1 Or ($nbSides = 3 And $i = 2) Then
-						Local $edgesPixelToDrop = GetPixelDropTroop($troop, $nbTroopsPerEdge, $slotsPerEdge)
 						ReDim $listInfoPixelDropTroop[UBound($listInfoPixelDropTroop) + 1]
-						$listInfoPixelDropTroop[UBound($listInfoPixelDropTroop) - 1] = $edgesPixelToDrop[$i]
+						$listInfoPixelDropTroop[UBound($listInfoPixelDropTroop) - 1] = GetPixelDropTroop($troop, $nbTroopsPerEdge, $slotsPerEdge)
 					ElseIf ($nbSides = 2 And $i = 0) Or ($nbSides = 3 And $i <> 1) Then
 						Local $edgesPixelToDrop = GetPixelDropTroop($troop, $nbTroopsPerEdge, $slotsPerEdge)
 						ReDim $listInfoPixelDropTroop[UBound($listInfoPixelDropTroop) + 2]
