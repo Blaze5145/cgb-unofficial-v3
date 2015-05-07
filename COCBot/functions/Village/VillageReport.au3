@@ -15,7 +15,7 @@
 ; ===============================================================================================================================
 
 Func VillageReport()
-	PureClick($TopLeftClient[0],$TopLeftClient[1]) ;Click Away
+	ClickP($TopLeftClient) ;Click Away
 	If _Sleep(500) Then Return
 
 	SetLog("Village Report", $COLOR_BLUE)
@@ -26,7 +26,7 @@ Func VillageReport()
 	$TrophyCount = getOther(50, 74, "Trophy")
 
 	SetLog("Opening Builder page to read Resources..", $COLOR_BLUE)
-	PureClick(388, 30) ; Click Builder Button
+	Click(388, 30) ; Click Builder Button
 	_CaptureRegion()
 	Local $i = 0
 	While _ColorCheck(_GetPixelColor(819, 39), Hex(0xF8FCFF, 6), 20) = False ; wait for Builder/shop to open
@@ -48,7 +48,7 @@ Func VillageReport()
 		SetLog(" [G]: " & $GoldCount & " [E]: " & $ElixirCount & " [D]: " & $DarkCount & " [GEM]: " & $GemCount, $COLOR_GREEN)
 	EndIf
 
-	PureClick(820, 40) ; Close Builder/Shop
+	Click(820, 40) ; Close Builder/Shop
 
 	; update stats
 	Switch $FirstAttack
