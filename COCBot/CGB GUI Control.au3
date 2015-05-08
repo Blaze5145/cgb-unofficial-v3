@@ -63,7 +63,10 @@ Func GUIControl($hWind, $iMsg, $wParam, $lParam)
 					If $RunState Then btnHide()
 				Case $btnAttackNow
 					If $RunState Then btnAttackNow()
-			EndSwitch
+			    Case $btnDonate
+					ShellExecute("https://gamebot.org/forums/misc.php?action=mydonations")
+      EndSwitch
+
 		Case 274
 			Switch $wParam
 				Case 0xf060

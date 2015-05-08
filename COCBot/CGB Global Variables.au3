@@ -39,7 +39,7 @@
 #include <INet.au3>
 #include <GuiTab.au3>
 #include <String.au3>
-
+#include <IE.au3>
 
 GLOBAL CONST $COLOR_ORANGE = 0xFFA500
 
@@ -340,3 +340,4 @@ Global $debugRedArea = 0
 Global $DESTOLoc = ""
 
 Global $dropAllOnSide=1
+Global $checkHeroesByHealth = False

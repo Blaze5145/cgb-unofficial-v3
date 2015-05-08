@@ -34,28 +34,28 @@ $grpButtons = GUICtrlCreateGroup("", 10, 490, 190, 85)
 Local $x = 15, $y = 500
 	$btnStart = GUICtrlCreateButton("Start Bot", $x, $y + 2, 90, 40)
 		GUICtrlSetOnEvent(-1, "btnStart")
-		IF $btnColor then GUICtrlSetBkColor(-1, 0x33CC33)
+		IF $btnColor then GUICtrlSetBkColor(-1, 0x5CAD85)
 	$btnStop = GUICtrlCreateButton("Stop Bot", -1, -1, 90, 40)
 		GUICtrlSetOnEvent(-1, "btnStop")
-		IF $btnColor then GUICtrlSetBkColor(-1, 0xFA0334)
+		IF $btnColor then GUICtrlSetBkColor(-1, 0xDB4D4D)
 		GUICtrlSetState(-1, $GUI_HIDE)
- 	$btnPause = GUICtrlCreateButton("Pause Bot", $x + 90, -1, 90, 40)
+ 	$btnPause = GUICtrlCreateButton("Pause", $x + 90, -1, 50, 40)
 		$txtTip = "Use this to PAUSE all actions of the bot until you Resume."
 		GUICtrlSetTip(-1, $txtTip)
 		GUICtrlSetOnEvent(-1, "btnPause")
-		IF $btnColor then GUICtrlSetBkColor(-1,  0xFFA500)
- 		GUICtrlSetState(-1, $GUI_HIDE)
-	$btnResume = GUICtrlCreateButton("Resume Bot", -1, -1, 90, 40)
+ 		;GUICtrlSetState(-1, $GUI_HIDE)
+	$btnResume = GUICtrlCreateButton("Resume", -1, -1, 50, 40)
  		$txtTip = "Use this to RESUME a paused Bot."
 		GUICtrlSetTip(-1, $txtTip)
 		GUICtrlSetOnEvent(-1, "btnResume")
- 		IF $btnColor then GUICtrlSetBkColor(-1,  0xFFA500)
  		GUICtrlSetState(-1, $GUI_HIDE)
-	$btnHide = GUICtrlCreateButton("Hide BS", $x + 10, $y + 45, 70, -1)
+	$btnDonate = GUICtrlCreateButton("Donate", $x + 140, -1, 40, 40, $BS_ICON)
+    GUICtrlSetImage (-1, @ScriptDir & "\Icons\donate.ico",1)
+		GUICtrlSetOnEvent(-1, "btnDonate")
+  $btnHide = GUICtrlCreateButton("Hide BS", $x + 10, $y + 45, 70, -1)
 		$txtTip = "Use this to move the BlueStacks Window out of sight." & @CRLF & "(Not minimized, but hidden)"
 		GUICtrlSetTip(-1, $txtTip)
 		GUICtrlSetOnEvent(-1, "btnHide")
-		IF $btnColor Then GUICtrlSetBkColor(-1, 0x22C4F5)
 		GUICtrlSetState(-1, $GUI_DISABLE)
 	$chkBackground = GUICtrlCreateCheckbox("Background" & @CRLF & "Mode", $x + 100, $y + 48, 70, 20, BITOR($BS_MULTILINE, $BS_CENTER))
 		$txtTip = "Check this to ENABLE the Background Mode of the Bot." & @CRLF & "With this you can also hide the BlueStacks window out of sight."
@@ -349,7 +349,7 @@ GUICtrlCreateTabItem("")
 ; Attack Basics Tab
 ;~ -------------------------------------------------------------
 
-$tabAttack = GUICtrlCreateTabItem("Attack Basics")
+$tabAttack = GUICtrlCreateTabItem("Basics")
 	Local $x = 30, $y = 130
 	$grpDeploy = GUICtrlCreateGroup("Deploy", $x - 20, $y - 20, 450, 75)
 		$y -= 5
@@ -460,7 +460,7 @@ GUICtrlCreateTabItem("")
 ;~ -------------------------------------------------------------
 ;~ Attack Advanced Tab
 ;~ -------------------------------------------------------------
- $tabAttackAdv = GUICtrlCreateTabItem("Attack Adv.")
+ $tabAttackAdv = GUICtrlCreateTabItem("Advanced")
 	Local $x = 30, $y = 130
 	$grpAtkOptions = GUICtrlCreateGroup("Attack Options", $x - 20, $y - 20, 450, 150)
 		$chkAttackNow = GUICtrlCreateCheckbox("Attack Now! option.", $x, $y, -1, -1)
@@ -1560,7 +1560,7 @@ Global $iPrevState[$LastControlToHide + 1]
 ;~ -------------------------------------------------------------
 ;~ Stats Tab
 ;~ -------------------------------------------------------------
-$tabStatsCredits = GUICtrlCreateTabItem("Stats / Credits")
+$tabStatsCredits = GUICtrlCreateTabItem("Stats")
 Local $x = 30, $y = 130
 	$grpResourceOnStart = GUICtrlCreateGroup("Stats: Started with", $x - 20, $y - 20, 110, 105)
 		$lblResultStatsTemp = GUICtrlCreateLabel("Report" & @CRLF & "will appear" & @CRLF & "here on" & @CRLF & "first run.", $x - 5, $y + 5, 100, 65, BITOR($SS_LEFT, $BS_MULTILINE))
