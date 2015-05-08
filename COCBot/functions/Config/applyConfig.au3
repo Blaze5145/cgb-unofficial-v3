@@ -37,6 +37,14 @@ Func applyConfig() ;Applies the data from config to the controls in GUI
 			GUICtrlSetState($radAllBases, $GUI_CHECKED)
 	EndSwitch
 
+	If $iChkBackToAllMode = 1 Then
+		GUICtrlSetState($chkBackToAllMode, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkBackToAllMode, $GUI_UNCHECKED)
+	EndIf
+	GUICtrlSetData($txtBackToAllMode, $iTxtBackAllBase)
+	chkBackToAllMode()
+	
 	If $iChkSearchReduction = 1 Then
 		GUICtrlSetState($chkSearchReduction, $GUI_CHECKED)
 	Else
@@ -226,9 +234,9 @@ Func applyConfig() ;Applies the data from config to the controls in GUI
 	Else
 		GUICtrlSetState($chkLightSpell, $GUI_UNCHECKED)
 	EndIf
-	GUILightSpell()
-
+	GUICtrlSetData($txtMinDarkStorage, $SpellMinDarkStorage)
 	_GUICtrlComboBox_SetCurSel($cmbiLSpellQ, $iLSpellQ - 1)
+	GUILightSpell()
 
 	If $OptBullyMode = 1 Then
 		GUICtrlSetState($chkBullyMode, $GUI_CHECKED)

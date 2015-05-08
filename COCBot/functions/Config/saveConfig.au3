@@ -36,6 +36,13 @@ Func saveConfig() ;Saves the controls settings to the config
 		IniWrite($config, "search", "mode", 2)
 	EndIf
 
+	If GUICtrlRead($chkBackToAllMode) = $GUI_CHECKED Then
+		IniWrite($config, "search", "backAllBase", 1)
+	Else
+		IniWrite($config, "search", "backAllBase", 0)
+	EndIf
+	IniWrite($config, "search", "txtBackAllBase", GUICtrlRead($txtBackToAllMode))
+	
 	If GUICtrlRead($chkSearchReduction) = $GUI_CHECKED Then
 		IniWrite($config, "search", "reduction", 1)
 	Else
@@ -210,6 +217,7 @@ Func saveConfig() ;Saves the controls settings to the config
 	Else
 		IniWrite($config, "advanced", "hitDElightning", 0)
 	EndIf
+	IniWrite($config, "advanced", "txtMinDarkStorage", GUICtrlRead($txtMinDarkStorage))
 	IniWrite($config, "advanced", "QLSpell", _GUICtrlComboBox_GetCurSel($cmbiLSpellQ) + 1)
 
 	If GUICtrlRead($chkBullyMode) = $GUI_CHECKED Then
