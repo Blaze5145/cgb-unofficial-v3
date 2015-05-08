@@ -405,6 +405,8 @@ Func algorithm_AllTroops() ;Attack Algorithm for all existing troops
 				AttackTHNormal();Good for Masters
 			Case 2
 				AttackTHXtreme();Good for Champ
+			Case 3
+				AttackTHgbarch();Good for Champ also
 		EndSwitch
 
 		If $OptTrophyMode = 1 And SearchTownHallLoc() Then; Return ;Exit attacking if trophy hunting and not bullymode

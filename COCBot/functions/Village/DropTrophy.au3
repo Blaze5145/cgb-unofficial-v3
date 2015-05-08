@@ -44,21 +44,20 @@ Func DropTrophy()
 					EndIf
 				EndIf
 
+
 				If _Sleep(1500) Then Return
+				$King = -1
+				$Queen = -1
+				For $i = 0 To 8
+					If $atkTroops[$i][0] = $eKing Then
+						$King = $i
+					ElseIf $atkTroops[$i][0] = $eQueen Then
+						$Queen = $i
+					EndIf
+				Next
 
 				If $iChkTrophyHeroes = 1 Then
-					$King = -1
-					$Queen = -1
-					For $i = 0 To 8
-						If $atkTroops[$i][0] = $eKing Then
-							$King = $i
-						ElseIf $atkTroops[$i][0] = $eQueen Then
-							$Queen = $i
-						EndIf
-					Next
-
-
-					If $King <> -1 Then
+					If $King <> -1 And ($KingAttack[0] = 1 Or $KingAttack[2] = 1) Then
 						SetLog("Deploying King", $COLOR_BLUE)
 						Click(68 + (72 * $King), 595) ;Select King
 						_Sleep(1000)
@@ -68,7 +67,7 @@ Func DropTrophy()
 						If _Sleep(1000) Then ExitLoop
 						GUICtrlSetData($lblresulttrophiesdropped, GUICtrlRead($lblresulttrophiesdropped) - ($TrophyCount - getOther(50, 74, "Trophy")))
 					EndIf
-					If $King = -1 And $Queen <> -1 Then
+					If $King = -1 And $Queen <> -1 And ($QueenAttack[0] = 1 Or $QueenAttack[2] = 1) Then
 						SetLog("Deploying Queen", $COLOR_BLUE)
 						Click(68 + (72 * $Queen), 595) ;Select Queen
 						_Sleep(1000)
@@ -104,7 +103,7 @@ Func DropTrophy()
 						Case $atkTroops[0][0] = $eGobl
 							Click(34, 310) ;Drop one troop
 							$CurGobl += 1
-							$ArmyComp -= 2
+							$ArmyComp -= 1
 							SetLog("Deploying 1 Goblins", $COLOR_BLUE)
 						Case $atkTroops[0][0] = $eMini
 							Click(34, 310) ;Drop one troop
