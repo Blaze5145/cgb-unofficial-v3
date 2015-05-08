@@ -90,21 +90,29 @@ Func Train()
     Local $PrevPos = _PixelSearch(70, 336, 110, 351, Hex(0xF08C40, 6), 5)
 	
 	$icount = 0
-	while not IsArray($NextPos)
-		If _Sleep(100) Then Return
-		$NextPos = _PixelSearch(749, 333, 787, 349, Hex(0xF08C40, 6), 5)
-		$PrevPos = _PixelSearch(70, 336, 110, 351, Hex(0xF08C40, 6), 5)
-		$icount += 1
-		if $icount = 20 then ExitLoop
-	wend
-	
-	$icount = 0
-	while not IsArray($PrevPos)
-		If _Sleep(100) Then Return
-		$PrevPos = _PixelSearch(70, 336, 110, 351, Hex(0xF08C40, 6), 5)
-		$icount += 1
-		if $icount = 20 then ExitLoop
-	wend
+Local $checkLoop = 0
+   while not IsArray($NextPos)
+       If $checkLoop > 20 Then
+          SetLog("Something went wrong.", $COLOR_RED)
+          checkMainScreen()
+          Return
+       EndIf
+       If _Sleep(100) Then Return
+       $NextPos = _PixelSearch(749, 333, 787, 349, Hex(0xF08C40, 6), 5)
+       $PrevPos = _PixelSearch(70, 336, 110, 351, Hex(0xF08C40, 6), 5)
+       $checkLoop += 1
+    wend
+ $checkLoop = 0
+   while not IsArray($PrevPos)
+      If $checkLoop > 20 Then
+          SetLog("Something went wrong.", $COLOR_RED)
+          checkMainScreen()
+          Return
+       EndIf
+       If _Sleep(100) Then Return
+       $PrevPos = _PixelSearch(70, 336, 110, 351, Hex(0xF08C40, 6), 5)
+       $checkLoop += 1
+   wend
 
 	
 	if $isNormalBuild = "" then
