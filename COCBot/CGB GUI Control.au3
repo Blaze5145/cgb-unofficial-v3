@@ -121,7 +121,7 @@ Func Initiate()
 		$FirstStart = True
 		$Checkrearm = True
 		If $iDelALlPush = 1 Then
-			_DeleteMessage()
+			_DeletePush()
 			SetLog("Delete all PushBullet...", $COLOR_BLUE)
 		EndIf
 		$sTimer = TimerInit()
