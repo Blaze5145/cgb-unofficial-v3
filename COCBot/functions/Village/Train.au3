@@ -85,14 +85,13 @@ Func Train()
 		if not $fullArmy then CheckFullArmy()  ;if armycamp not full, check full by barrack
 	Endif
 
-	Local $NextPos = _PixelSearch(749, 333, 787, 349, Hex(0xF08C40, 6), 5)
-    Local $PrevPos = _PixelSearch(70, 336, 110, 351, Hex(0xF08C40, 6), 5)
+	Local $NextPos = _PixelSearch(749, 333, 787, 349, Hex(0xF08C40, 6), 7)
+    Local $PrevPos = _PixelSearch(70, 336, 110, 351, Hex(0xF08C40, 6), 7)
 
 	$icount = 0
 	while not IsArray($NextPos)
 		If _Sleep(100) Then Return
-		$NextPos = _PixelSearch(749, 333, 787, 349, Hex(0xF08C40, 6), 5)
-		$PrevPos = _PixelSearch(70, 336, 110, 351, Hex(0xF08C40, 6), 5)
+		$NextPos = _PixelSearch(749, 333, 787, 349, Hex(0xF08C40, 6), 7)
 		$icount += 1
 		if $icount = 20 then ExitLoop
 	wend
@@ -100,7 +99,7 @@ Func Train()
 	$icount = 0
 	while not IsArray($PrevPos)
 		If _Sleep(100) Then Return
-		$PrevPos = _PixelSearch(70, 336, 110, 351, Hex(0xF08C40, 6), 5)
+		$PrevPos = _PixelSearch(70, 336, 110, 351, Hex(0xF08C40, 6), 7)
 		$icount += 1
 		if $icount = 20 then ExitLoop
 	wend
