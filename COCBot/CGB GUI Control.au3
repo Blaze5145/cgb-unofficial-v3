@@ -778,11 +778,7 @@ EndFunc   ;==>chkBullyMode
 
 Func chkSnipeMode()
 	If GUICtrlRead($chkTrophyMode) = $GUI_CHECKED Then
-<<<<<<< HEAD
 		$OptTrophyMode = 1
-=======
-		$OptBullyMode = 1
->>>>>>> master
 		GUICtrlSetState($txtTHaddtiles, $GUI_ENABLE)
 		GUICtrlSetState($cmbAttackTHType, $GUI_ENABLE)
 	Else
