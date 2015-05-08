@@ -15,7 +15,7 @@
 ; ===============================================================================================================================
 
 Func VillageReport()
-	ClickP($TopLeftClient) ;Click Away
+	PureClick($TopLeftClient[0],$TopLeftClient[1]) ;Click Away
 	If _Sleep(500) Then Return
 
 	SetLog("Village Report", $COLOR_BLUE)
@@ -26,7 +26,7 @@ Func VillageReport()
 	$TrophyCount = getOther(50, 74, "Trophy")
 
 	SetLog("Opening Builder page to read Resources..", $COLOR_BLUE)
-	Click(388, 30) ; Click Builder Button
+	PureClick(388, 30) ; Click Builder Button
 	_CaptureRegion()
 	Local $i = 0
 	While _ColorCheck(_GetPixelColor(819, 39), Hex(0xF8FCFF, 6), 20) = False ; wait for Builder/shop to open
@@ -48,7 +48,7 @@ Func VillageReport()
 		SetLog(" [G]: " & $GoldCount & " [E]: " & $ElixirCount & " [D]: " & $DarkCount & " [GEM]: " & $GemCount, $COLOR_GREEN)
 	EndIf
 
-	Click(820, 40) ; Close Builder/Shop
+	PureClick(820, 40) ; Close Builder/Shop
 
 	; update stats
 	Switch $FirstAttack
@@ -75,17 +75,18 @@ Func VillageReport()
 		_CaptureRegion()
 		If $i >= 20 Then ExitLoop
 	WEnd
-   If $iAlertPBVillage = 1 Then
-     _PushBullet("My Village:", " [G]: " & _NumberFormat($GoldCount) & " [E]: " & _NumberFormat($ElixirCount) & " [D]: " & _NumberFormat($DarkCount) & "  [T]: " & _NumberFormat($TrophyCount) & " [FreeBuilders]: " & $FreeBuilder)
-   Endif
 
-   If $iLastAttack = 1 Then
-		If $GoldLast = "" And $ElixirLast = "" Then
-			_PushBullet("First time run", "remember: Last gain is : Attack Loot & Bonus - Cost of troops & Cost of searchs ")
-		Else
-			_PushBullet("Last Gain :", " [G]: " &  _NumberFormat($GoldLast) & " [E]: " &  _NumberFormat($ElixirLast) & " [D]: " &  _NumberFormat($DarkLast) & "  [T]: " & _NumberFormat($TrophyLast))
-		EndIf
-   EndIf
+  ; If $iAlertPBVillage = 1 Then
+  ;   _PushBullet("My Village:", " [G]: " & _NumberFormat($GoldCount) & " [E]: " & _NumberFormat($ElixirCount) & " [D]: " & _NumberFormat($DarkCount) & "  [T]: " & _NumberFormat($TrophyCount) & " [FreeBuilders]: " & $FreeBuilder)
+  ; Endif
+
+  ; If $iLastAttack = 1 Then
+		;If $GoldLast = "" And $ElixirLast = "" Then
+		;	_PushBullet("First time run", "remember: Last gain is : Attack Loot & Bonus - Cost of troops & Cost of searchs ")
+	;	Else
+		;	_PushBullet("Last Gain :", " [G]: " &  _NumberFormat($GoldLast) & " [E]: " &  _NumberFormat($ElixirLast) & " [D]: " &  _NumberFormat($DarkLast) & "  [T]: " & _NumberFormat($TrophyLast))
+	;	EndIf
+  ; EndIf
 
 EndFunc   ;==>VillageReport
 

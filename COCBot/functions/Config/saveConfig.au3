@@ -42,7 +42,7 @@ Func saveConfig() ;Saves the controls settings to the config
 		IniWrite($config, "search", "backAllBase", 0)
 	EndIf
 	IniWrite($config, "search", "txtBackAllBase", GUICtrlRead($txtBackToAllMode))
-	
+
 	If GUICtrlRead($chkSearchReduction) = $GUI_CHECKED Then
 		IniWrite($config, "search", "reduction", 1)
 	Else
@@ -77,25 +77,25 @@ Func saveConfig() ;Saves the controls settings to the config
 		IniWrite($config, "search", "conditionTrophy", 1)
 	Else
 		IniWrite($config, "search", "conditionTrophy", 0)
-	 EndIf
+	EndIf
 
 	If GUICtrlRead($chkMeetTH) = $GUI_CHECKED Then
 		IniWrite($config, "search", "conditionTownHall", 1)
 	Else
 		IniWrite($config, "search", "conditionTownHall", 0)
-	 EndIf
+	EndIf
 
 	If GUICtrlRead($chkMeetTHO) = $GUI_CHECKED Then
 		IniWrite($config, "search", "conditionTownHallO", 1)
 	Else
 		IniWrite($config, "search", "conditionTownHallO", 0)
-	 EndIf
+	EndIf
 
 	If GUICtrlRead($chkMeetOne) = $GUI_CHECKED Then
 		IniWrite($config, "search", "conditionOne", 1)
 	Else
 		IniWrite($config, "search", "conditionOne", 0)
-	 EndIf
+	EndIf
 
 	IniWrite($config, "search", "searchGold", GUICtrlRead($txtMinGold))
 	IniWrite($config, "search", "searchElixir", GUICtrlRead($txtMinElixir))
@@ -107,7 +107,7 @@ Func saveConfig() ;Saves the controls settings to the config
 		IniWrite($config, "search", "AlertSearch", 1)
 	Else
 		IniWrite($config, "search", "AlertSearch", 0)
-	 EndIf
+	EndIf
 
 
 	;Attack Basic Settings-------------------------------------------------------------------------
@@ -184,7 +184,7 @@ Func saveConfig() ;Saves the controls settings to the config
 
 	If GUICtrlRead($radManAbilities) = $GUI_CHECKED Then
 		IniWrite($config, "attack", "ActivateKQ", "Manual")
-	Elseif GUICtrlRead($radAutoAbilities) = $GUI_CHECKED Then
+	ElseIf GUICtrlRead($radAutoAbilities) = $GUI_CHECKED Then
 		IniWrite($config, "attack", "ActivateKQ", "Auto")
 	EndIf
 
@@ -238,19 +238,25 @@ Func saveConfig() ;Saves the controls settings to the config
 	IniWrite($config, "advanced", "THaddTiles", GUICtrlRead($txtTHaddtiles))
 	IniWrite($config, "advanced", "AttackTHType", _GUICtrlComboBox_GetCurSel($cmbAttackTHType))
 
-    IniWrite($config, "advanced", "AccountToken", GUICtrlRead($PushBTokenN))
+	IniWrite($config, "advanced", "AccountToken", GUICtrlRead($PushBTokenN))
 
 	If GUICtrlRead($chkAlertPBVillage) = $GUI_CHECKED Then
-	   IniWrite($config, "advanced", "AlertPBVillage", 1)
-    Else
-	    IniWrite($config, "advanced", "AlertPBVillage", 0)
-	  EndIf
+		IniWrite($config, "advanced", "AlertPBVillage", 1)
+	Else
+		IniWrite($config, "advanced", "AlertPBVillage", 0)
+	EndIf
 
-	If  GUICtrlRead($chkAlertPBLastAttack) = $GUI_CHECKED Then
-        IniWrite($config, "advanced", "AlertPBLastAttack", 1)
-    Else
-	    IniWrite($config, "advanced", "AlertPBLastAttack", 0)
-	 EndIf
+	If GUICtrlRead($DelALlPush) = $GUI_CHECKED Then
+		IniWrite($config, "advanced", "DelALlPush", 1)
+	Else
+		IniWrite($config, "advanced", "DelALlPush", 0)
+	EndIf
+
+	If GUICtrlRead($chkAlertPBLastAttack) = $GUI_CHECKED Then
+		IniWrite($config, "advanced", "AlertPBLastAttack", 1)
+	Else
+		IniWrite($config, "advanced", "AlertPBLastAttack", 0)
+	EndIf
 
 	;atk their king
 	;attk their queen
@@ -507,13 +513,13 @@ Func saveConfig() ;Saves the controls settings to the config
 	IniWrite($config, "donate", "txtBlacklist", StringReplace(GUICtrlRead($txtBlacklist), @CRLF, "|"))
 
 	;Troop Settings--------------------------------------------------------------------------
-	for $i=0 to Ubound($TroopName) - 1 
-		IniWrite($config, "troop", $TroopName[$i], GUICtrlRead(eval("txtNum" & $TroopName[$i])))
-	next
-	for $i=0 to Ubound($TroopDarkName) - 1 
-		IniWrite($config, "troop", $TroopDarkName[$i], GUICtrlRead(eval("txtNum" & $TroopDarkName[$i])))
-	next
-	
+	For $i = 0 To UBound($TroopName) - 1
+		IniWrite($config, "troop", $TroopName[$i], GUICtrlRead(Eval("txtNum" & $TroopName[$i])))
+	Next
+	For $i = 0 To UBound($TroopDarkName) - 1
+		IniWrite($config, "troop", $TroopDarkName[$i], GUICtrlRead(Eval("txtNum" & $TroopDarkName[$i])))
+	Next
+
 	IniWrite($config, "troop", "troop1", _GUICtrlComboBox_GetCurSel($cmbBarrack1))
 	IniWrite($config, "troop", "troop2", _GUICtrlComboBox_GetCurSel($cmbBarrack2))
 	IniWrite($config, "troop", "troop3", _GUICtrlComboBox_GetCurSel($cmbBarrack3))
@@ -545,12 +551,12 @@ Func saveConfig() ;Saves the controls settings to the config
 		IniWrite($config, "other", "chkTrap", 1)
 	Else
 		IniWrite($config, "other", "chkTrap", 0)
-	 EndIf
+	EndIf
 	If GUICtrlRead($chkCollect) = $GUI_CHECKED Then
 		IniWrite($config, "other", "chkCollect", 1)
 	Else
 		IniWrite($config, "other", "chkCollect", 0)
-	 EndIf
+	EndIf
 	IniWrite($config, "other", "txtTimeWakeUp", GUICtrlRead($txtTimeWakeUp))
 	IniWrite($config, "other", "VSDelay", GUICtrlRead($sldVSDelay))
 
@@ -603,17 +609,17 @@ Func saveConfig() ;Saves the controls settings to the config
 	IniWrite($building, "other", "xCCPos", $aCCPos[0])
 	IniWrite($building, "other", "yCCPos", $aCCPos[1])
 
-    IniWrite($building, "other", "xArmy", $ArmyPos[0])
-    IniWrite($building, "other", "yArmy", $ArmyPos[1])
-	
-    IniWrite($building, "other", "barrackNum", $barrackNum)
-    IniWrite($building, "other", "barrackDarkNum", $barrackDarkNum)
-	
-    IniWrite($building, "other", "listResource", $listResourceLocation)
+	IniWrite($building, "other", "xArmy", $ArmyPos[0])
+	IniWrite($building, "other", "yArmy", $ArmyPos[1])
+
+	IniWrite($building, "other", "barrackNum", $barrackNum)
+	IniWrite($building, "other", "barrackDarkNum", $barrackDarkNum)
+
+	IniWrite($building, "other", "listResource", $listResourceLocation)
 
 	;For $i = 0 To 3 ;Covers all 4 Barracks
-		IniWrite($building, "other", "xBarrack", $barrackPos[0])
-		IniWrite($building, "other", "yBarrack", $barrackPos[1])
+	IniWrite($building, "other", "xBarrack", $barrackPos[0])
+	IniWrite($building, "other", "yBarrack", $barrackPos[1])
 	;Next
 
 	IniWrite($building, "other", "xSpellfactory", $SFPos[0])

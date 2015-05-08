@@ -39,7 +39,7 @@
 #include <INet.au3>
 #include <GuiTab.au3>
 #include <String.au3>
-
+#include <IE.au3>
 
 GLOBAL CONST $COLOR_ORANGE = 0xFFA500
 
@@ -71,6 +71,7 @@ Global $iChkAttackNow, $iAttackNowDelay, $bBtnAttackNowPressed = False
 Global $PushToken = ""
 Global $iLastAttack
 Global $iAlertPBVillage
+Global $iDelALlPush
 
 Global $cmbTroopComp ;For Event change on ComboBox Troop Compositions
 Global $iCollectCounter = 0 ; Collect counter, when reaches $COLLECTATCOUNT, it will collect
@@ -340,3 +341,4 @@ Global $debugRedArea = 0
 Global $DESTOLoc = ""
 
 Global $dropAllOnSide=1
+Global $checkHeroesByHealth = False
