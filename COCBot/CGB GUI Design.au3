@@ -1547,6 +1547,9 @@ $tabPushBullet = GUICtrlCreateTabItem("PushBullet")
       $PushBTokenN = GUICtrlCreateInput("", $x + 90, $y, 260, 19)
 	  $chkAlertPBVillage = GUICtrlCreateCheckbox("Alert My Village", $x + 20, $y + 25, -1, -1)
 	  $chkAlertPBLastAttack = GUICtrlCreateCheckbox("Alert Last Attack", $x + 115, $y+25, -1, -1)
+	  $DelALlPush = GUICtrlCreateCheckbox("Delete all Push", $x + 220, $y+25, -1, -1)
+		$txtTip = "Delete all pushes on startup"
+		GUICtrlSetTip(-1, $txtTip)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 GUICtrlCreateTabItem("")
 

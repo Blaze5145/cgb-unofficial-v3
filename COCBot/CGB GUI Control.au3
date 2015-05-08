@@ -63,9 +63,9 @@ Func GUIControl($hWind, $iMsg, $wParam, $lParam)
 					If $RunState Then btnHide()
 				Case $btnAttackNow
 					If $RunState Then btnAttackNow()
-			    Case $btnDonate
+				Case $btnDonate
 					ShellExecute("https://gamebot.org/forums/misc.php?action=mydonations")
-      EndSwitch
+			EndSwitch
 
 		Case 274
 			Switch $wParam
@@ -120,6 +120,10 @@ Func Initiate()
 		$AttackNow = False
 		$FirstStart = True
 		$Checkrearm = True
+		If $iDelALlPush = 1 Then
+			_DeleteMessage()
+			SetLog("Delete all PushBullet...", $COLOR_BLUE)
+		EndIf
 		$sTimer = TimerInit()
 		AdlibRegister("SetTime", 1000)
 		checkMainScreen()
@@ -738,12 +742,12 @@ EndFunc   ;==>radNotWeakBases
 
 Func chkBackToAllMode()
 	If GUICtrlRead($chkBackToAllMode) = $GUI_CHECKED Then
-	   GUICtrlSetState($txtBackToAllMode, $GUI_ENABLE)
-	   GUICtrlSetState($lblBackToAllMode, $GUI_ENABLE)
+		GUICtrlSetState($txtBackToAllMode, $GUI_ENABLE)
+		GUICtrlSetState($lblBackToAllMode, $GUI_ENABLE)
 	Else
-	   GUICtrlSetState($txtBackToAllMode, $GUI_DISABLE)
-	   GUICtrlSetState($lblBackToAllMode, $GUI_DISABLE)
-    EndIf
+		GUICtrlSetState($txtBackToAllMode, $GUI_DISABLE)
+		GUICtrlSetState($lblBackToAllMode, $GUI_DISABLE)
+	EndIf
 EndFunc   ;==>chkBackToAllMode
 
 Func chkAttackNow()
