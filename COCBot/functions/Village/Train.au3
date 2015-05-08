@@ -58,6 +58,7 @@ Func Train()
 
 	If _Sleep(500) Then Return
 
+
 	Local $TrainPos = _PixelSearch(155, 603, 694, 605, Hex(0x9C7C37, 6), 5) ;Finds Train Troops button
 	$icount = 0
 	while not IsArray($TrainPos)
@@ -66,7 +67,8 @@ Func Train()
 		$TrainPos = _PixelSearch(155, 603, 694, 605, Hex(0x9C7C37, 6), 5) ;Finds Train Troops button
 		if $icount = 4 then ExitLoop
 	wend
-	
+
+
 	If IsArray($TrainPos) = False Then
 		SetLog("Your Barrack is not available. (Upgrading? Locate another Barrack on the 'Misc' tab)", $COLOR_RED)
 		If _Sleep(500) Then Return
@@ -85,7 +87,7 @@ Func Train()
 
 	Local $NextPos = _PixelSearch(749, 333, 787, 349, Hex(0xF08C40, 6), 5)
     Local $PrevPos = _PixelSearch(70, 336, 110, 351, Hex(0xF08C40, 6), 5)
-	
+
 	$icount = 0
 	while not IsArray($NextPos)
 		If _Sleep(100) Then Return
@@ -94,7 +96,7 @@ Func Train()
 		$icount += 1
 		if $icount = 20 then ExitLoop
 	wend
-	
+
 	$icount = 0
 	while not IsArray($PrevPos)
 		If _Sleep(100) Then Return
@@ -103,7 +105,7 @@ Func Train()
 		if $icount = 20 then ExitLoop
 	wend
 
-	
+
 	if $isNormalBuild = "" then
 		for $i=0 to Ubound($TroopName) - 1
 			If GUICtrlRead(eval("txtNum" & $TroopName[$i])) <> "0" Then
@@ -114,7 +116,7 @@ Func Train()
 	if $isNormalBuild = "" then
 		$isNormalBuild = false
 	endif
-	
+
 	if $isDarkBuild = "" then
 		for $i=0 to Ubound($TroopDarkName) - 1
 			If GUICtrlRead(eval("txtNum" & $TroopDarkName[$i])) <> "0" Then
@@ -524,7 +526,7 @@ Func Train()
 			If _Sleep(1000) Then ExitLoop
 			If $iBarrHere = 7 then ExitLoop
 	  wend
-	
+
 	if isSpellFactory() then
 		SetLog("Create Lightning Spell", $COLOR_BLUE)
 		If  _ColorCheck(_GetPixelColor(237, 354,"Y"), Hex(0xFFFFFF, 6), 20) = False Then
@@ -584,7 +586,7 @@ Func checkArmyCamp()
 	   if $TotalCamp = "" or $TotalCamp = 0 then
 		$TotalCamp = Number(getOther(586, 193, "Camp", True))
 	   endif
-	   
+
 	   if $TotalCamp = "" and $TotalCamp = 0 then
 		   $TotalCamp = InputBox("Question", "Enter your total Army Camp capacity", "200", "", _
 				 Default,Default, 600, 300)
