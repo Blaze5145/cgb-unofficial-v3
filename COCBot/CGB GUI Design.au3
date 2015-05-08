@@ -51,7 +51,7 @@ Local $x = 15, $y = 500
  		GUICtrlSetState(-1, $GUI_HIDE)
 	$btnDonate = GUICtrlCreateButton("Donate", $x + 140, -1, 40, 40, $BS_ICON)
     GUICtrlSetImage (-1, @ScriptDir & "\Icons\donate.ico",1)
-		GUICtrlSetOnEvent(-1, "btnDonate")
+		GUICtrlSetOnEvent(-1, "")
   $btnHide = GUICtrlCreateButton("Hide BS", $x + 10, $y + 45, 70, -1)
 		$txtTip = "Use this to move the BlueStacks Window out of sight." & @CRLF & "(Not minimized, but hidden)"
 		GUICtrlSetTip(-1, $txtTip)
