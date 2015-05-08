@@ -52,7 +52,7 @@ Func CheckWall()
 	Local $centerPixel[2] = [430, 313]
 	If _Sleep(500) Then Return
 
-	For $Tolerance2 = 0 To 75
+	For $Tolerance2 = 0 To 60
 		For $x = 0 To 1
 			If $WallLoc = 0 Then
 				;###################### ZONE 2 ##########################
@@ -70,7 +70,7 @@ Func CheckWall()
 		Next
 	Next
 
-	For $Tolerance2 = 0 To 75
+	For $Tolerance2 = 0 To 60
 		For $x = 0 To 1
 			If $WallLoc = 0 Then
 				;###################### ZONE 1 ##########################
@@ -87,7 +87,7 @@ Func CheckWall()
 			EndIf
 		Next
 	Next
-	For $Tolerance2 = 0 To 75
+	For $Tolerance2 = 0 To 60
 		For $x = 0 To 1
 			If $WallLoc = 0 Then
 				;###################### ZONE 3 ##########################
@@ -104,7 +104,7 @@ Func CheckWall()
 			EndIf
 		Next
 	Next
-	For $Tolerance2 = 0 To 75
+	For $Tolerance2 = 0 To 60
 		For $x = 0 To 1
 			If $WallLoc = 0 Then
 				;###################### ZONE 4 ##########################
