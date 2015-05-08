@@ -29,13 +29,11 @@ Local $aTxtBlacklistControls[16] = [$txtBlacklistBarbarians, $txtBlacklistArcher
 Local $aLblBtnControls[16] = [$lblBtnBarbarians, $lblBtnArchers, $lblBtnGiants, $lblBtnGoblins, $lblBtnWallBreakers, $lblBtnBalloons, $lblBtnWizards, $lblBtnHealers, $lblBtnDragons, $lblBtnPekkas, $lblBtnMinions, $lblBtnHogRiders, $lblBtnValkyries, $lblBtnGolems, $lblBtnWitches, $lblBtnLavaHounds]
 
 _GDIPlus_Startup()
-
 Global Const $64Bit = StringInStr(@OSArch, "64") > 0
 Global Const $DEFAULT_HEIGHT = 720
 Global Const $DEFAULT_WIDTH = 860
 Global $Initiate = 0
 Global Const $REGISTRY_KEY_DIRECTORY = "HKEY_LOCAL_MACHINE\SOFTWARE\BlueStacks\Guests\Android\FrameBuffer\0"
-
 Func GUIControl($hWind, $iMsg, $wParam, $lParam)
 	Local $nNotifyCode = BitShift($wParam, 16)
 	Local $nID = BitAND($wParam, 0x0000FFFF)
@@ -65,7 +63,9 @@ Func GUIControl($hWind, $iMsg, $wParam, $lParam)
 					If $RunState Then btnHide()
 				Case $btnAttackNow
 					If $RunState Then btnAttackNow()
-			EndSwitch
+			  Case $btnDonate
+					ShellExecute("https://gamebot.org/forums/misc.php?action=mydonations")
+      EndSwitch
 		Case 274
 			Switch $wParam
 				Case 0xf060
@@ -164,7 +164,6 @@ Func btnStart()
 	GUICtrlSetState($btnStop, $GUI_SHOW)
 	GUICtrlSetState($btnPause, $GUI_SHOW)
 	$FirstAttack = 0
-
 	CreateLogFile()
 
 
@@ -178,13 +177,11 @@ Func btnStart()
 	If WinExists($Title) Then
 		DisableBS($HWnD, $SC_MINIMIZE)
 		DisableBS($HWnD, $SC_CLOSE)
-
 		Initiate()
 
 	Else
 		Open()
 	EndIf
-
 EndFunc   ;==>btnStart
 
 Func btnStop()
@@ -225,15 +222,6 @@ Func btnAttackNow()
 		$bBtnAttackNowPressed = True
 	EndIf
 EndFunc   ;==>btnAttackNow
-
-Func Check()
-	If IsArray(ControlGetPos($Title, "_ctl.Window", "[CLASS:BlueStacksApp; INSTANCE:1]")) Then
-	btnStart()
- Else
-	Sleep(500)
-	Check()
-	EndIf
-EndFunc
 
 Func btnLocateBarracks()
 	$RunState = True
@@ -351,14 +339,12 @@ EndFunc   ;==>chkDeployRedArea
 Func cmbTroopComp()
 	If _GUICtrlComboBox_GetCurSel($cmbTroopComp) <> $icmbTroopComp Then
 		$icmbTroopComp = _GUICtrlComboBox_GetCurSel($cmbTroopComp)
-
 		For $i = 0 To UBound($TroopName) - 1
 			Assign("Cur" & $TroopName[$i], 1)
 		Next
 		For $i = 0 To UBound($TroopDarkName) - 1
 			Assign("Cur" & $TroopDarkName[$i], 1)
 		Next
-
 		SetComboTroopComp()
 	EndIf
 EndFunc   ;==>cmbTroopComp
@@ -372,7 +358,6 @@ Func SetComboTroopComp()
 			GUICtrlSetState($cmbBarrack4, $GUI_DISABLE)
 			;GUICtrlSetState($txtCapacity, $GUI_ENABLE)
 
-
 			For $i = 0 To UBound($TroopName) - 1
 				GUICtrlSetState(Eval("txtNum" & $TroopName[$i]), $GUI_ENABLE)
 			Next
@@ -380,11 +365,9 @@ Func SetComboTroopComp()
 				GUICtrlSetState(Eval("txtNum" & $TroopDarkName[$i]), $GUI_ENABLE)
 			Next
 
-
 			GUICtrlSetData($txtNumBarb, "0")
 			GUICtrlSetData($txtNumArch, "100")
 			GUICtrlSetData($txtNumGobl, "0")
-
 
 			For $i = 0 To UBound($TroopName) - 1
 				_GUICtrlEdit_SetReadOnly(Eval("txtNum" & $TroopName[$i]), True)
@@ -399,7 +382,6 @@ Func SetComboTroopComp()
 			For $i = 0 To UBound($TroopDarkName) - 1
 				GUICtrlSetData(Eval("txtNum" & $TroopDarkName[$i]), "0")
 			Next
-
 		Case 1
 			GUICtrlSetState($cmbBarrack1, $GUI_DISABLE)
 			GUICtrlSetState($cmbBarrack2, $GUI_DISABLE)
@@ -407,7 +389,6 @@ Func SetComboTroopComp()
 			GUICtrlSetState($cmbBarrack4, $GUI_DISABLE)
 			;GUICtrlSetState($txtCapacity, $GUI_ENABLE)
 
-
 			For $i = 0 To UBound($TroopName) - 1
 				GUICtrlSetState(Eval("txtNum" & $TroopName[$i]), $GUI_ENABLE)
 			Next
@@ -428,7 +409,6 @@ Func SetComboTroopComp()
 			For $i = 0 To UBound($TroopDarkName) - 1
 				GUICtrlSetData(Eval("txtNum" & $TroopDarkName[$i]), "0")
 			Next
-
 			GUICtrlSetData($txtNumBarb, "100")
 		Case 2
 			GUICtrlSetState($cmbBarrack1, $GUI_DISABLE)
@@ -436,7 +416,6 @@ Func SetComboTroopComp()
 			GUICtrlSetState($cmbBarrack3, $GUI_DISABLE)
 			GUICtrlSetState($cmbBarrack4, $GUI_DISABLE)
 			;GUICtrlSetState($txtCapacity, $GUI_ENABLE)
-
 			For $i = 0 To UBound($TroopName) - 1
 				GUICtrlSetState(Eval("txtNum" & $TroopName[$i]), $GUI_ENABLE)
 			Next
@@ -457,7 +436,6 @@ Func SetComboTroopComp()
 			For $i = 0 To UBound($TroopDarkName) - 1
 				GUICtrlSetData(Eval("txtNum" & $TroopDarkName[$i]), "0")
 			Next
-
 			GUICtrlSetData($txtNumGobl, "100")
 		Case 3
 			GUICtrlSetState($cmbBarrack1, $GUI_DISABLE)
@@ -465,7 +443,6 @@ Func SetComboTroopComp()
 			GUICtrlSetState($cmbBarrack3, $GUI_DISABLE)
 			GUICtrlSetState($cmbBarrack4, $GUI_DISABLE)
 			;GUICtrlSetState($txtCapacity, $GUI_ENABLE)
-
 			For $i = 0 To UBound($TroopName) - 1
 				GUICtrlSetState(Eval("txtNum" & $TroopName[$i]), $GUI_ENABLE)
 			Next
@@ -486,7 +463,6 @@ Func SetComboTroopComp()
 			For $i = 0 To UBound($TroopDarkName) - 1
 				GUICtrlSetData(Eval("txtNum" & $TroopDarkName[$i]), "0")
 			Next
-
 
 			GUICtrlSetData($txtNumBarb, "50")
 			GUICtrlSetData($txtNumArch, "50")
@@ -496,7 +472,6 @@ Func SetComboTroopComp()
 			GUICtrlSetState($cmbBarrack3, $GUI_DISABLE)
 			GUICtrlSetState($cmbBarrack4, $GUI_DISABLE)
 			;GUICtrlSetState($txtCapacity, $GUI_ENABLE)
-
 			For $i = 0 To UBound($TroopName) - 1
 				GUICtrlSetState(Eval("txtNum" & $TroopName[$i]), $GUI_ENABLE)
 			Next
@@ -517,7 +492,6 @@ Func SetComboTroopComp()
 			For $i = 0 To UBound($TroopDarkName) - 1
 				GUICtrlSetData(Eval("txtNum" & $TroopDarkName[$i]), "0")
 			Next
-
 
 			_GUICtrlEdit_SetReadOnly($txtNumGiant, False)
 
@@ -532,7 +506,6 @@ Func SetComboTroopComp()
 			GUICtrlSetState($cmbBarrack3, $GUI_DISABLE)
 			GUICtrlSetState($cmbBarrack4, $GUI_DISABLE)
 			;GUICtrlSetState($txtCapacity, $GUI_ENABLE)
-
 			For $i = 0 To UBound($TroopName) - 1
 				GUICtrlSetState(Eval("txtNum" & $TroopName[$i]), $GUI_ENABLE)
 			Next
@@ -553,7 +526,6 @@ Func SetComboTroopComp()
 			For $i = 0 To UBound($TroopDarkName) - 1
 				GUICtrlSetData(Eval("txtNum" & $TroopDarkName[$i]), "0")
 			Next
-
 			_GUICtrlEdit_SetReadOnly($txtNumGiant, False)
 
 			GUICtrlSetData($txtNumBarb, "50")
@@ -566,7 +538,6 @@ Func SetComboTroopComp()
 			GUICtrlSetState($cmbBarrack3, $GUI_DISABLE)
 			GUICtrlSetState($cmbBarrack4, $GUI_DISABLE)
 			;GUICtrlSetState($txtCapacity, $GUI_ENABLE)
-
 			For $i = 0 To UBound($TroopName) - 1
 				GUICtrlSetState(Eval("txtNum" & $TroopName[$i]), $GUI_ENABLE)
 			Next
@@ -587,7 +558,6 @@ Func SetComboTroopComp()
 			For $i = 0 To UBound($TroopDarkName) - 1
 				GUICtrlSetData(Eval("txtNum" & $TroopDarkName[$i]), "0")
 			Next
-
 			GUICtrlSetData($txtNumBarb, "60")
 			GUICtrlSetData($txtNumArch, "30")
 			GUICtrlSetData($txtNumGobl, "10")
@@ -597,7 +567,6 @@ Func SetComboTroopComp()
 			GUICtrlSetState($cmbBarrack3, $GUI_DISABLE)
 			GUICtrlSetState($cmbBarrack4, $GUI_DISABLE)
 			;GUICtrlSetState($txtCapacity, $GUI_ENABLE)
-
 			For $i = 0 To UBound($TroopName) - 1
 				GUICtrlSetState(Eval("txtNum" & $TroopName[$i]), $GUI_ENABLE)
 			Next
@@ -618,7 +587,6 @@ Func SetComboTroopComp()
 			For $i = 0 To UBound($TroopDarkName) - 1
 				GUICtrlSetData(Eval("txtNum" & $TroopDarkName[$i]), "0")
 			Next
-
 
 			_GUICtrlEdit_SetReadOnly($txtNumGiant, False)
 			_GUICtrlEdit_SetReadOnly($txtNumWall, False)
@@ -638,21 +606,18 @@ Func SetComboTroopComp()
 			GUICtrlSetState($cmbBarrack3, $GUI_ENABLE)
 			GUICtrlSetState($cmbBarrack4, $GUI_ENABLE)
 			;GUICtrlSetState($txtCapacity, $GUI_DISABLE)
-
 			For $i = 0 To UBound($TroopName) - 1
 				GUICtrlSetState(Eval("txtNum" & $TroopName[$i]), $GUI_DISABLE)
 			Next
 			For $i = 0 To UBound($TroopDarkName) - 1
 				GUICtrlSetState(Eval("txtNum" & $TroopDarkName[$i]), $GUI_DISABLE)
 			Next
-
 		Case 9
 			GUICtrlSetState($cmbBarrack1, $GUI_DISABLE)
 			GUICtrlSetState($cmbBarrack2, $GUI_DISABLE)
 			GUICtrlSetState($cmbBarrack3, $GUI_DISABLE)
 			GUICtrlSetState($cmbBarrack4, $GUI_DISABLE)
 			;GUICtrlSetState($txtCapacity, $GUI_ENABLE)
-
 			For $i = 0 To UBound($TroopName) - 1
 				GUICtrlSetState(Eval("txtNum" & $TroopName[$i]), $GUI_ENABLE)
 			Next
@@ -673,7 +638,6 @@ Func SetComboTroopComp()
 			For $i = 0 To UBound($TroopDarkName) - 1
 				GUICtrlSetData(Eval("txtNum" & $TroopDarkName[$i]), Eval($TroopDarkName[$i] & "Comp"))
 			Next
-
 
 	EndSwitch
 	lblTotalCount()
@@ -813,11 +777,11 @@ EndFunc   ;==>chkBullyMode
 
 Func chkSnipeMode()
 	If GUICtrlRead($chkTrophyMode) = $GUI_CHECKED Then
-		$OptBullyMode = 1
+		$OptTrophyMode = 1
 		GUICtrlSetState($txtTHaddtiles, $GUI_ENABLE)
 		GUICtrlSetState($cmbAttackTHType, $GUI_ENABLE)
 	Else
-		$OptBullyMode = 0
+		$OptTrophyMode = 0
 		GUICtrlSetState($txtTHaddtiles, $GUI_DISABLE)
 		GUICtrlSetState($cmbAttackTHType, $GUI_DISABLE)
 	EndIf

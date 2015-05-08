@@ -58,18 +58,15 @@ Func Train()
 
 	If _Sleep(500) Then Return
 
-	if $TrainPos = "" then
+	Local $TrainPos = _PixelSearch(155, 603, 694, 605, Hex(0x9C7C37, 6), 5) ;Finds Train Troops button
+	$icount = 0
+	while not IsArray($TrainPos)
+		If _Sleep(500) Then Return
+		$icount = $icount + 1
 		$TrainPos = _PixelSearch(155, 603, 694, 605, Hex(0x9C7C37, 6), 5) ;Finds Train Troops button
-
-		$icount = 0
-		while not IsArray($TrainPos)
-			If _Sleep(100) Then Return
-			$icount = $icount + 1
-			$TrainPos = _PixelSearch(155, 603, 694, 605, Hex(0x9C7C37, 6), 5) ;Finds Train Troops button
-			if $icount = 20 then ExitLoop
-		wend
-	endif
-
+		if $icount = 4 then ExitLoop
+	wend
+	
 	If IsArray($TrainPos) = False Then
 		SetLog("Your Barrack is not available. (Upgrading? Locate another Barrack on the 'Misc' tab)", $COLOR_RED)
 		If _Sleep(500) Then Return
@@ -77,7 +74,6 @@ Func Train()
 	Else
 		Click($TrainPos[0], $TrainPos[1]) ;Click Train Troops button
 		If _Sleep(500) Then Return
-
 		$icount = 0
 		while not isBarrack()
 			If _Sleep(500) Then Return
@@ -85,12 +81,11 @@ Func Train()
 			if $icount = 10 then ExitLoop
 		wend
 		if not $fullArmy then CheckFullArmy()  ;if armycamp not full, check full by barrack
-
 	Endif
 
 	Local $NextPos = _PixelSearch(749, 333, 787, 349, Hex(0xF08C40, 6), 5)
     Local $PrevPos = _PixelSearch(70, 336, 110, 351, Hex(0xF08C40, 6), 5)
-
+	
 	$icount = 0
 	while not IsArray($NextPos)
 		If _Sleep(100) Then Return
@@ -99,7 +94,7 @@ Func Train()
 		$icount += 1
 		if $icount = 20 then ExitLoop
 	wend
-
+	
 	$icount = 0
 	while not IsArray($PrevPos)
 		If _Sleep(100) Then Return
@@ -108,7 +103,7 @@ Func Train()
 		if $icount = 20 then ExitLoop
 	wend
 
-
+	
 	if $isNormalBuild = "" then
 		for $i=0 to Ubound($TroopName) - 1
 			If GUICtrlRead(eval("txtNum" & $TroopName[$i])) <> "0" Then
@@ -119,7 +114,7 @@ Func Train()
 	if $isNormalBuild = "" then
 		$isNormalBuild = false
 	endif
-
+	
 	if $isDarkBuild = "" then
 		for $i=0 to Ubound($TroopDarkName) - 1
 			If GUICtrlRead(eval("txtNum" & $TroopDarkName[$i])) <> "0" Then
@@ -375,7 +370,7 @@ Func Train()
 		   If _Sleep(500) Then ExitLoop
 			$icount = 0
 			while not isBarrack()
-				If _Sleep(100) Then ExitLoop
+				If _Sleep(200) Then ExitLoop
 				$icount = $icount + 1
 				if $icount = 5 then ExitLoop
 			wend
@@ -504,7 +499,7 @@ Func Train()
 			   If _Sleep(500) Then ExitLoop
 				$icount = 0
 				while not isDarkBarrack()
-					If _Sleep(100) Then ExitLoop
+					If _Sleep(200) Then ExitLoop
 					$icount = $icount + 1
 					if $icount = 5 then ExitLoop
 				wend
@@ -529,7 +524,7 @@ Func Train()
 			If _Sleep(1000) Then ExitLoop
 			If $iBarrHere = 7 then ExitLoop
 	  wend
-
+	
 	if isSpellFactory() then
 		SetLog("Create Lightning Spell", $COLOR_BLUE)
 		If  _ColorCheck(_GetPixelColor(237, 354,"Y"), Hex(0xFFFFFF, 6), 20) = False Then
@@ -589,6 +584,13 @@ Func checkArmyCamp()
 	   if $TotalCamp = "" or $TotalCamp = 0 then
 		$TotalCamp = Number(getOther(586, 193, "Camp", True))
 	   endif
+	   
+	   if $TotalCamp = "" and $TotalCamp = 0 then
+		   $TotalCamp = InputBox("Question", "Enter your total Army Camp capacity", "200", "", _
+				 Default,Default, 600, 300)
+			$TotalCamp = int($TotalCamp)
+		 Endif
+	   If _Sleep(500) Then Return
 
 	   SetLog("Total Army Camp capacity: " & $CurCamp & "/" & $TotalCamp)
 	   ;If _ColorCheck(_GetPixelColor(692, 208), Hex(0x90DB38, 6), 20) and $ichkFullTroop = 0 Then

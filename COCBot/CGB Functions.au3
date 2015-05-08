@@ -39,6 +39,7 @@
 #include "functions\Main Screen\checkObstacles.au3"
 #include "functions\Main Screen\waitMainScreen.au3"
 #include "functions\Main Screen\ZoomOut.au3"
+#include "functions\Main Screen\isProblemAffect.au3"
 
 #include "functions\Other\_NumberFormat.au3"
 #include "functions\Other\_PadStringCenter.au3"
@@ -53,6 +54,7 @@
 #include "functions\Other\Time.au3"
 #include "functions\Other\BlockInputEx.au3"
 #include "functions\Other\TogglePause.au3"
+#include "functions\Other\CheckPrerequisites.au3"
 
 #include "functions\Pixels\_CaptureRegion.au3"
 #include "functions\Pixels\_ColorCheck.au3"

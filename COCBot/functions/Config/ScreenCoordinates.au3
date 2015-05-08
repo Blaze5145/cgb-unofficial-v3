@@ -32,7 +32,7 @@ Global $CampFull[4]  	  = [328, 535, 0xD03840,     20] ;
 Global $DropTrophiesStartPoint=[34, 310]
 
 Global $TrainBarb[4]  = [ 261, 366, 0x39D8E0,     20] ;
-Global $TrainArch[4]  = [ 369, 366, 0x39D8E0,     20] ;
+Global $TrainArch[4]  = [ 369, 366, 0x39D8E0,     100] ;
 Global $TrainGiant[4] = [ 475, 366, 0x3DD8E0,     20] ;
 Global $TrainWiza[4]  = [ 325, 425, 0xA56052,     20] ;
 Global $TrainGobl[4]  = [ 581, 366, 0x39D8E0,     20] ;
