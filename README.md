@@ -19,4 +19,4 @@ http://www.gnu.org/licenses/gpl-3.0.txt
 * Upon receiving evidence that the mod/fix works for the most of the testers of the people without any issues it'll be merged into the Beta branch.
 * Once the bugfix/mod works for ALL of the testers it'll be merged into the stable branch.
 * What the above means is that ALL bugfixes and mods should be merged into the Alpha branch first for preliminary testing. So developers please create pull requests into Alpha NOT the master branch.
-* @HungLe and @ProMac are official staff who are collaborators of this project which means that we have staff reviewing and pushing bugfixes to this repository.
+* @HungLe and @ProMac are official staff collaborators of this project which means that we have staff reviewing and pushing bugfixes to this repository
