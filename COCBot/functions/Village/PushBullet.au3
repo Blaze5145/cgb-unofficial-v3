@@ -139,7 +139,6 @@ Func _RemoteControl()
 						_DeleteMessage($iden[$x])
 					Case "bot stats"
 						SetLog("Your request has been received. Statistics sent")
-						_Push("CGB remote request: stats", "Feature not implemented yet")
 						_Push("Request for Stats", "Resources at Start\n-Gold:  " & GUICtrlRead($lblResultGoldStart) & "\n-Elixir:  " & GUICtrlRead($lblResultElixirStart) & "\n-DE:  " & GUICtrlRead($lblResultDEStart) & "\n-Trophies:  " & GUICtrlRead($lblResultTrophyStart) & "\n\nCurrent Resources \n-Gold:  " & GUICtrlRead($lblResultGoldNow) & "\n-Elixir:  " & GUICtrlRead($lblResultElixirNow) & "\n-DE:  " & GUICtrlRead($lblResultDeNow) & "\n-Trophies:  " & GUICtrlRead($lblResultTrophyNow) & "\n\nTotal Gain\n-Gold Gain:  " & GUICtrlRead($lblGoldLoot) & "\n-Elixir Gain:  " & GUICtrlRead($lblElixirLoot) & "\n-DE Gain:  " & GUICtrlRead($lblDarkLoot) & "\n-Trophies Gain:  " & GUICtrlRead($lblTrophyLoot) & "\n\nOther Stats\n-Attacked:  " & GUICtrlRead($lblresultvillagesattacked) & "\n-Skipped:  tbd" & "\n-Bot Run Time:  " & StringFormat("%02i:%02i:%02i", $hour, $min, $sec))
 						_DeleteMessage($iden[$x])
 					Case "bot logs"
