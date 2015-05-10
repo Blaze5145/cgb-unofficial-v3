@@ -4,7 +4,7 @@
 ; Syntax ........:
 ; Parameters ....: None
 ; Return values .:
-; Author ........:
+; Author ........: ProMac (2015)
 ; Modified ......:
 ; Remarks .......: This file is part of ClashGameBot. Copyright 2015
 ;                  ClashGameBot is distributed under the terms of the GNU GPL
@@ -12,10 +12,10 @@
 ; Link ..........:
 ; Example .......: No
 ; ===============================================================================================================================
-
+Global $WallWord = 0
+Global $WallLvc = 0
 
 Global $checkwalllogic
-Global $WallLvText , $WallLv
 Global $Wall[7][3]
 
 ;$Wall[0][0] = @ScriptDir & "\images\Walls\3_1.bmp"
@@ -43,7 +43,6 @@ $Wall[5][2] = @ScriptDir & "\images\Walls\9_3.bmp"
 $Wall[6][0] = @ScriptDir & "\images\Walls\10_1.bmp"
 $Wall[6][1] = @ScriptDir & "\images\Walls\10_2.bmp"
 
-
 Global $WallX = 0, $WallY = 0, $WallLoc = 0
 
 
@@ -52,97 +51,126 @@ Func CheckWall()
 	Local $centerPixel[2] = [430, 313]
 	If _Sleep(500) Then Return
 
-	For $Tolerance2 = 0 To 60
-		For $x = 0 To 1
-			If $WallLoc = 0 Then
-				;###################### ZONE 2 ##########################
-				_CaptureRegion(78, 200, 790, 360)
-				$WallLoc = _ImageSearch($Wall[$icmbWalls][$x], 1, $WallX, $WallY, $Tolerance2) ; Getting Wall Location
-				If $WallLoc = 1 Then
-					$WallX += 78
-					$WallY += 200
-					SetLog("Tolerance is " & $Tolerance2 & " Wall segment in Zone 2: " & "[" & $WallX & "," & $WallY & "]", $COLOR_GREEN)
-					SetLog("Found Walls level " & $icmbWalls + 4 & ", Upgrading...", $COLOR_GREEN)
-					$checkwalllogic = True
-					Return True
+	If $WallLoc = 0 Then
+		_CaptureRegion(78, 200, 790, 360) ; Zona 2
+		For $Tolerance2 = 0 To 65
+			For $x = 0 To 1
+				If $WallLoc = 0 Then
+					;_CaptureRegion(78, 200, 790, 360)
+					$WallLoc = _ImageSearch($Wall[$icmbWalls][$x], 1, $WallX, $WallY, $Tolerance2) ; Getting Wall Location
+					If $WallLoc = 1 Then
+						$WallX += 78
+						$WallY += 200
+						SetLog("Tolerance is " & $Tolerance2 & " Wall segment in Zone 2: " & "[" & $WallX & "," & $WallY & "]", $COLOR_GREEN)
+						SetLog("Found Walls level " & $icmbWalls + 4 & ", Verifying...", $COLOR_GREEN)
+						$checkwalllogic = True
+						Return True
+					EndIf
 				EndIf
-			EndIf
+			Next
 		Next
-	Next
+	EndIf
+	If $WallLoc = 0 Then
+		_CaptureRegion(226, 74, 654, 204) ; Zona 1
+		For $Tolerance2 = 0 To 65
+			For $x = 0 To 1
+				If $WallLoc = 0 Then
+					;_CaptureRegion(226, 74, 654, 204)
+					$WallLoc = _ImageSearch($Wall[$icmbWalls][$x], 1, $WallX, $WallY, $Tolerance2) ; Getting Wall Location
+					If $WallLoc = 1 Then
+						$WallX += 226
+						$WallY += 74
+						SetLog("Tolerance is " & $Tolerance2 & " Wall segment in Zone 1: " & "[" & $WallX & "," & $WallY & "]", $COLOR_GREEN)
+						SetLog("Found Walls level " & $icmbWalls + 4 & ", Verifying...", $COLOR_GREEN)
+						$checkwalllogic = True
+						Return True
+					EndIf
+				EndIf
+			Next
+		Next
+	EndIf
+	If $WallLoc = 0 Then
+		_CaptureRegion(168, 355, 702, 430) ; Zona 3
+		For $Tolerance2 = 0 To 65
+			For $x = 0 To 1
+				If $WallLoc = 0 Then
+					;_CaptureRegion(168, 355, 702, 430)
+					$WallLoc = _ImageSearch($Wall[$icmbWalls][$x], 1, $WallX, $WallY, $Tolerance2) ; Getting Wall Location
+					If $WallLoc = 1 Then
+						$WallX += 168
+						$WallY += 335
+						SetLog("Tolerance is " & $Tolerance2 & " Wall segment in Zone 3: " & "[" & $WallX & "," & $WallY & "]", $COLOR_GREEN)
+						SetLog("Found Walls level " & $icmbWalls + 4 & ", Verifying...", $COLOR_GREEN)
+						$checkwalllogic = True
+						Return True
+					EndIf
+				EndIf
+			Next
+		Next
+	EndIf
+	If $WallLoc = 0 Then
+		_CaptureRegion(294, 425, 654, 520) ; Zona 4
+		For $Tolerance2 = 0 To 65
+			For $x = 0 To 1
+				If $WallLoc = 0 Then
+					;_CaptureRegion(294, 425, 654, 520)
+					$WallLoc = _ImageSearch($Wall[$icmbWalls][$x], 1, $WallX, $WallY, $Tolerance2) ; Getting Wall Location
+					If $WallLoc = 1 Then
+						$WallX += 294
+						$WallY += 425
+						SetLog("Tolerance is " & $Tolerance2 & " Wall segment in Zone 4: " & "[" & $WallX & "," & $WallY & "]", $COLOR_GREEN)
+						SetLog("Found Walls level " & $icmbWalls + 4 & ", Verifying...", $COLOR_GREEN)
+						$checkwalllogic = True
+						Return True
+					EndIf
+				EndIf
+			Next
+		Next
+	EndIf
 
-	For $Tolerance2 = 0 To 60
-		For $x = 0 To 1
-			If $WallLoc = 0 Then
-				;###################### ZONE 1 ##########################
-				_CaptureRegion(226, 74, 654, 204)
-				$WallLoc = _ImageSearch($Wall[$icmbWalls][$x], 1, $WallX, $WallY, $Tolerance2) ; Getting Wall Location
-				If $WallLoc = 1 Then
-					$WallX += 226
-					$WallY += 74
-					SetLog("Tolerance is " & $Tolerance2 & " Wall segment in Zone 1: " & "[" & $WallX & "," & $WallY & "]", $COLOR_GREEN)
-					SetLog("Found Walls level " & $icmbWalls + 4 & ", Upgrading...", $COLOR_GREEN)
-					$checkwalllogic = True
-					Return True
-				EndIf
-			EndIf
-		Next
-	Next
-	For $Tolerance2 = 0 To 60
-		For $x = 0 To 1
-			If $WallLoc = 0 Then
-				;###################### ZONE 3 ##########################
-				_CaptureRegion(168, 355, 702, 430)
-				$WallLoc = _ImageSearch($Wall[$icmbWalls][$x], 1, $WallX, $WallY, $Tolerance2) ; Getting Wall Location
-				If $WallLoc = 1 Then
-					$WallX += 168
-					$WallY += 335
-					SetLog("Tolerance is " & $Tolerance2 & " Wall segment in Zone 3: " & "[" & $WallX & "," & $WallY & "]", $COLOR_GREEN)
-					SetLog("Found Walls level " & $icmbWalls + 4 & ", Upgrading...", $COLOR_GREEN)
-					$checkwalllogic = True
-					Return True
-				EndIf
-			EndIf
-		Next
-	Next
-	For $Tolerance2 = 0 To 60
-		For $x = 0 To 1
-			If $WallLoc = 0 Then
-				;###################### ZONE 4 ##########################
-				_CaptureRegion(294, 425, 654, 520)
-				$WallLoc = _ImageSearch($Wall[$icmbWalls][$x], 1, $WallX, $WallY, $Tolerance2) ; Getting Wall Location
-				If $WallLoc = 1 Then
-					$WallX += 294
-					$WallY += 425
-					SetLog("Tolerance is " & $Tolerance2 & " Wall segment in Zone 4: " & "[" & $WallX & "," & $WallY & "]", $COLOR_GREEN)
-					SetLog("Found Walls level " & $icmbWalls + 4 & ", Upgrading...", $COLOR_GREEN)
-					$checkwalllogic = True
-					Return True
-				EndIf
-			EndIf
-		Next
-	Next
-	$checkwalllogic = False
-	SetLog("Cannot find Walls level " & $icmbWalls + 4 & ", Skip upgrade...", $COLOR_RED)
-	Return False
+	If $WallLoc = 0 Then ; Verifycation if is a Wall and if is a Correct Level
+		$checkwalllogic = False
+		SetLog("Cannot find Walls level " & $icmbWalls + 4 & ", Skip upgrade...", $COLOR_RED)
+		Return False
+	EndIf
+
 EndFunc   ;==>CheckWall
 
-Func CheckWallLv()
-	$WallLv = 0
-	Local $i = ($icmbWalls - 1)
+Global $WallLv[7]
+$WallLv[0] = @ScriptDir & "\images\Walls\LV4.bmp"
+$WallLv[1] = @ScriptDir & "\images\Walls\LV5.bmp"
+$WallLv[2] = @ScriptDir & "\images\Walls\LV6.bmp"
+$WallLv[3] = @ScriptDir & "\images\Walls\LV7.bmp"
+$WallLv[4] = @ScriptDir & "\images\Walls\LV8.bmp"
+$WallLv[5] = @ScriptDir & "\images\Walls\LV9.bmp"
+$WallLv[6] = @ScriptDir & "\images\Walls\LV10.bmp"
 
-	For $Tolerance2 = 0 To 75
-		For $x = 0 To 1
-			If $WallLv = 0 Then
-				_CaptureRegion(78, 146, 760, 480)
-				$WallLv = _ImageSearch($Wall[$i][$x], 1, $x, $y, $Tolerance2) ; Getting Wall Location
-				If $WallLv = 1 Then
-					SetLog("Found Walls level: " & $i + 4 & " in Village Map", $COLOR_GREEN)
-					Return $WallLvText[$i]
-				EndIf
-			EndIf
-		Next
-	Next
-	If $WallLv = 0 Then
-		SetLog("Not Found Walls level: " & $i + 4 & " to upgrade, please verify your Settings", $COLOR_GREEN)
+Func CheckWallLv()
+	$WallLvc = 0
+	_CaptureRegion(340, 520, 555, 550)
+	If _ImageSearch($WallLv[$icmbWalls], 1, $x, $y, 65) Then ; Getting Wall level
+		$WallLvc = 1
+		SetLog("Found Word: (level " & $icmbWalls + 4 & ")", $COLOR_GREEN)
+		Return True
+	Else
+		$WallLvc = 0
+		SetLog("Not Found Word: (level " & $icmbWalls + 4 & ")", $COLOR_GREEN)
+		Return False
 	EndIf
 EndFunc   ;==>CheckWallLv
+
+
+Func CheckWallWord()
+	$WallWord = 0
+	_CaptureRegion(340, 520, 515, 550)
+	If _ImageSearch(@ScriptDir & "\images\Walls\wallword.bmp", 1, $x, $y, 55) Then ; Getting Wall word
+		$WallWord = 1
+		SetLog("Found Word: Wall", $COLOR_GREEN)
+		Return True
+	Else
+		$WallWord = 0
+		SetLog("Not Found Word: Wall", $COLOR_GREEN)
+		Return False
+	EndIf
+
+EndFunc   ;==>CheckWallWord
