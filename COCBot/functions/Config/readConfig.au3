@@ -1,7 +1,7 @@
 ;Reads config file and sets variables
 
 Func readConfig() ;Reads config and sets it to the variables
-	If FileExists($building) Then		
+	If FileExists($building) Then
 		$TownHallPos[0] = IniRead($building, "other", "xTownHall", "-1")
 		$TownHallPos[1] = IniRead($building, "other", "yTownHall", "-1")
 
@@ -16,12 +16,12 @@ Func readConfig() ;Reads config and sets it to the variables
 
 		$SFPos[0] = IniRead($building, "other", "xspellfactory", "-1")
 		$SFPos[1] = IniRead($building, "other", "yspellfactory", "-1")
-		
+
 		$barrackNum = IniRead($building, "other", "barrackNum", "0")
 		$barrackDarkNum = IniRead($building, "other", "barrackDarkNum", "0")
-		
+
 		$listResourceLocation = IniRead($building, "other", "listResource", "")
-		
+
 		$ichkUpgrade1 = IniRead($building, "other", "BuildUpgrade1", "0")
 		$ichkUpgrade2 = IniRead($building, "other", "BuildUpgrade2", "0")
 		$ichkUpgrade3 = IniRead($building, "other", "BuildUpgrade3", "0")
@@ -41,6 +41,7 @@ Func readConfig() ;Reads config and sets it to the variables
 		$frmBotPosX = IniRead($config, "general", "frmBotPosX", "900")
 		$frmBotPosY = IniRead($config, "general", "frmBotPosY", "20")
 
+		$ichkAutoStart = IniRead($config, "general", "AutoStart", "0")
 		$ichkBackground = IniRead($config, "general", "Background", "0")
 		$ichkBotStop = IniRead($config, "general", "BotStop", "0")
 		$icmbBotCommand = IniRead($config, "general", "Command", "0")

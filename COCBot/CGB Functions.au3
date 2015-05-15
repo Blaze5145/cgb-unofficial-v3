@@ -109,3 +109,6 @@
 
 #include "functions\Village\LocateSpell.au3"
 #include "functions\Village\Spell.au3"
+
+;AutoStart MOD - Sm0kE
+#include "functions\Other\AutoStart.au3"

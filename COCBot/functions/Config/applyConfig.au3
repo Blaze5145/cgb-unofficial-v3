@@ -5,6 +5,13 @@ Func applyConfig() ;Applies the data from config to the controls in GUI
 	;General Settings--------------------------------------------------------------------------
 	If $frmBotPosX <> -32000 Then WinMove($sBotTitle, "", $frmBotPosX, $frmBotPosY)
 
+	If $ichkAutoStart = 1 Then
+		GUICtrlSetState($chkAutoStart, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkAutoStart, $GUI_UNCHECKED)
+	EndIf
+
+
 	If $ichkBackground = 1 Then
 		GUICtrlSetState($chkBackground, $GUI_CHECKED)
 	Else
@@ -534,10 +541,10 @@ Func applyConfig() ;Applies the data from config to the controls in GUI
 	EndIf
 
 	;Troop Settings--------------------------------------------------------------------------
-	for $i=0 to Ubound($TroopName) - 1 
+	for $i=0 to Ubound($TroopName) - 1
 		GUICtrlSetData(eval("txtNum" & $TroopName[$i]), eval($TroopName[$i]&"Comp"))
 	next
-	for $i=0 to Ubound($TroopDarkName) - 1 
+	for $i=0 to Ubound($TroopDarkName) - 1
 		GUICtrlSetData(eval("txtNum" & $TroopDarkName[$i]), eval($TroopDarkName[$i]&"Comp"))
 	next
 	SetComboTroopComp()

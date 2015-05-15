@@ -52,7 +52,13 @@ Local $x = 15, $y = 500
 	$btnDonate = GUICtrlCreateButton("Donate", $x + 140, -1, 40, 40, $BS_ICON)
     GUICtrlSetImage (-1, @ScriptDir & "\Icons\donate.ico",1)
 		GUICtrlSetOnEvent(-1, "btnDonate")
-  $btnHide = GUICtrlCreateButton("Hide BS", $x + 10, $y + 45, 70, -1)
+    $chkAutoStart = GUICtrlCreateCheckbox("AS", $x + 2, $y + 48, 30, 20)
+	    $txtTip = "Check this to ENABLE the Auto Start of the Bot." & @CRLF & "The bot will Auto Start after 10 seconds"
+		GUICtrlSetFont(-1, 7)
+		GUICtrlSetTip(-1, $txtTip)
+		GUICtrlSetOnEvent(-1, "chkAS")
+		GUICtrlSetState(-1, $GUI_UNCHECKED)
+    $btnHide = GUICtrlCreateButton("Hide BS", $x + 40, $y + 45, 50, -1)
 		$txtTip = "Use this to move the BlueStacks Window out of sight." & @CRLF & "(Not minimized, but hidden)"
 		GUICtrlSetTip(-1, $txtTip)
 		GUICtrlSetOnEvent(-1, "btnHide")
