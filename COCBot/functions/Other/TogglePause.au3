@@ -3,7 +3,8 @@
 HotKeySet("{PAUSE}", "TogglePause")
 
 Func TogglePause()
-   Local $BlockInputPausePrev
+	Local $BlockInputPausePrev
+	Local $x
 	$TPaused = NOT $TPaused
 	If $TPaused and $Runstate = True Then
 		TrayTip($sBotTitle, "", 1)
@@ -25,6 +26,11 @@ Func TogglePause()
 
 	While $TPaused ; Actual Pause loop
 		If _Sleep(100) Then ExitLoop
+		$x += 1
+		If $x > 40 Then ; Check pushbullet remote control every 4sec
+			_RemoteControl()
+			$x = 0
+		EndIf
 	WEnd
 	; everything below this WEnd is executed when unpaused!
 	ZoomOut()
